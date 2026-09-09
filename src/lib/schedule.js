@@ -19,15 +19,20 @@ export function saveDaySchedule(date, schedule) {
   save('schedule:' + date, schedule)
 }
 
-// 7 tanggal terakhir termasuk hari ini, urutan terbaru dulu
-export function last7Dates() {
+// n tanggal terakhir termasuk hari ini, urutan terbaru dulu
+export function lastNDates(n) {
   const dates = []
-  for (let i = 0; i < 7; i++) {
+  for (let i = 0; i < n; i++) {
     const d = new Date()
     d.setDate(d.getDate() - i)
     dates.push(dateKey(d))
   }
   return dates
+}
+
+// 7 tanggal terakhir termasuk hari ini, urutan terbaru dulu
+export function last7Dates() {
+  return lastNDates(7)
 }
 
 // Isi 3 hari kemarin dengan jadwal contoh, sekali doang (dikunci lewat flag
@@ -40,6 +45,7 @@ export function seedDemoScheduleIfNeeded(slots, demoPicks) {
   if (exists('demo-seed-done')) return false
   save('demo-seed-done', true)
 
+  const seededDates = []
   demoPicks.forEach((picks, idx) => {
     const d = new Date()
     d.setDate(d.getDate() - (idx + 1))
@@ -51,6 +57,14 @@ export function seedDemoScheduleIfNeeded(slots, demoPicks) {
       schedule[slot.id] = { recipeId: picks[slot.id], boosters: [] }
     })
     saveDaySchedule(date, schedule)
+    seededDates.push(date)
   })
+  save('demo-schedule-dates', seededDates)
   return true
+}
+
+// Dipake sama lib/targetEngine.js buat nyaring hari demo dari histori kalori -
+// jadwal palsu itu gak boleh ikut ngitung TDEE adaptif, soalnya bukan konsumsi asli.
+export function isDemoScheduleDate(date) {
+  return load('demo-schedule-dates', []).includes(date)
 }

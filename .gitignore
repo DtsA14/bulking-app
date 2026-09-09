@@ -3,3 +3,5 @@ dist
 .vercel
 *.local
 ingredients-db.json
+
+.vercel

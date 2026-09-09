@@ -48,6 +48,17 @@ export function clearTotalsCache() {
   boosterTotalsCache.clear()
 }
 
+// Dibulatin 1 desimal (bukan integer) karena banyak mikro jumlahnya kecil per
+// porsi (misal vitamin B12 ~0.3mcg) - kalau dibulatin ke integer kayak makro,
+// keitung 0 semua.
+function roundMikro(mikro, divisor) {
+  const result = {}
+  Object.entries(mikro).forEach(([key, val]) => {
+    result[key] = Math.round((val / divisor) * 10) / 10
+  })
+  return result
+}
+
 // Total gizi & estimasi harga SELALU dihitung dari ingredients, gak pernah disimpan
 // statis di objek resep - biar gak ada 2 sumber angka yang bisa beda pas salah satu diupdate.
 // Ingredients di tiap resep itu buat SELURUH BATCH (misal 4 porsi), jadi hasilnya
@@ -64,7 +75,8 @@ export function getRecipeTotals(recipe) {
     karbo: Math.round(batch.karbo / porsi),
     lemak: Math.round(batch.lemak / porsi),
     serat: Math.round(batch.serat / porsi),
-    harga: Math.round(batch.harga / porsi)
+    harga: Math.round(batch.harga / porsi),
+    mikro: roundMikro(batch.mikro, porsi)
   }
   recipeTotalsCache.set(recipe.id, result)
   return result
@@ -225,7 +237,8 @@ export function getBoosterTotals(booster) {
     karbo: Math.round(t.karbo),
     lemak: Math.round(t.lemak),
     serat: Math.round(t.serat),
-    harga: Math.round(t.harga)
+    harga: Math.round(t.harga),
+    mikro: roundMikro(t.mikro, 1)
   }
   boosterTotalsCache.set(booster.id, result)
   return result

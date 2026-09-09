@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { load, save, exists } from '../lib/storage.js'
 import { dateKey } from '../lib/schedule.js'
+import { getWeightTrend } from '../lib/weight.js'
 
 const DEMO_LOGS = [
   { date: '2026-08-25', weight: 61.0 },
@@ -9,14 +10,6 @@ const DEMO_LOGS = [
   { date: '2026-09-04', weight: 61.9 },
   { date: '2026-09-08', weight: 62.1 }
 ]
-
-// Selisih hari kalender antara dua tanggal "YYYY-MM-DD" (bukan selisih index array),
-// biar tren gak keliru pas user nyatet gak konsisten tiap hari.
-function daysBetween(dateStr, referenceStr) {
-  const d1 = new Date(dateStr)
-  const d2 = new Date(referenceStr)
-  return Math.round((d2 - d1) / 86400000)
-}
 
 export default function Progress() {
   // Demo data cuma dipake kalau BELUM PERNAH ADA data asli sama sekali (key belum
@@ -46,17 +39,10 @@ export default function Progress() {
   }
 
   const today = dateKey()
-  const last7 = logs.filter(l => { const diff = daysBetween(l.date, today); return diff >= 0 && diff < 7 })
-  const prev7 = logs.filter(l => { const diff = daysBetween(l.date, today); return diff >= 7 && diff < 14 })
-  const avg = arr => (arr.length ? arr.reduce((a, b) => a + b.weight, 0) / arr.length : null)
-  const avgNow = avg(last7)
-  const avgPrev = avg(prev7)
+  const { deltaPerWeek } = getWeightTrend(logs, today)
 
   let suggestion = 'Belum cukup data. Catat berat tiap pagi minimal 2 minggu buat mulai lihat tren.'
-  if (avgNow !== null && avgPrev !== null) {
-    // avgNow dan avgPrev udah masing-masing rata-rata 7 hari kalender, jadi
-    // selisihnya LANGSUNG jadi delta per minggu - gak perlu dibagi 2 lagi.
-    const deltaPerWeek = avgNow - avgPrev
+  if (deltaPerWeek !== null) {
     if (deltaPerWeek < 0) suggestion = 'Berat turun — tambah 200 kkal segera.'
     else if (deltaPerWeek < 0.1) suggestion = 'Kenaikan lambat — pertimbangkan tambah 150-200 kkal (booster) per hari.'
     else if (deltaPerWeek <= 0.5) suggestion = 'Tren ideal, pertahankan pola makan sekarang.'

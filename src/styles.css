@@ -77,7 +77,8 @@ body { margin: 0; font-family: -apple-system, sans-serif; background: #F7F3E8; c
 .macrogrid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
 .mcell { background: #EFE8D6; border-radius: 8px; padding: 10px; text-align: center; }
 .mcell .v { font-size: 16px; font-weight: 600; color: #26433A; }
-.mcell .l { font-size: 10px; color: #8A8272; }
+.mcell .l { font-size: 11px; color: #6A6355; }
+.mikro-low { color: #9C3D2A; font-weight: 600; }
 .field-row.no-gap { flex-direction: row; justify-content: space-between; margin-bottom: 0; }
 .price-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #D8CFB8; font-size: 13px; }
 .price-row input { width: 90px; padding: 6px 8px; border: 1px solid #D8CFB8; border-radius: 6px; font-size: 13px; text-align: right; }

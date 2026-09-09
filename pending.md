@@ -21,25 +21,30 @@ Kalau dikerjain nanti:
   kombinasi & cara masak
 
 ## Dari audit eksternal (2026-09) — belum dikerjain
-2 poin dari audit yang sengaja ditahan (bukan kelewat):
+1 poin dari audit yang sengaja ditahan (bukan kelewat):
 
-- **Profile jadi "target engine"** — sekarang `baselineKkal` cuma data display/storage,
-  belum benar-benar ngontrol target kalori harian, rekomendasi booster, pilihan menu,
-  atau timeline. Next level: Profile → Target Engine → daily calorie target →
-  today's deficit/surplus → booster recommendation otomatis
 - **Schema ingredient belum future-proof** — `per_100g`/`per_100ml`/`harga_per_100`
   udah oke buat sekarang, tapi kalau nanti ada custom recipe atau price tracking,
   bakal butuh metadata tambahan: raw vs cooked, edible portion, package size, brand.
   Database sekarang nyampur ayam mentah, nasi matang, kentang panggang dalam satu
   asumsi "siap pakai" — belum masalah di skala sekarang, tapi rawan jadi sumber
   error kalau database membesar
+- **Breakdown gizi granular** (dari referensi app tracking makanan lain, 2026-09) —
+  `lemak_g` sekarang cuma total, belum dipecah saturated/trans/mono/poly-unsaturated;
+  `karbo_g` juga belum dipecah sugar vs fiber (serat udah ada terpisah, tapi sugar
+  belum). Butuh re-sourcing data per bahan dari USDA/TKPI, bukan cuma nambah field
+  kosong. Baru krusial kalau mau nilai kualitas lemak/gula, bukan cuma kuantitas
 
 Udah kekerjain (2026-09-09): pantangan filter resep, `getRecipeTotals()`/
 `getBoosterTotals()` caching (invalidate manual lewat `clearTotalsCache()` pas
 harga bahan diedit), error handling storage (toast lewat custom event
 `bulking-app:storage-error`), PWA setup (manifest + service worker via
 `vite-plugin-pwa`), demo-seed histori Belanja (3 hari kebelakang, sekali doang
-lewat flag `demo-seed-done`).
+lewat flag `demo-seed-done`), Profile jadi Target Engine (`lib/targetEngine.js`
+— adaptive TDEE dari histori 14 hari + tren berat, fallback ke `baselineKkal`
+manual pas data belum cukup, rekomendasi booster otomatis di Hari Ini), makro
+lengkap + mikronutrien harian di Hari Ini (agregat otomatis dari `calcTotals()`,
+termasuk %AKG per mikro pake acuan Permenkes 28/2019 dewasa laki-laki 19-29 th).
 
 ## Lainnya (dari diskusi awal, belum dieksekusi)
 - **Custom recipe builder** — user nambah resep sendiri, bukan cuma yang di-hardcode

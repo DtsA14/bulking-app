@@ -3,6 +3,7 @@ import { load, save } from '../lib/storage.js'
 import { DEFAULT_PROFILE } from '../lib/profile.js'
 import ingredientsData from '../data/ingredients.json'
 import { clearTotalsCache } from '../data/recipes.js'
+import { getCalorieTarget } from '../lib/targetEngine.js'
 
 function TargetSection() {
   const [profile, setProfile] = useState(() => load('profile', DEFAULT_PROFILE))
@@ -34,11 +35,29 @@ function TargetSection() {
         Baseline kalori harian
         <input type="number" value={profile.baselineKkal} onChange={e => update('baselineKkal', parseFloat(e.target.value) || 0)} />
       </label>
+      <TargetReadout profile={profile} />
       <label className="field-row">
         Pantangan makanan
         <input type="text" value={profile.pantangan} onChange={e => update('pantangan', e.target.value)} />
       </label>
     </>
+  )
+}
+
+// Pake `profile.baselineKkal` langsung (bukan cuma dari getCalorieTarget()) buat
+// mode 'baseline', biar angkanya update live pas user ngetik - getCalorieTarget()
+// baca profile dari localStorage yang baru ke-update di useEffect abis render.
+function TargetReadout({ profile }) {
+  const info = getCalorieTarget()
+  const target = info.mode === 'adaptive' ? info.target : profile.baselineKkal
+
+  return (
+    <p className="empty-note" style={{ marginBottom: 10 }}>
+      Target harian saat ini: <strong>{target} kkal</strong> —{' '}
+      {info.mode === 'adaptive'
+        ? `berdasarkan tren 14 hari terakhir (TDEE ${info.tdee} kkal + surplus 300 kkal)`
+        : `estimasi awal dari Baseline (${info.daysTracked}/14 hari histori terkumpul, minimal 10 buat switch otomatis)`}
+    </p>
   )
 }
 
