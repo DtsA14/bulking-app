@@ -98,7 +98,11 @@ export default function HariIni() {
         </div>
       </div>
       <p className="empty-note" style={{ marginTop: -10, marginBottom: 16 }}>
-        Target {targetInfo.mode === 'adaptive' ? 'berdasarkan tren 14 hari terakhir' : 'estimasi awal dari Profil'}
+        Target {
+          targetInfo.mode === 'adaptive' ? 'berdasarkan tren 14 hari terakhir'
+          : targetInfo.mode === 'manual' ? 'override manual dari Profil'
+          : 'estimasi awal (BMR + aktivitas)'
+        }
       </p>
 
       {recommended && (

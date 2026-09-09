@@ -4,7 +4,10 @@ export const DEFAULT_PROFILE = {
   beratSekarang: 61,
   tinggiBadan: 173,
   targetBerat: 67,
-  baselineKkal: 2400,
+  umur: 25,
+  gender: 'L', // 'L' laki-laki, 'P' perempuan - dipake buat formula BMR Mifflin-St Jeor
+  aktivitas: 'moderate', // 'sedentary' | 'moderate' | 'aktif'
+  baselineKkal: 0, // 0 = auto-hitung dari BMR+aktivitas, isi manual buat override paksa
   pantangan: 'Ikan'
 }
 

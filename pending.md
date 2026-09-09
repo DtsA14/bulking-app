@@ -41,10 +41,22 @@ harga bahan diedit), error handling storage (toast lewat custom event
 `bulking-app:storage-error`), PWA setup (manifest + service worker via
 `vite-plugin-pwa`), demo-seed histori Belanja (3 hari kebelakang, sekali doang
 lewat flag `demo-seed-done`), Profile jadi Target Engine (`lib/targetEngine.js`
-— adaptive TDEE dari histori 14 hari + tren berat, fallback ke `baselineKkal`
-manual pas data belum cukup, rekomendasi booster otomatis di Hari Ini), makro
-lengkap + mikronutrien harian di Hari Ini (agregat otomatis dari `calcTotals()`,
-termasuk %AKG per mikro pake acuan Permenkes 28/2019 dewasa laki-laki 19-29 th).
+— adaptive TDEE dari histori 14 hari + tren berat, fallback ke cold-start
+Mifflin-St Jeor BMR + level aktivitas [3 mode] + surplus kalau histori belum
+cukup, override manual opsional, rekomendasi booster otomatis di Hari Ini),
+makro lengkap + mikronutrien harian di Hari Ini (agregat otomatis dari
+`calcTotals()`, %AKG per mikro pake acuan Permenkes 28/2019 dewasa laki-laki
+19-29 th, 6 mikro esensial default + toggle lihat semua, sort ascending by
+%AKG), Profil nambah field umur/gender/level aktivitas.
+
+## Bug/gap yang diketahui — belum dibenerin
+- **`beratSekarang` di Profil gak sinkron sama histori berat di Progress** —
+  keduanya disimpen di key storage terpisah (`profile` vs `weight-logs`) dan
+  gak saling update. Akibatnya target protein/lemak (g/kg) & BMR di Target
+  Engine bisa ngitung pake berat badan yang udah basi kalau user rajin nyatet
+  progress di tab Progress tapi lupa update field Profil manual. Fix-nya:
+  `getMacroTargets()`/`calcMifflinTarget()` harusnya ambil entry TERBARU dari
+  `weight-logs` (fallback ke `profile.beratSekarang` kalau histori kosong).
 
 ## Lainnya (dari diskusi awal, belum dieksekusi)
 - **Custom recipe builder** — user nambah resep sendiri, bukan cuma yang di-hardcode

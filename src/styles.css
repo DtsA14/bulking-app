@@ -65,7 +65,7 @@ body { margin: 0; font-family: -apple-system, sans-serif; background: #F7F3E8; c
 .empty-note { color: #8A8272; font-style: italic; font-size: 13.5px; }
 
 .field-row { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: #6A6355; margin-bottom: 14px; }
-.field-row input { padding: 8px; border: 1px solid #D8CFB8; border-radius: 6px; font-size: 14px; }
+.field-row input, .field-row select { padding: 8px; border: 1px solid #D8CFB8; border-radius: 6px; font-size: 14px; background: #fff; color: #2A2621; }
 
 .recipe-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #D8CFB8; font-size: 13.5px; cursor: pointer; }
 .recipe-detail-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }

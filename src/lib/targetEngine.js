@@ -11,6 +11,28 @@ const SURPLUS_KKAL = 300
 const PROTEIN_G_PER_KG = 2.0 // lean bulk: 1.6-2.2 g/kg, pake titik atas biar aman
 const FAT_G_PER_KG = 1.0 // lean bulk: 0.8-1.2 g/kg buat kesehatan hormonal
 
+// 3 tingkat aktivitas (simplifikasi dari 5-tingkat akademis) - cukup buat
+// estimasi cold-start, gak perlu presisi berlebihan buat angka yang bakal
+// ke-replace otomatis begitu ada histori.
+export const ACTIVITY_LEVELS = {
+  sedentary: { label: 'Jarang olahraga', multiplier: 1.2 },
+  moderate: { label: 'Olahraga teratur (3-5x/minggu)', multiplier: 1.55 },
+  aktif: { label: 'Olahraga intens/tiap hari', multiplier: 1.725 }
+}
+
+// BMR (Mifflin-St Jeor) -> TDEE -> + surplus, dipake SEKALI di cold-start
+// (belum ada histori kalori+berat yang cukup). Butuh umur & gender karena
+// beda dari adaptive TDEE (yang gak butuh itu, tapi baru bisa jalan abis
+// ada data 2 minggu). Ini cuma estimasi awal, ilang perannya begitu adaptive
+// TDEE ambil alih.
+export function calcMifflinTarget(profile) {
+  const { beratSekarang, tinggiBadan, umur, gender } = profile
+  const bmr = 10 * beratSekarang + 6.25 * tinggiBadan - 5 * umur + (gender === 'P' ? -161 : 5)
+  const multiplier = ACTIVITY_LEVELS[profile.aktivitas]?.multiplier || ACTIVITY_LEVELS.moderate.multiplier
+  const tdee = Math.round(bmr * multiplier)
+  return { tdee, target: tdee + SURPLUS_KKAL }
+}
+
 function dayKkal(daySchedule) {
   if (!daySchedule) return null
   let kkal = 0
@@ -27,13 +49,17 @@ function dayKkal(daySchedule) {
   return kkal
 }
 
-// Target kalori harian: default-nya baselineKkal manual dari Profil (cold start,
-// belum ada histori). Begitu ada minimal ~10 dari 14 hari terakhir kepake +
-// tren berat kebaca (minimal 2 minggu, sama kayak syarat di Progress.jsx),
-// switch otomatis ke TDEE adaptif dari histori beneran - lebih akurat daripada
-// formula BMR dan gak butuh input baru (umur/gender/activity level) di Profil.
-// TDEE = rata-rata kalori masuk - (perubahan berat mingguan_kg * 7700 / 7),
-// target = TDEE + surplus lean bulk standar (+300 kkal/hari).
+// Target kalori harian, 3 mode:
+// - 'manual': user isi field "Baseline kalori harian" sendiri (override paksa,
+//   dipake apa adanya, gak dihitung ulang)
+// - 'baseline': cold start TANPA override - dihitung dari BMR Mifflin-St Jeor
+//   (butuh umur/gender/tinggi/berat/aktivitas dari Profil) + surplus
+// - 'adaptive': begitu ada minimal ~10 dari 14 hari terakhir kepake + tren
+//   berat kebaca (minimal 2 minggu, sama kayak syarat di Progress.jsx), switch
+//   otomatis ke TDEE adaptif dari histori beneran - lebih akurat dari formula
+//   manapun karena berbasis data asli, bukan estimasi populasi.
+//   TDEE = rata-rata kalori masuk - (perubahan berat mingguan_kg * 7700 / 7),
+//   target = TDEE + surplus lean bulk standar (+300 kkal/hari).
 export function getCalorieTarget() {
   const profile = getProfile()
   const today = dateKey()
@@ -48,7 +74,11 @@ export function getCalorieTarget() {
 
   const hasEnoughData = dailyKkals.length >= MIN_TRACKED_DAYS && deltaPerWeek !== null
   if (!hasEnoughData) {
-    return { mode: 'baseline', tdee: null, target: profile.baselineKkal, daysTracked: dailyKkals.length }
+    if (profile.baselineKkal > 0) {
+      return { mode: 'manual', tdee: null, target: profile.baselineKkal, daysTracked: dailyKkals.length }
+    }
+    const { tdee, target } = calcMifflinTarget(profile)
+    return { mode: 'baseline', tdee, target, daysTracked: dailyKkals.length }
   }
 
   const avgIntake = dailyKkals.reduce((a, b) => a + b, 0) / dailyKkals.length
