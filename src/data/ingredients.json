@@ -1,0 +1,438 @@
+{
+  "_meta": {
+    "unit": "semua nilai per 100 gram bahan mentah/siap pakai, kecuali disebutkan lain",
+    "sumber": "Estimasi digabung dari USDA FoodData Central (bahan generik) dan TKPI Kemenkes 2019 (bahan khas Indonesia: kecap, tempe, tahu, dll). Angka mikro yang belum ada datanya sengaja dikosongkan (null) daripada dikira-kira.",
+    "cara_pakai": "kalori_per_gram = kkal / 100. Kalikan sama berat aktual bahan buat dapet nilai per porsi.",
+    "harga": "harga_per_100 = estimasi rupiah per 100g (atau per 100ml buat bahan cair), seed awal - WAJIB di-adjust manual sesuai harga di tempat belanja masing-masing, bukan data pasar real-time."
+  },
+  "ingredients": [
+    {
+      "id": "ayam-fillet",
+      "nama": "Ayam fillet (dada/paha, tanpa kulit)",
+      "kategori": "protein-hewani",
+      "per_100g": {
+        "kkal": 165,
+        "protein_g": 31,
+        "karbo_g": 0,
+        "lemak_g": 3.6,
+        "serat_g": 0
+      },
+      "mikro": {
+        "zat_besi_mg": 1.0,
+        "vitamin_b6_mg": 0.6,
+        "zinc_mg": 1.0,
+        "vitamin_b12_mcg": 0.3
+      },
+      "harga_per_100": 3500
+    },
+    {
+      "id": "daging-sapi-has",
+      "nama": "Daging sapi has (has dalam/tenderloin)",
+      "kategori": "protein-hewani",
+      "per_100g": {
+        "kkal": 179,
+        "protein_g": 27,
+        "karbo_g": 0,
+        "lemak_g": 7.5,
+        "serat_g": 0
+      },
+      "mikro": {
+        "zat_besi_mg": 2.6,
+        "zinc_mg": 4.8,
+        "vitamin_b12_mcg": 2.6
+      },
+      "harga_per_100": 12000
+    },
+    {
+      "id": "telur",
+      "nama": "Telur ayam (1 butir ~55g)",
+      "kategori": "protein-hewani",
+      "per_100g": {
+        "kkal": 155,
+        "protein_g": 13,
+        "karbo_g": 1.1,
+        "lemak_g": 11,
+        "serat_g": 0
+      },
+      "mikro": {
+        "kolin_mg": 294,
+        "vitamin_b12_mcg": 0.9,
+        "vitamin_d_mcg": 2.0
+      },
+      "harga_per_100": 2000
+    },
+    {
+      "id": "tahu",
+      "nama": "Tahu putih",
+      "kategori": "protein-nabati",
+      "per_100g": {
+        "kkal": 76,
+        "protein_g": 8,
+        "karbo_g": 1.9,
+        "lemak_g": 4.8,
+        "serat_g": 0.3
+      },
+      "mikro": {
+        "kalsium_mg": 350,
+        "zat_besi_mg": 5.4
+      },
+      "harga_per_100": 1000
+    },
+    {
+      "id": "tempe",
+      "nama": "Tempe",
+      "kategori": "protein-nabati",
+      "per_100g": {
+        "kkal": 193,
+        "protein_g": 19,
+        "karbo_g": 9.4,
+        "lemak_g": 11,
+        "serat_g": 1.4
+      },
+      "mikro": {
+        "zat_besi_mg": 2.7,
+        "kalsium_mg": 155
+      },
+      "harga_per_100": 900
+    },
+    {
+      "id": "nasi-matang",
+      "nama": "Nasi putih matang",
+      "kategori": "karbo",
+      "per_100g": {
+        "kkal": 130,
+        "protein_g": 2.7,
+        "karbo_g": 28,
+        "lemak_g": 0.3,
+        "serat_g": 0.4
+      },
+      "mikro": {},
+      "harga_per_100": 300
+    },
+    {
+      "id": "kentang",
+      "nama": "Kentang (dipanggang, dengan kulit)",
+      "kategori": "karbo",
+      "per_100g": {
+        "kkal": 93,
+        "protein_g": 2.5,
+        "karbo_g": 21,
+        "lemak_g": 0.1,
+        "serat_g": 2.2
+      },
+      "mikro": {
+        "kalium_mg": 544,
+        "vitamin_c_mg": 9.6
+      },
+      "harga_per_100": 1200
+    },
+    {
+      "id": "roti-gandum",
+      "nama": "Roti gandum (whole wheat)",
+      "kategori": "karbo",
+      "per_100g": {
+        "kkal": 247,
+        "protein_g": 13,
+        "karbo_g": 41,
+        "lemak_g": 3.4,
+        "serat_g": 6
+      },
+      "mikro": {},
+      "harga_per_100": 4000
+    },
+    {
+      "id": "oat-instan",
+      "nama": "Oat instan (kering)",
+      "kategori": "karbo",
+      "per_100g": {
+        "kkal": 389,
+        "protein_g": 17,
+        "karbo_g": 66,
+        "lemak_g": 7,
+        "serat_g": 10
+      },
+      "mikro": {
+        "zat_besi_mg": 4.7,
+        "magnesium_mg": 177
+      },
+      "harga_per_100": 3500
+    },
+    {
+      "id": "brokoli",
+      "nama": "Brokoli",
+      "kategori": "sayur",
+      "per_100g": {
+        "kkal": 34,
+        "protein_g": 2.8,
+        "karbo_g": 7,
+        "lemak_g": 0.4,
+        "serat_g": 2.6
+      },
+      "mikro": {
+        "vitamin_c_mg": 89,
+        "vitamin_a_mcg": 31
+      },
+      "harga_per_100": 3000
+    },
+    {
+      "id": "wortel",
+      "nama": "Wortel",
+      "kategori": "sayur",
+      "per_100g": {
+        "kkal": 41,
+        "protein_g": 0.9,
+        "karbo_g": 10,
+        "lemak_g": 0.2,
+        "serat_g": 2.8
+      },
+      "mikro": {
+        "vitamin_a_mcg": 835
+      },
+      "harga_per_100": 1200
+    },
+    {
+      "id": "bayam",
+      "nama": "Bayam",
+      "kategori": "sayur",
+      "per_100g": {
+        "kkal": 23,
+        "protein_g": 2.9,
+        "karbo_g": 3.6,
+        "lemak_g": 0.4,
+        "serat_g": 2.2
+      },
+      "mikro": {
+        "folat_mcg": 194,
+        "zat_besi_mg": 2.7
+      },
+      "harga_per_100": 1000
+    },
+    {
+      "id": "kacang-panjang",
+      "nama": "Kacang panjang",
+      "kategori": "sayur",
+      "per_100g": {
+        "kkal": 47,
+        "protein_g": 2.8,
+        "karbo_g": 8,
+        "lemak_g": 0.4,
+        "serat_g": 3.6
+      },
+      "mikro": {
+        "vitamin_k_mcg": 43
+      },
+      "harga_per_100": 1500
+    },
+    {
+      "id": "paprika",
+      "nama": "Paprika",
+      "kategori": "sayur",
+      "per_100g": {
+        "kkal": 31,
+        "protein_g": 1,
+        "karbo_g": 6,
+        "lemak_g": 0.3,
+        "serat_g": 2.1
+      },
+      "mikro": {
+        "vitamin_c_mg": 128
+      },
+      "harga_per_100": 4000
+    },
+    {
+      "id": "pisang",
+      "nama": "Pisang (1 buah ~118g)",
+      "kategori": "buah",
+      "per_100g": {
+        "kkal": 89,
+        "protein_g": 1.1,
+        "karbo_g": 23,
+        "lemak_g": 0.3,
+        "serat_g": 2.6
+      },
+      "mikro": {
+        "kalium_mg": 358,
+        "vitamin_b6_mg": 0.4
+      },
+      "harga_per_100": 700
+    },
+    {
+      "id": "susu-full-cream",
+      "nama": "Susu full cream (cair)",
+      "kategori": "dairy",
+      "per_100ml": {
+        "kkal": 61,
+        "protein_g": 3.2,
+        "karbo_g": 4.8,
+        "lemak_g": 3.3,
+        "serat_g": 0
+      },
+      "mikro": {
+        "kalsium_mg": 113,
+        "vitamin_d_mcg": 1.3
+      },
+      "harga_per_100": 1500
+    },
+    {
+      "id": "yogurt",
+      "nama": "Yogurt plain",
+      "kategori": "dairy",
+      "per_100g": {
+        "kkal": 61,
+        "protein_g": 3.5,
+        "karbo_g": 4.7,
+        "lemak_g": 3.3,
+        "serat_g": 0
+      },
+      "mikro": {
+        "kalsium_mg": 121
+      },
+      "harga_per_100": 2500
+    },
+    {
+      "id": "keju-parut",
+      "nama": "Keju cheddar parut",
+      "kategori": "dairy",
+      "per_100g": {
+        "kkal": 403,
+        "protein_g": 25,
+        "karbo_g": 1.3,
+        "lemak_g": 33,
+        "serat_g": 0
+      },
+      "mikro": {
+        "kalsium_mg": 721
+      },
+      "harga_per_100": 8000
+    },
+    {
+      "id": "selai-kacang",
+      "nama": "Selai kacang",
+      "kategori": "lemak-sehat",
+      "per_100g": {
+        "kkal": 588,
+        "protein_g": 25,
+        "karbo_g": 20,
+        "lemak_g": 50,
+        "serat_g": 6
+      },
+      "mikro": {
+        "magnesium_mg": 168,
+        "vitamin_e_mg": 9.5
+      },
+      "harga_per_100": 4000
+    },
+    {
+      "id": "minyak-wijen",
+      "nama": "Minyak wijen/sayur",
+      "kategori": "lemak",
+      "per_100g": {
+        "kkal": 884,
+        "protein_g": 0,
+        "karbo_g": 0,
+        "lemak_g": 100,
+        "serat_g": 0
+      },
+      "mikro": {},
+      "harga_per_100": 4000
+    },
+    {
+      "id": "kecap-manis",
+      "nama": "Kecap manis",
+      "kategori": "bumbu",
+      "per_100g": {
+        "kkal": 274,
+        "protein_g": 3.3,
+        "karbo_g": 60,
+        "lemak_g": 0.2,
+        "serat_g": 0
+      },
+      "mikro": {},
+      "harga_per_100": 2000
+    },
+    {
+      "id": "kecap-asin",
+      "nama": "Kecap asin (soy sauce)",
+      "kategori": "bumbu",
+      "per_100g": {
+        "kkal": 53,
+        "protein_g": 8,
+        "karbo_g": 4.9,
+        "lemak_g": 0.1,
+        "serat_g": 0
+      },
+      "mikro": {},
+      "harga_per_100": 2000
+    },
+    {
+      "id": "saus-tiram",
+      "nama": "Saus tiram",
+      "kategori": "bumbu",
+      "per_100g": {
+        "kkal": 143,
+        "protein_g": 3,
+        "karbo_g": 27,
+        "lemak_g": 0.6,
+        "serat_g": 0.5
+      },
+      "mikro": {},
+      "harga_per_100": 3000
+    },
+    {
+      "id": "madu",
+      "nama": "Madu",
+      "kategori": "pemanis",
+      "per_100g": {
+        "kkal": 304,
+        "protein_g": 0.3,
+        "karbo_g": 82,
+        "lemak_g": 0,
+        "serat_g": 0.2
+      },
+      "mikro": {},
+      "harga_per_100": 8000
+    },
+    {
+      "id": "whey-protein",
+      "nama": "Whey protein bubuk (generik)",
+      "kategori": "suplemen",
+      "per_100g": {
+        "kkal": 400,
+        "protein_g": 80,
+        "karbo_g": 8,
+        "lemak_g": 5,
+        "serat_g": 0
+      },
+      "mikro": null,
+      "harga_per_100": 20000
+    },
+    {
+      "id": "bawang-putih",
+      "nama": "Bawang putih",
+      "kategori": "bumbu",
+      "per_100g": {
+        "kkal": 149,
+        "protein_g": 6.4,
+        "karbo_g": 33,
+        "lemak_g": 0.5,
+        "serat_g": 2.1
+      },
+      "mikro": {},
+      "harga_per_100": 4000
+    },
+    {
+      "id": "granola",
+      "nama": "Granola",
+      "kategori": "karbo",
+      "per_100g": {
+        "kkal": 471,
+        "protein_g": 10,
+        "karbo_g": 64,
+        "lemak_g": 20,
+        "serat_g": 7
+      },
+      "mikro": {},
+      "harga_per_100": 5000
+    }
+  ]
+}
