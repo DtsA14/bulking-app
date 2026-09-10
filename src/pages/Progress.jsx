@@ -65,7 +65,7 @@ export default function Progress() {
           value={input}
           onChange={e => setInput(e.target.value)}
         />
-        <button onClick={addLog}>Catat</button>
+        <button className="btn-primary" onClick={addLog}>Catat</button>
       </div>
 
       <div className="suggestion-box">{suggestion}</div>

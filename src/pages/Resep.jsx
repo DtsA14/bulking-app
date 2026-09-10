@@ -66,7 +66,10 @@ export default function Resep() {
           {RECIPES.filter(r => r.cat === cat && !recipeMatchesPantangan(r, pantangan)).map(r => (
             <div className="recipe-row" key={r.id} onClick={() => { setOpenRecipeId(r.id); setRecipeTab('masak') }}>
               <span>{r.name}</span>
-              <span className="recipe-meta">{getRecipeTotals(r).kkal} kkal</span>
+              <span className="recipe-row-right">
+                <span className="recipe-meta">{getRecipeTotals(r).kkal} kkal</span>
+                <span className="recipe-row-chevron">›</span>
+              </span>
             </div>
           ))}
         </div>

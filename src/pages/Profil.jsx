@@ -18,52 +18,62 @@ function TargetSection() {
 
   return (
     <>
-      <div className="cat-heading">Target</div>
-      <label className="field-row">
-        Berat sekarang (kg)
-        <input type="number" value={profile.beratSekarang} onChange={e => update('beratSekarang', parseFloat(e.target.value) || 0)} />
-      </label>
-      <label className="field-row">
-        Tinggi badan (cm)
-        <input type="number" value={profile.tinggiBadan} onChange={e => update('tinggiBadan', parseFloat(e.target.value) || 0)} />
-      </label>
-      <label className="field-row">
-        Target berat (kg)
-        <input type="number" value={profile.targetBerat} onChange={e => update('targetBerat', parseFloat(e.target.value) || 0)} />
-      </label>
-      <label className="field-row">
-        Umur (tahun)
-        <input type="number" value={profile.umur} onChange={e => update('umur', parseFloat(e.target.value) || 0)} />
-      </label>
-      <label className="field-row">
-        Jenis kelamin
-        <select value={profile.gender} onChange={e => update('gender', e.target.value)}>
-          <option value="L">Laki-laki</option>
-          <option value="P">Perempuan</option>
-        </select>
-      </label>
-      <label className="field-row">
-        Level aktivitas
-        <select value={profile.aktivitas} onChange={e => update('aktivitas', e.target.value)}>
-          {Object.entries(ACTIVITY_LEVELS).map(([key, { label }]) => (
-            <option key={key} value={key}>{label}</option>
-          ))}
-        </select>
-      </label>
-      <label className="field-row">
-        Override kalori manual (opsional)
-        <input
-          type="number"
-          value={profile.baselineKkal || ''}
-          placeholder="Kosongin buat pake estimasi otomatis"
-          onChange={e => update('baselineKkal', parseFloat(e.target.value) || 0)}
-        />
-      </label>
-      <TargetReadout profile={profile} />
-      <label className="field-row">
-        Pantangan makanan
-        <input type="text" value={profile.pantangan} onChange={e => update('pantangan', e.target.value)} />
-      </label>
+      <div className="section-card">
+        <div className="cat-heading">Data diri</div>
+        <label className="field-row">
+          Berat sekarang (kg)
+          <input type="number" value={profile.beratSekarang} onChange={e => update('beratSekarang', parseFloat(e.target.value) || 0)} />
+        </label>
+        <label className="field-row">
+          Tinggi badan (cm)
+          <input type="number" value={profile.tinggiBadan} onChange={e => update('tinggiBadan', parseFloat(e.target.value) || 0)} />
+        </label>
+        <label className="field-row">
+          Target berat (kg)
+          <input type="number" value={profile.targetBerat} onChange={e => update('targetBerat', parseFloat(e.target.value) || 0)} />
+        </label>
+        <label className="field-row">
+          Umur (tahun)
+          <input type="number" value={profile.umur} onChange={e => update('umur', parseFloat(e.target.value) || 0)} />
+        </label>
+        <label className="field-row">
+          Jenis kelamin
+          <select value={profile.gender} onChange={e => update('gender', e.target.value)}>
+            <option value="L">Laki-laki</option>
+            <option value="P">Perempuan</option>
+          </select>
+        </label>
+      </div>
+
+      <div className="section-card">
+        <div className="cat-heading">Target kalori</div>
+        <label className="field-row">
+          Level aktivitas
+          <select value={profile.aktivitas} onChange={e => update('aktivitas', e.target.value)}>
+            {Object.entries(ACTIVITY_LEVELS).map(([key, { label }]) => (
+              <option key={key} value={key}>{label}</option>
+            ))}
+          </select>
+        </label>
+        <label className="field-row">
+          Override kalori manual (opsional)
+          <input
+            type="number"
+            value={profile.baselineKkal || ''}
+            placeholder="Kosongin buat pake estimasi otomatis"
+            onChange={e => update('baselineKkal', parseFloat(e.target.value) || 0)}
+          />
+        </label>
+        <TargetReadout profile={profile} />
+      </div>
+
+      <div className="section-card">
+        <div className="cat-heading">Pantangan</div>
+        <label className="field-row">
+          Pantangan makanan
+          <input type="text" value={profile.pantangan} onChange={e => update('pantangan', e.target.value)} />
+        </label>
+      </div>
     </>
   )
 }
@@ -77,7 +87,7 @@ function TargetReadout({ profile }) {
 
   if (info.mode === 'adaptive') {
     return (
-      <p className="empty-note" style={{ marginBottom: 10 }}>
+      <p className="disclaimer" style={{ marginBottom: 0 }}>
         Target harian saat ini: <strong>{info.target} kkal</strong> — berdasarkan
         tren 14 hari terakhir (TDEE {info.tdee} kkal + surplus 300 kkal)
       </p>
@@ -86,7 +96,7 @@ function TargetReadout({ profile }) {
 
   if (profile.baselineKkal > 0) {
     return (
-      <p className="empty-note" style={{ marginBottom: 10 }}>
+      <p className="disclaimer" style={{ marginBottom: 0 }}>
         Target harian saat ini: <strong>{profile.baselineKkal} kkal</strong> —
         override manual, gak dihitung ulang sampe dikosongin
       </p>
@@ -95,7 +105,7 @@ function TargetReadout({ profile }) {
 
   const { tdee, target } = calcMifflinTarget(profile)
   return (
-    <p className="empty-note" style={{ marginBottom: 10 }}>
+    <p className="disclaimer" style={{ marginBottom: 0 }}>
       Target harian saat ini: <strong>{target} kkal</strong> — estimasi awal dari
       BMR Mifflin-St Jeor + aktivitas (TDEE {tdee} kkal + surplus 300 kkal).{' '}
       {info.daysTracked}/14 hari histori terkumpul, minimal 10 buat switch ke
@@ -121,7 +131,7 @@ function HargaBahanSection() {
   }
 
   return (
-    <>
+    <div className="section-card">
       <div className="cat-heading">Harga bahan (Rp per 100g/100ml)</div>
       <p className="empty-note" style={{ marginBottom: 10 }}>
         Estimasi awal dari sistem — sesuaikan sama harga di tempat lu belanja biar Belanja lebih akurat.
@@ -136,7 +146,7 @@ function HargaBahanSection() {
           />
         </div>
       ))}
-    </>
+    </div>
   )
 }
 

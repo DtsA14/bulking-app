@@ -106,15 +106,15 @@ export default function HariIni() {
       </p>
 
       {recommended && (
-        <div className="suggestion-box">
+        <div className="nudge-box">
           Masih kurang ~{remaining} kkal dari target. Coba tambah{' '}
           <strong>{recommended.name}</strong> (+{getBoosterTotals(recommended).kkal} kkal)
-          {' '}
-          <button onClick={() => addBooster(RECOMMEND_TO_SLOT, recommended.id)}>Tambah</button>
+          <br />
+          <button className="btn-primary" onClick={() => addBooster(RECOMMEND_TO_SLOT, recommended.id)}>Tambah</button>
         </div>
       )}
 
-      <button onClick={() => setShowDetail(v => !v)} style={{ marginBottom: 16 }}>
+      <button className="btn-secondary" onClick={() => setShowDetail(v => !v)} style={{ marginBottom: 16 }}>
         {showDetail ? 'Sembunyikan' : 'Lihat'} detail gizi (makro & mikro)
       </button>
 
@@ -122,10 +122,10 @@ export default function HariIni() {
         <>
           <div className="cat-heading">Makro hari ini</div>
           <div className="macrogrid">
-            <div className="mcell"><div className="v">{totals.kkal}</div><div className="l">kkal · target {targetInfo.target}</div></div>
-            <div className="mcell"><div className="v">{totals.protein}g</div><div className="l">protein · target {macroTargets.protein}g</div></div>
-            <div className="mcell"><div className="v">{Math.round(totals.karbo)}g</div><div className="l">karbo · target {macroTargets.karbo}g</div></div>
-            <div className="mcell"><div className="v">{Math.round(totals.lemak)}g</div><div className="l">lemak · target {macroTargets.fat}g</div></div>
+            <div className="mcell"><div className="v">{totals.kkal}</div><div className="l">kkal <span className="target">· target {targetInfo.target}</span></div></div>
+            <div className="mcell"><div className="v">{totals.protein}g</div><div className="l">protein <span className="target">· target {macroTargets.protein}g</span></div></div>
+            <div className="mcell"><div className="v">{Math.round(totals.karbo)}g</div><div className="l">karbo <span className="target">· target {macroTargets.karbo}g</span></div></div>
+            <div className="mcell"><div className="v">{Math.round(totals.lemak)}g</div><div className="l">lemak <span className="target">· target {macroTargets.fat}g</span></div></div>
           </div>
           <div className="field-row no-gap"><span>Serat</span><span>{Math.round(totals.serat)}g</span></div>
 
@@ -163,7 +163,7 @@ export default function HariIni() {
 
                 {rest.length > 0 && (
                   <>
-                    <button onClick={() => setShowAllMikro(v => !v)} style={{ marginTop: 8 }}>
+                    <button className="btn-secondary" onClick={() => setShowAllMikro(v => !v)} style={{ marginTop: 8 }}>
                       {showAllMikro ? 'Sembunyikan' : 'Lihat semua'} mikronutrien
                     </button>
                     {showAllMikro && rest.map(renderRow)}
@@ -173,7 +173,7 @@ export default function HariIni() {
             )
           })()}
 
-          <p className="empty-note" style={{ marginTop: 8, marginBottom: 16 }}>
+          <p className="disclaimer">
             Target protein & lemak dari berat badan (2.0g/kg & 1.0g/kg, standar lean
             bulk), karbo ngisi sisa kalori target. Mikronutrien cuma yang ada
             datanya di database bahan — bukan daftar lengkap kebutuhan harian.
@@ -196,35 +196,37 @@ export default function HariIni() {
               <span className="slot-name">{slot.name}</span>
             </div>
 
-            {r ? (
-              <div className="selected-card">
-                <div>
-                  <div className="sc-name">{r.name}</div>
-                  <div className="sc-macro">{getRecipeTotals(r).kkal} kkal · {getRecipeTotals(r).protein}g protein</div>
+            <div className="meal-card">
+              {r ? (
+                <div className="meal-card-main">
+                  <div>
+                    <div className="sc-name">{r.name}</div>
+                    <div className="sc-macro">{getRecipeTotals(r).kkal} kkal · {getRecipeTotals(r).protein}g protein</div>
+                  </div>
+                  <button className="btn-secondary" onClick={() => setOpenPicker({ slotId: slot.id, type: 'menu' })}>Ganti</button>
                 </div>
-                <button onClick={() => setOpenPicker({ slotId: slot.id, type: 'menu' })}>Ganti</button>
-              </div>
-            ) : (
-              <div className="selected-card empty">Belum pilih menu</div>
-            )}
+              ) : (
+                <div className="meal-card-main empty">Belum pilih menu</div>
+              )}
 
-            {s.boosters.length > 0 && (
-              <div className="booster-chips">
-                {s.boosters.map(b => {
-                  const booster = findBooster(b.boosterId)
-                  return (
-                    <span className="chip" key={b.uid}>
-                      {booster.name} (+{getBoosterTotals(booster).kkal})
-                      <button onClick={() => removeBooster(slot.id, b.uid)}>×</button>
-                    </span>
-                  )
-                })}
-              </div>
-            )}
+              {s.boosters.length > 0 && (
+                <div className="booster-chips">
+                  {s.boosters.map(b => {
+                    const booster = findBooster(b.boosterId)
+                    return (
+                      <span className="chip" key={b.uid}>
+                        {booster.name} (+{getBoosterTotals(booster).kkal})
+                        <button onClick={() => removeBooster(slot.id, b.uid)}>×</button>
+                      </span>
+                    )
+                  })}
+                </div>
+              )}
 
-            <div className="slot-actions">
-              <button onClick={() => setOpenPicker(isMenuOpen ? null : { slotId: slot.id, type: 'menu' })}>+ Menu</button>
-              <button onClick={() => setOpenPicker(isBoosterOpen ? null : { slotId: slot.id, type: 'booster' })}>+ Booster</button>
+              <div className="meal-card-actions">
+                <button className="btn-secondary" onClick={() => setOpenPicker(isMenuOpen ? null : { slotId: slot.id, type: 'menu' })}>+ Menu</button>
+                <button className="btn-secondary" onClick={() => setOpenPicker(isBoosterOpen ? null : { slotId: slot.id, type: 'booster' })}>+ Booster</button>
+              </div>
             </div>
 
             {isMenuOpen && (

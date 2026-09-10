@@ -58,6 +58,24 @@ makro lengkap + mikronutrien harian di Hari Ini (agregat otomatis dari
   `getMacroTargets()`/`calcMifflinTarget()` harusnya ambil entry TERBARU dari
   `weight-logs` (fallback ke `profile.beratSekarang` kalau histori kosong).
 
+## Design critique (dari sesi lain, 2026-09-10) — udah dikerjain (2026-09-10)
+App-nya functionally kuat tapi sebelumnya visualnya masih "data mentah dalam
+kartu beige" - semua kartu/tombol pake bobot & warna yang sama. Fix:
+
+- **Button hierarchy** — `.btn-primary` (filled, dipake buat "Tambah" di nudge
+  booster & "Catat" di Progress) vs `.btn-secondary` (ghost, buat Ganti/+ Menu/
+  + Booster/toggle) di `styles.css`
+- **Color-coding by purpose** — `.nudge-box` (aksen amber) buat rekomendasi
+  booster actionable, beda dari `.suggestion-box`/tan buat data pasif
+- **Tap affordance Resep** — chevron `›` + hover state di `recipe-row`
+- **Struktur section Profil** — dibagi jadi `.section-card` terpisah (Data
+  diri / Target kalori / Pantangan / Harga bahan), bukan 1 form panjang flat
+- Nesting "+ Menu"/"+ Booster" jadi footer row DI DALAM `.meal-card` yang sama
+  kayak "Ganti" (bukan floating terpisah)
+- Kontras label "target X" di macro grid dinaikin lewat span `.target` terpisah
+- Disclaimer panjang (metodologi target, caveat mikro) pake kelas `.disclaimer`
+  non-italic, bukan `.empty-note` italic
+
 ## Lainnya (dari diskusi awal, belum dieksekusi)
 - **Custom recipe builder** — user nambah resep sendiri, bukan cuma yang di-hardcode
 - **Reminder/notifikasi jam makan** — relevan karena masalah utama user emang

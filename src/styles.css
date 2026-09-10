@@ -18,7 +18,8 @@ body { margin: 0; font-family: -apple-system, sans-serif; background: #F7F3E8; c
 }
 .nav-item { background: none; border: none; display: flex; flex-direction: column; align-items: center; gap: 2px; color: #8A8272; font-size: 11px; cursor: pointer; }
 .nav-item.active { color: #26433A; font-weight: 600; }
-.nav-icon { font-size: 20px; }
+.nav-icon { display: flex; }
+.nav-icon svg { width: 22px; height: 22px; }
 
 .summary-bar { display: flex; gap: 16px; background: #E7EFE6; border-radius: 10px; padding: 14px; margin-bottom: 16px; }
 .summary-val { font-size: 22px; font-weight: 600; color: #26433A; }
@@ -29,19 +30,31 @@ body { margin: 0; font-family: -apple-system, sans-serif; background: #F7F3E8; c
 .slot-time { font-weight: 600; color: #9C3D2A; }
 .slot-name { font-weight: 600; color: #26433A; }
 
-.selected-card { display: flex; justify-content: space-between; align-items: center; background: #EFE8D6; border: 1px solid #D8CFB8; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; }
-.selected-card.empty { color: #8A8272; font-style: italic; background: none; border-style: dashed; }
+/* Button hierarchy - 1 gaya primary (aksi utama per section) + 1 secondary
+   (semua aksi lain). Sebelumnya semua tombol pill outline identik, gak ada
+   yang nunjukkin mana aksi paling penting di layar. */
+.btn-primary {
+  font-size: 13px; font-weight: 600; border: none; color: #fff; background: #26433A;
+  border-radius: 999px; padding: 8px 16px; cursor: pointer;
+}
+.btn-secondary {
+  font-size: 13px; border: 1px solid #26433A; color: #26433A; background: none;
+  border-radius: 999px; padding: 6px 14px; cursor: pointer;
+}
+
+/* Meal card - "Ganti" nempel di baris atas, "+ Menu"/"+ Booster" jadi footer
+   row DI DALAM kartu yang sama (bukan floating di bawah dengan gap), biar
+   jelas ketiganya aksi buat slot makan yang sama. */
+.meal-card { background: #EFE8D6; border: 1px solid #D8CFB8; border-radius: 10px; padding: 12px; margin-bottom: 8px; }
+.meal-card-main { display: flex; justify-content: space-between; align-items: center; }
+.meal-card-main.empty { color: #8A8272; font-style: italic; }
+.meal-card-actions { display: flex; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #D8CFB8; }
 .sc-name { font-size: 14px; font-weight: 500; }
 .sc-macro { font-size: 12px; color: #8A8272; }
 
-.booster-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.booster-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 .chip { display: flex; align-items: center; gap: 6px; background: #F3E7D4; border: 1px solid #D8CFB8; border-radius: 999px; padding: 4px 10px; font-size: 12px; color: #9C3D2A; }
 .chip button { border: none; background: none; color: #9C3D2A; cursor: pointer; }
-
-.slot-actions { display: flex; gap: 8px; }
-.slot-actions button, .selected-card button {
-  font-size: 13px; border: 1px solid #26433A; color: #26433A; background: none; border-radius: 999px; padding: 6px 14px; cursor: pointer;
-}
 
 .picker { margin-top: 8px; border: 1px solid #D8CFB8; border-radius: 8px; overflow: hidden; }
 .picker-opt { display: flex; justify-content: space-between; padding: 10px 14px; font-size: 13.5px; cursor: pointer; border-bottom: 1px solid #D8CFB8; background: #fff; }
@@ -57,17 +70,30 @@ body { margin: 0; font-family: -apple-system, sans-serif; background: #F7F3E8; c
 .recipe-desc { color: #5A5347; }
 .recipe-micro { color: #6A6355; }
 
-.log-input { display: flex; gap: 8px; margin-bottom: 16px; }
+.log-input { display: flex; gap: 8px; margin-bottom: 16px; align-items: center; }
 .log-input input { flex: 1; padding: 8px; border: 1px solid #D8CFB8; border-radius: 6px; }
-.log-input button { border: none; background: #26433A; color: #fff; border-radius: 6px; padding: 8px 16px; cursor: pointer; }
 .suggestion-box { background: #EFE8D6; border-radius: 8px; padding: 12px; font-size: 13.5px; margin-bottom: 8px; }
+
+/* Nudge box - buat insight yang ACTIONABLE (rekomendasi booster), bukan data
+   pasif. Aksen amber biar beda kelas sama kartu tan biasa - ini yang paling
+   worth diperhatiin user di layar, bukan cuma kartu ke-sekian. */
+.nudge-box { background: #FBEAD0; border: 1px solid #E3A94D; border-radius: 8px; padding: 12px; font-size: 13.5px; margin-bottom: 16px; }
+.nudge-box button { margin-top: 8px; }
+
 .log-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #D8CFB8; font-size: 13.5px; }
 .empty-note { color: #8A8272; font-style: italic; font-size: 13.5px; }
+/* Disclaimer non-italic - buat paragraf caveat yang PANJANG (metodologi
+   target, catatan mikro). Italic pendek masih oke, tapi italic di teks
+   panjang ganggu keterbacaan lebih dari nolong sinyal "ini caveat". */
+.disclaimer { color: #8A8272; font-size: 12.5px; line-height: 1.5; margin-top: 8px; margin-bottom: 16px; }
 
 .field-row { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: #6A6355; margin-bottom: 14px; }
 .field-row input, .field-row select { padding: 8px; border: 1px solid #D8CFB8; border-radius: 6px; font-size: 14px; background: #fff; color: #2A2621; }
 
-.recipe-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #D8CFB8; font-size: 13.5px; cursor: pointer; }
+.recipe-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 0; border-bottom: 1px solid #D8CFB8; font-size: 13.5px; cursor: pointer; }
+.recipe-row:hover, .recipe-row:active { background: #EFE8D6; margin: 0 -8px; padding-left: 8px; padding-right: 8px; }
+.recipe-row-right { display: flex; align-items: center; gap: 6px; }
+.recipe-row-chevron { color: #8A8272; }
 .recipe-detail-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
 .recipe-detail-head button { border: none; background: none; font-size: 16px; cursor: pointer; color: #26433A; }
 .rtitle { font-size: 15px; font-weight: 600; color: #26433A; }
@@ -78,7 +104,15 @@ body { margin: 0; font-family: -apple-system, sans-serif; background: #F7F3E8; c
 .mcell { background: #EFE8D6; border-radius: 8px; padding: 10px; text-align: center; }
 .mcell .v { font-size: 16px; font-weight: 600; color: #26433A; }
 .mcell .l { font-size: 11px; color: #6A6355; }
+.mcell .l .target { color: #8A8272; font-size: 10px; }
 .mikro-low { color: #9C3D2A; font-weight: 600; }
 .field-row.no-gap { flex-direction: row; justify-content: space-between; margin-bottom: 0; }
 .price-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #D8CFB8; font-size: 13px; }
 .price-row input { width: 90px; padding: 6px 8px; border: 1px solid #D8CFB8; border-radius: 6px; font-size: 13px; text-align: right; }
+
+/* Section card - bungkus grup field yang beda jenis (body stats / aktivitas /
+   harga bahan / pantangan) jadi blok visual terpisah, biar Profil gak keliatan
+   satu form panjang tanpa pembagian. */
+.section-card { background: #fff; border: 1px solid #D8CFB8; border-radius: 10px; padding: 14px; margin-bottom: 16px; }
+.section-card .cat-heading { margin-top: 0; }
+.section-card .field-row:last-child { margin-bottom: 0; }
