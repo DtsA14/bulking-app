@@ -14,6 +14,14 @@ const TABS = {
   profil: Profil
 }
 
+const TAB_TITLES = {
+  hariini: 'Hari Ini',
+  resep: 'Resep',
+  progress: 'Progress',
+  belanja: 'Belanja',
+  profil: 'Profil'
+}
+
 export default function App() {
   const [activeTab, setActiveTab] = useState('hariini')
   const [storageError, setStorageError] = useState(false)
@@ -37,6 +45,9 @@ export default function App() {
           <button onClick={() => setStorageError(false)}>×</button>
         </div>
       )}
+      <header className="app-header">
+        <span className="app-header-title">{TAB_TITLES[activeTab]}</span>
+      </header>
       <main className="app-content">
         <ActivePage />
       </main>

@@ -102,3 +102,10 @@ export function mikroPercentAkg(key, value) {
   const akg = MIKRO_LABELS[key]?.akg
   return akg ? Math.round((value / akg) * 100) : null
 }
+
+// Selisih absolut dari AKG (bukan cuma persen) - biar user langsung liat
+// "kurang berapa gram/mg" tanpa perlu ngitung sendiri dari %.
+export function mikroDeltaFromAkg(key, value) {
+  const akg = MIKRO_LABELS[key]?.akg
+  return akg ? Math.round((value - akg) * 10) / 10 : null
+}

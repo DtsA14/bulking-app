@@ -2,6 +2,8 @@
 body { margin: 0; font-family: -apple-system, sans-serif; background: #F7F3E8; color: #2A2621; }
 
 .app-shell { display: flex; flex-direction: column; min-height: 100vh; max-width: 480px; margin: 0 auto; }
+.app-header { background: #26433A; padding: 14px 16px; }
+.app-header-title { color: #fff; font-weight: 600; font-size: 16px; }
 .app-content { flex: 1; padding: 16px; padding-bottom: 80px; overflow-y: auto; }
 
 .storage-toast {
@@ -47,7 +49,7 @@ body { margin: 0; font-family: -apple-system, sans-serif; background: #F7F3E8; c
    jelas ketiganya aksi buat slot makan yang sama. */
 .meal-card { background: #EFE8D6; border: 1px solid #D8CFB8; border-radius: 10px; padding: 12px; margin-bottom: 8px; }
 .meal-card-main { display: flex; justify-content: space-between; align-items: center; }
-.meal-card-main.empty { color: #8A8272; font-style: italic; }
+.meal-card-main.empty { color: #8A8272; font-style: italic; display: flex; justify-content: space-between; align-items: center; }
 .meal-card-actions { display: flex; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #D8CFB8; }
 .sc-name { font-size: 14px; font-weight: 500; }
 .sc-macro { font-size: 12px; color: #8A8272; }
@@ -63,6 +65,11 @@ body { margin: 0; font-family: -apple-system, sans-serif; background: #F7F3E8; c
 .picker-macro { color: #8A8272; }
 
 .cat-heading { font-weight: 600; color: #9C3D2A; margin: 20px 0 8px; }
+.section-heading-row { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; }
+.info-badge {
+  width: 22px; height: 22px; border-radius: 50%; border: 1px solid #8A8272; color: #8A8272;
+  background: none; font-size: 12px; line-height: 1; cursor: pointer; padding: 0;
+}
 .recipe { border-bottom: 1px solid #D8CFB8; margin-bottom: 8px; }
 .recipe-head { display: flex; justify-content: space-between; padding: 12px 0; cursor: pointer; font-weight: 500; }
 .recipe-meta { color: #8A8272; font-size: 13px; }
