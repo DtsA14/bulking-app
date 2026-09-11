@@ -125,6 +125,18 @@ Kesimpulan buat kalau nanti beneran dibangun (lihat item #8 di atas):
   "telur utuh" - keduanya ada datanya di USDA) - atau terima gap-nya sambil
   kasih disclaimer "kejar dari sinar matahari" (yang emang saran gizi yang
   valid, vitamin D emang bukan terutama dari makanan).
+- **Update (2026-09-12) - suplemen itu jalan UTAMA, bukan fallback.** Awalnya
+  digambar sebagai "whole food dulu, suplemen cuma buat nutup sisa gap yang
+  gak kekejar" - itu KELIRU. User emang sengaja mau andelin suplemen/
+  multivitamin buat nutup gap mikro (termasuk vitamin D di atas) karena males
+  masak/makan whole food demi 1-2 mikro doang - konsisten sama alasan awal
+  app ini didesain "zero decision-making" (males/skip makan). Suplemen udah
+  otomatis kesupport tanpa ubah skema apa-apa (tinggal entry baru di database
+  bahan, kategori `suplemen` udah ada dari whey-protein, basis `per_serving`
+  yang udah dibangun 2026-09-11 pas banget buat "1 tablet"). Kalau nanti
+  generator ini digarap, prompt-nya jangan diarahin "prioritasin whole food,
+  suplemen darurat aja" - treat semua bahan (termasuk suplemen) setara dari
+  awal.
 - Butuh infra baru yang belum ada di app ini: serverless function buat proxy
   API key (gak bisa di-embed client-side, sama constraint-nya kayak USDA key
   kemarin) - beda dari fitur-fitur sebelumnya yang murni frontend+localStorage.
