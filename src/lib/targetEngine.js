@@ -2,7 +2,7 @@ import { SLOTS, BOOSTERS, findRecipe, findBooster, getRecipeTotals, getBoosterTo
 import { lastNDates, loadDaySchedule, isDemoScheduleDate, dateKey } from './schedule.js'
 import { load } from './storage.js'
 import { getProfile } from './profile.js'
-import { getWeightTrend } from './weight.js'
+import { getWeightTrend, getCurrentWeight } from './weight.js'
 
 const HISTORY_DAYS = 14
 const MIN_TRACKED_DAYS = 10
@@ -26,7 +26,8 @@ export const ACTIVITY_LEVELS = {
 // ada data 2 minggu). Ini cuma estimasi awal, ilang perannya begitu adaptive
 // TDEE ambil alih.
 export function calcMifflinTarget(profile) {
-  const { beratSekarang, tinggiBadan, umur, gender } = profile
+  const { tinggiBadan, umur, gender } = profile
+  const beratSekarang = getCurrentWeight(profile)
   const bmr = 10 * beratSekarang + 6.25 * tinggiBadan - 5 * umur + (gender === 'P' ? -161 : 5)
   const multiplier = ACTIVITY_LEVELS[profile.aktivitas]?.multiplier || ACTIVITY_LEVELS.moderate.multiplier
   const tdee = Math.round(bmr * multiplier)

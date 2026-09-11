@@ -4,6 +4,7 @@ import { dateKey, loadDaySchedule, saveDaySchedule } from '../lib/schedule.js'
 import { getProfile } from '../lib/profile.js'
 import { getCalorieTarget, getMacroTargets, recommendBooster } from '../lib/targetEngine.js'
 import { mikroLabel, mikroUnit, mikroPercentAkg, mikroDeltaFromAkg, ESSENTIAL_MIKRO_KEYS } from '../lib/nutrition.js'
+import { getCurrentWeight } from '../lib/weight.js'
 
 function addMikro(acc, mikro) {
   Object.entries(mikro).forEach(([key, val]) => {
@@ -68,7 +69,7 @@ export default function HariIni() {
   const targetInfo = getCalorieTarget()
   const remaining = targetInfo.target - totals.kkal
   const recommended = remaining > 0 ? recommendBooster(remaining) : null
-  const macroTargets = getMacroTargets(targetInfo.target, profile.beratSekarang)
+  const macroTargets = getMacroTargets(targetInfo.target, getCurrentWeight(profile))
 
   function pickRecipe(slotId, recipeId) {
     setSchedule(prev => ({ ...prev, [slotId]: { ...prev[slotId], recipeId } }))

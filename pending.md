@@ -91,14 +91,47 @@ USDA "milk whole" nyasar ke hasil keju, belum di-retry).
   beda komposisi) maupun ketemu di TKPI pas scrape kemarin. Kandidat buat
   dicari manual dari sumber lain (misal nutrition label produk ABC/Bango).
 
-## Bug/gap yang diketahui — belum dibenerin
-- **`beratSekarang` di Profil gak sinkron sama histori berat di Progress** —
-  keduanya disimpen di key storage terpisah (`profile` vs `weight-logs`) dan
-  gak saling update. Akibatnya target protein/lemak (g/kg) & BMR di Target
-  Engine bisa ngitung pake berat badan yang udah basi kalau user rajin nyatet
-  progress di tab Progress tapi lupa update field Profil manual. Fix-nya:
-  `getMacroTargets()`/`calcMifflinTarget()` harusnya ambil entry TERBARU dari
-  `weight-logs` (fallback ke `profile.beratSekarang` kalau histori kosong).
+Udah kekerjain (2026-09-11): **Fix sync `beratSekarang` vs histori Progress**
+— nambah `getCurrentWeight(profile)` di `lib/weight.js` (baca entry TERBARU
+dari `weight-logs`, fallback ke `profile.beratSekarang` kalau histori kosong/
+belum pernah dicatat). `calcMifflinTarget()` & pemanggilan `getMacroTargets()`
+di `HariIni.jsx` sekarang lewat fungsi ini, jadi BMR/target protein-lemak
+otomatis kepake berat TERBARU dari Progress, gak lagi basi kalau user lupa
+update field Profil manual. Dites: catat 80kg baru di Progress → target
+protein 122→160g, lemak 61→80g, target kkal 2735→3030, semuanya re-kalkulasi
+otomatis tanpa nyentuh Profil sama sekali.
+
+## Eksperimen AI recipe/meal-plan generator (2026-09-11) — belum dibangun,
+## cuma dry-run manual buat validasi konsep
+Nyoba manual (bukan API call beneran) generate jadwal makan 5x/hari yang
+ngejar target kalori+makro+6 mikro esensial, pake cuma database bahan yang
+ada (`getAllIngredients()` + `calcTotals()`, gak nambah data baru). Hasil:
+kkal/protein/lemak/karbo bisa didekatin (90-134% dari target, protein/lemak
+malah gampang ke-over duluan), 5 dari 6 mikro gampang ke-over jauh (zat besi
+sampe 327%), TAPI **vitamin D mentok di ~57% AKG apapun kombinasinya** —
+sumbernya di database cuma telur & susu, dan nambahin lebih banyak dari
+keduanya keburu ngelewatin target protein/lemak sebelum vitD-nya nutup. Ini
+keterbatasan DATA, bukan keterbatasan pendekatannya.
+
+Kesimpulan buat kalau nanti beneran dibangun (lihat item #8 di atas):
+- **Wajib pake verify-loop**, bukan sekali generate langsung dipercaya: AI
+  susun komposisi dari bahan yang ADA di database (`ingredientId`, bukan
+  nulis bebas) → app hitung ulang pake `calcTotals()` (ground truth) → kalau
+  meleset jauh, feed gap-nya balik ke AI buat direvisi (1-2 iterasi). Tanpa
+  loop ini, hasil kemungkinan lebih kasar dari yang di-generate manual di
+  eksperimen ini.
+- Kalau mau ngejar vitamin D beneran, perlu nambah bahan baru ke database
+  (misal "susu UHT fortifikasi vit D" atau pisahin "kuning telur" dari
+  "telur utuh" - keduanya ada datanya di USDA) - atau terima gap-nya sambil
+  kasih disclaimer "kejar dari sinar matahari" (yang emang saran gizi yang
+  valid, vitamin D emang bukan terutama dari makanan).
+- Butuh infra baru yang belum ada di app ini: serverless function buat proxy
+  API key (gak bisa di-embed client-side, sama constraint-nya kayak USDA key
+  kemarin) - beda dari fitur-fitur sebelumnya yang murni frontend+localStorage.
+- **Diputuskan (2026-09-11): DITUNDA.** Bukan prioritas karena app-nya udah
+  didesain "zero decision-making" dan resep kurasi manual udah nutup masalah
+  utama (males/skip makan) - fitur ini lebih cocok jadi mode eksplorasi
+  opsional pas udah rajin masak, bukan kerjaan mendesak.
 
 ## Design critique (dari sesi lain, 2026-09-10) — udah dikerjain (2026-09-10)
 App-nya functionally kuat tapi sebelumnya visualnya masih "data mentah dalam

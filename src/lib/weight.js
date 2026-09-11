@@ -1,3 +1,19 @@
+import { load, exists } from './storage.js'
+
+// Berat TERBARU dari histori Progress, fallback ke field manual Profil kalau
+// histori belum ada sama sekali. Dipake di targetEngine.js biar BMR/macro
+// target gak ngitung pake angka Profil yang basi kalau user rajin nyatet di
+// Progress tapi lupa update field "Berat sekarang" manual.
+export function getCurrentWeight(profile) {
+  if (exists('weight-logs')) {
+    const logs = load('weight-logs', [])
+    if (logs.length > 0) {
+      return [...logs].sort((a, b) => a.date.localeCompare(b.date)).at(-1).weight
+    }
+  }
+  return profile.beratSekarang
+}
+
 // Selisih hari kalender antara dua tanggal "YYYY-MM-DD" (bukan selisih index array),
 // biar tren gak keliru pas user nyatet gak konsisten tiap hari.
 function daysBetween(dateStr, referenceStr) {
