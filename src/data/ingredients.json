@@ -1,7 +1,7 @@
 {
   "_meta": {
     "unit": "semua nilai per 100 gram bahan mentah/siap pakai, kecuali disebutkan lain",
-    "sumber": "Estimasi digabung dari USDA FoodData Central (bahan generik) dan TKPI Kemenkes 2019 (bahan khas Indonesia: kecap, tempe, tahu, dll). Angka mikro yang belum ada datanya sengaja dikosongkan (null) daripada dikira-kira.",
+    "sumber": "USDA FoodData Central jadi sumber default (API resmi, cakupan lebih lengkap & terstruktur), TKPI Kemenkes 2019 via panganku.org dipake buat bahan khas Indonesia yang gak ada padanan internasional ATAU beda spesies/bentuk dari versi Barat-nya (misal bayam Indonesia = Amaranthus, beda dari 'spinach' USDA yang Spinacia; tahu Indonesia lebih basah dari 'firm tofu' USDA). Di-refresh 2026-09-11: 10 bahan dari USDA API (ayam-fillet, daging-sapi-has, kentang, keju-parut, oat-instan, brokoli, paprika, kecap-asin, saus-tiram, granola, whey-protein), 13 bahan dari TKPI (telur, tahu, tempe, wortel, bayam, kacang-panjang, pisang, susu-full-cream, yogurt, selai-kacang, minyak-wijen, madu, bawang-putih). nasi-matang di-cross-check ke USDA lagi abis TKPI-nya kedeteksi kegedean (180 vs 130 kkal - USDA menang di sini, cooked rice biasa bukan varian padat). roti-gandum belum di-refresh (kandidat USDA yang ketemu - pita/vienna bread - gak representatif buat roti tawar biasa). Angka mikro yang belum ada datanya sengaja dikosongkan (null/dihilangkan) daripada dikira-kira.",
     "cara_pakai": "kalori_per_gram = kkal / 100. Kalikan sama berat aktual bahan buat dapet nilai per porsi.",
     "harga": "harga_per_100 = estimasi rupiah per 100g (atau per 100ml buat bahan cair), seed awal - WAJIB di-adjust manual sesuai harga di tempat belanja masing-masing, bukan data pasar real-time."
   },
@@ -11,17 +11,25 @@
       "nama": "Ayam fillet (dada/paha, tanpa kulit)",
       "kategori": "protein-hewani",
       "per_100g": {
-        "kkal": 165,
-        "protein_g": 31,
+        "kkal": 120,
+        "protein_g": 22.5,
         "karbo_g": 0,
-        "lemak_g": 3.6,
+        "lemak_g": 2.62,
         "serat_g": 0
       },
       "mikro": {
-        "zat_besi_mg": 1.0,
-        "vitamin_b6_mg": 0.6,
-        "zinc_mg": 1.0,
-        "vitamin_b12_mcg": 0.3
+        "zat_besi_mg": 0.37,
+        "vitamin_b6_mg": 0.811,
+        "zinc_mg": 0.68,
+        "vitamin_b12_mcg": 0.21,
+        "kalsium_mg": 5,
+        "kalium_mg": 334,
+        "natrium_mg": 45,
+        "tembaga_mg": 0.037,
+        "kolin_mg": 82.1,
+        "folat_mcg": 9,
+        "vitamin_e_mg": 0.56,
+        "vitamin_a_mcg": 9
       },
       "harga_per_100": 3500
     },
@@ -30,16 +38,25 @@
       "nama": "Daging sapi has (has dalam/tenderloin)",
       "kategori": "protein-hewani",
       "per_100g": {
-        "kkal": 179,
-        "protein_g": 27,
+        "kkal": 146,
+        "protein_g": 21,
         "karbo_g": 0,
-        "lemak_g": 7.5,
+        "lemak_g": 6.88,
         "serat_g": 0
       },
       "mikro": {
-        "zat_besi_mg": 2.6,
-        "zinc_mg": 4.8,
-        "vitamin_b12_mcg": 2.6
+        "zat_besi_mg": 2.18,
+        "zinc_mg": 2.32,
+        "vitamin_b12_mcg": 1.76,
+        "kalsium_mg": 4,
+        "kalium_mg": 359,
+        "natrium_mg": 39,
+        "tembaga_mg": 0.102,
+        "magnesium_mg": 24,
+        "vitamin_e_mg": 0.59,
+        "vitamin_b6_mg": 0.264,
+        "vitamin_a_mcg": 9,
+        "vitamin_d_mcg": 0.1
       },
       "harga_per_100": 12000
     },
@@ -48,16 +65,22 @@
       "nama": "Telur ayam (1 butir ~55g)",
       "kategori": "protein-hewani",
       "per_100g": {
-        "kkal": 155,
-        "protein_g": 13,
-        "karbo_g": 1.1,
-        "lemak_g": 11,
+        "kkal": 154,
+        "protein_g": 12.4,
+        "karbo_g": 0.7,
+        "lemak_g": 10.8,
         "serat_g": 0
       },
       "mikro": {
         "kolin_mg": 294,
         "vitamin_b12_mcg": 0.9,
-        "vitamin_d_mcg": 2.0
+        "vitamin_d_mcg": 2.0,
+        "zat_besi_mg": 3.0,
+        "kalsium_mg": 86,
+        "kalium_mg": 118.5,
+        "zinc_mg": 1.0,
+        "natrium_mg": 142,
+        "tembaga_mg": 0.16
       },
       "harga_per_100": 2000
     },
@@ -66,15 +89,19 @@
       "nama": "Tahu putih",
       "kategori": "protein-nabati",
       "per_100g": {
-        "kkal": 76,
-        "protein_g": 8,
-        "karbo_g": 1.9,
-        "lemak_g": 4.8,
-        "serat_g": 0.3
+        "kkal": 80,
+        "protein_g": 10.9,
+        "karbo_g": 0.8,
+        "lemak_g": 4.7,
+        "serat_g": 0.1
       },
       "mikro": {
-        "kalsium_mg": 350,
-        "zat_besi_mg": 5.4
+        "kalsium_mg": 223,
+        "zat_besi_mg": 3.4,
+        "kalium_mg": 50.6,
+        "zinc_mg": 0.8,
+        "natrium_mg": 2,
+        "tembaga_mg": 0.19
       },
       "harga_per_100": 1000
     },
@@ -83,15 +110,19 @@
       "nama": "Tempe",
       "kategori": "protein-nabati",
       "per_100g": {
-        "kkal": 193,
-        "protein_g": 19,
-        "karbo_g": 9.4,
-        "lemak_g": 11,
+        "kkal": 201,
+        "protein_g": 20.8,
+        "karbo_g": 13.5,
+        "lemak_g": 8.8,
         "serat_g": 1.4
       },
       "mikro": {
-        "zat_besi_mg": 2.7,
-        "kalsium_mg": 155
+        "zat_besi_mg": 4.0,
+        "kalsium_mg": 155,
+        "kalium_mg": 234.0,
+        "zinc_mg": 1.7,
+        "natrium_mg": 9,
+        "tembaga_mg": 0.57
       },
       "harga_per_100": 900
     },
@@ -101,12 +132,22 @@
       "kategori": "karbo",
       "per_100g": {
         "kkal": 130,
-        "protein_g": 2.7,
-        "karbo_g": 28,
-        "lemak_g": 0.3,
-        "serat_g": 0.4
+        "protein_g": 2.38,
+        "karbo_g": 28.6,
+        "lemak_g": 0.21,
+        "serat_g": 0
       },
-      "mikro": {},
+      "mikro": {
+        "natrium_mg": 0,
+        "tembaga_mg": 0.038,
+        "kalsium_mg": 3,
+        "kalium_mg": 29,
+        "zinc_mg": 0.42,
+        "vitamin_b6_mg": 0.05,
+        "zat_besi_mg": 0.2,
+        "magnesium_mg": 13,
+        "folat_mcg": 2
+      },
       "harga_per_100": 300
     },
     {
@@ -116,13 +157,24 @@
       "per_100g": {
         "kkal": 93,
         "protein_g": 2.5,
-        "karbo_g": 21,
-        "lemak_g": 0.1,
+        "karbo_g": 21.2,
+        "lemak_g": 0.13,
         "serat_g": 2.2
       },
       "mikro": {
-        "kalium_mg": 544,
-        "vitamin_c_mg": 9.6
+        "kalium_mg": 535,
+        "vitamin_c_mg": 9.6,
+        "kalsium_mg": 15,
+        "zinc_mg": 0.36,
+        "vitamin_e_mg": 0.04,
+        "vitamin_b6_mg": 0.311,
+        "vitamin_k_mcg": 2,
+        "tembaga_mg": 0.118,
+        "folat_mcg": 28,
+        "zat_besi_mg": 1.08,
+        "magnesium_mg": 28,
+        "vitamin_a_mcg": 1,
+        "natrium_mg": 10
       },
       "harga_per_100": 1200
     },
@@ -145,15 +197,23 @@
       "nama": "Oat instan (kering)",
       "kategori": "karbo",
       "per_100g": {
-        "kkal": 389,
-        "protein_g": 17,
-        "karbo_g": 66,
-        "lemak_g": 7,
+        "kkal": 362,
+        "protein_g": 11.9,
+        "karbo_g": 69.5,
+        "lemak_g": 6.9,
         "serat_g": 10
       },
       "mikro": {
         "zat_besi_mg": 4.7,
-        "magnesium_mg": 177
+        "magnesium_mg": 128,
+        "kalsium_mg": 351,
+        "kalium_mg": 366,
+        "zinc_mg": 2.51,
+        "vitamin_e_mg": 0.51,
+        "natrium_mg": 220,
+        "tembaga_mg": 0.36,
+        "vitamin_b6_mg": 0.08,
+        "kolin_mg": 27.7
       },
       "harga_per_100": 3500
     },
@@ -162,15 +222,26 @@
       "nama": "Brokoli",
       "kategori": "sayur",
       "per_100g": {
-        "kkal": 34,
-        "protein_g": 2.8,
-        "karbo_g": 7,
-        "lemak_g": 0.4,
-        "serat_g": 2.6
+        "kkal": 31,
+        "protein_g": 2.57,
+        "karbo_g": 6.27,
+        "lemak_g": 0.34,
+        "serat_g": 2.4
       },
       "mikro": {
-        "vitamin_c_mg": 89,
-        "vitamin_a_mcg": 31
+        "vitamin_c_mg": 91.3,
+        "vitamin_a_mcg": 8,
+        "kalsium_mg": 46,
+        "kalium_mg": 303,
+        "zinc_mg": 0.42,
+        "vitamin_e_mg": 0.15,
+        "vitamin_b6_mg": 0.191,
+        "zat_besi_mg": 0.69,
+        "magnesium_mg": 21,
+        "natrium_mg": 36,
+        "tembaga_mg": 0.059,
+        "vitamin_k_mcg": 102,
+        "folat_mcg": 65
       },
       "harga_per_100": 3000
     },
@@ -179,14 +250,21 @@
       "nama": "Wortel",
       "kategori": "sayur",
       "per_100g": {
-        "kkal": 41,
-        "protein_g": 0.9,
-        "karbo_g": 10,
-        "lemak_g": 0.2,
-        "serat_g": 2.8
+        "kkal": 36,
+        "protein_g": 1.0,
+        "karbo_g": 7.9,
+        "lemak_g": 0.6,
+        "serat_g": 1.0
       },
       "mikro": {
-        "vitamin_a_mcg": 835
+        "vitamin_a_mcg": 835,
+        "zat_besi_mg": 1.0,
+        "kalsium_mg": 45,
+        "kalium_mg": 245.0,
+        "zinc_mg": 0.3,
+        "vitamin_c_mg": 18,
+        "natrium_mg": 70,
+        "tembaga_mg": 0.06
       },
       "harga_per_100": 1200
     },
@@ -195,15 +273,21 @@
       "nama": "Bayam",
       "kategori": "sayur",
       "per_100g": {
-        "kkal": 23,
-        "protein_g": 2.9,
-        "karbo_g": 3.6,
+        "kkal": 16,
+        "protein_g": 0.9,
+        "karbo_g": 2.9,
         "lemak_g": 0.4,
-        "serat_g": 2.2
+        "serat_g": 0.7
       },
       "mikro": {
         "folat_mcg": 194,
-        "zat_besi_mg": 2.7
+        "zat_besi_mg": 3.5,
+        "kalsium_mg": 166,
+        "kalium_mg": 456.4,
+        "zinc_mg": 0.4,
+        "vitamin_c_mg": 41,
+        "natrium_mg": 16,
+        "tembaga_mg": 0.13
       },
       "harga_per_100": 1000
     },
@@ -212,14 +296,21 @@
       "nama": "Kacang panjang",
       "kategori": "sayur",
       "per_100g": {
-        "kkal": 47,
-        "protein_g": 2.8,
-        "karbo_g": 8,
-        "lemak_g": 0.4,
-        "serat_g": 3.6
+        "kkal": 31,
+        "protein_g": 2.3,
+        "karbo_g": 5.3,
+        "lemak_g": 0.1,
+        "serat_g": 2.7
       },
       "mikro": {
-        "vitamin_k_mcg": 43
+        "vitamin_k_mcg": 43,
+        "zat_besi_mg": 0.6,
+        "kalsium_mg": 60,
+        "kalium_mg": 213.0,
+        "zinc_mg": 0.5,
+        "vitamin_c_mg": 46,
+        "natrium_mg": 30,
+        "tembaga_mg": 0.10
       },
       "harga_per_100": 1500
     },
@@ -228,14 +319,27 @@
       "nama": "Paprika",
       "kategori": "sayur",
       "per_100g": {
-        "kkal": 31,
-        "protein_g": 1,
-        "karbo_g": 6,
+        "kkal": 26,
+        "protein_g": 0.99,
+        "karbo_g": 6.03,
         "lemak_g": 0.3,
         "serat_g": 2.1
       },
       "mikro": {
-        "vitamin_c_mg": 128
+        "vitamin_c_mg": 128,
+        "folat_mcg": 46,
+        "kolin_mg": 5.6,
+        "natrium_mg": 4,
+        "vitamin_a_mcg": 157,
+        "vitamin_k_mcg": 4.9,
+        "vitamin_e_mg": 1.58,
+        "tembaga_mg": 0.017,
+        "zat_besi_mg": 0.43,
+        "magnesium_mg": 12,
+        "kalsium_mg": 7,
+        "kalium_mg": 211,
+        "zinc_mg": 0.25,
+        "vitamin_b6_mg": 0.291
       },
       "harga_per_100": 4000
     },
@@ -244,15 +348,19 @@
       "nama": "Pisang (1 buah ~118g)",
       "kategori": "buah",
       "per_100g": {
-        "kkal": 89,
-        "protein_g": 1.1,
-        "karbo_g": 23,
-        "lemak_g": 0.3,
-        "serat_g": 2.6
+        "kkal": 108,
+        "protein_g": 1.0,
+        "karbo_g": 24.3,
+        "lemak_g": 0.8,
+        "serat_g": 1.9
       },
       "mikro": {
         "kalium_mg": 358,
-        "vitamin_b6_mg": 0.4
+        "vitamin_b6_mg": 0.4,
+        "zat_besi_mg": 0.2,
+        "vitamin_c_mg": 9,
+        "natrium_mg": 10,
+        "tembaga_mg": 0.20
       },
       "harga_per_100": 700
     },
@@ -263,13 +371,18 @@
       "per_100ml": {
         "kkal": 61,
         "protein_g": 3.2,
-        "karbo_g": 4.8,
-        "lemak_g": 3.3,
+        "karbo_g": 4.3,
+        "lemak_g": 3.5,
         "serat_g": 0
       },
       "mikro": {
-        "kalsium_mg": 113,
-        "vitamin_d_mcg": 1.3
+        "kalsium_mg": 143,
+        "vitamin_d_mcg": 1.3,
+        "zat_besi_mg": 1.7,
+        "kalium_mg": 149.0,
+        "zinc_mg": 0.3,
+        "natrium_mg": 36,
+        "tembaga_mg": 0.02
       },
       "harga_per_100": 1500
     },
@@ -278,14 +391,18 @@
       "nama": "Yogurt plain",
       "kategori": "dairy",
       "per_100g": {
-        "kkal": 61,
-        "protein_g": 3.5,
-        "karbo_g": 4.7,
-        "lemak_g": 3.3,
+        "kkal": 52,
+        "protein_g": 3.3,
+        "karbo_g": 4.0,
+        "lemak_g": 2.5,
         "serat_g": 0
       },
       "mikro": {
-        "kalsium_mg": 121
+        "kalsium_mg": 120,
+        "kalium_mg": 299.0,
+        "zinc_mg": 0.6,
+        "natrium_mg": 40,
+        "tembaga_mg": 0.01
       },
       "harga_per_100": 2500
     },
@@ -294,14 +411,26 @@
       "nama": "Keju cheddar parut",
       "kategori": "dairy",
       "per_100g": {
-        "kkal": 403,
-        "protein_g": 25,
-        "karbo_g": 1.3,
-        "lemak_g": 33,
+        "kkal": 408,
+        "protein_g": 23.3,
+        "karbo_g": 2.44,
+        "lemak_g": 34,
         "serat_g": 0
       },
       "mikro": {
-        "kalsium_mg": 721
+        "kalsium_mg": 707,
+        "kalium_mg": 77,
+        "zinc_mg": 3.67,
+        "tembaga_mg": 0.033,
+        "vitamin_a_mcg": 316,
+        "vitamin_b6_mg": 0.069,
+        "vitamin_e_mg": 0.75,
+        "folat_mcg": 21,
+        "vitamin_b12_mcg": 1.06,
+        "vitamin_k_mcg": 2.4,
+        "natrium_mg": 654,
+        "zat_besi_mg": 0.16,
+        "magnesium_mg": 26.8
       },
       "harga_per_100": 8000
     },
@@ -310,15 +439,21 @@
       "nama": "Selai kacang",
       "kategori": "lemak-sehat",
       "per_100g": {
-        "kkal": 588,
-        "protein_g": 25,
-        "karbo_g": 20,
-        "lemak_g": 50,
-        "serat_g": 6
+        "kkal": 590,
+        "protein_g": 27.0,
+        "karbo_g": 20.9,
+        "lemak_g": 49.0,
+        "serat_g": 1.6
       },
       "mikro": {
         "magnesium_mg": 168,
-        "vitamin_e_mg": 9.5
+        "vitamin_e_mg": 9.5,
+        "zat_besi_mg": 2.0,
+        "kalsium_mg": 60,
+        "kalium_mg": 492.4,
+        "zinc_mg": 2.7,
+        "natrium_mg": 355,
+        "tembaga_mg": 0.57
       },
       "harga_per_100": 4000
     },
@@ -327,13 +462,15 @@
       "nama": "Minyak wijen/sayur",
       "kategori": "lemak",
       "per_100g": {
-        "kkal": 884,
-        "protein_g": 0,
+        "kkal": 881,
+        "protein_g": 0.2,
         "karbo_g": 0,
-        "lemak_g": 100,
+        "lemak_g": 99.7,
         "serat_g": 0
       },
-      "mikro": {},
+      "mikro": {
+        "natrium_mg": 2
+      },
       "harga_per_100": 4000
     },
     {
@@ -355,13 +492,24 @@
       "nama": "Kecap asin (soy sauce)",
       "kategori": "bumbu",
       "per_100g": {
-        "kkal": 53,
-        "protein_g": 8,
-        "karbo_g": 4.9,
+        "kkal": 60,
+        "protein_g": 10.5,
+        "karbo_g": 5.57,
         "lemak_g": 0.1,
-        "serat_g": 0
+        "serat_g": 0.8
       },
-      "mikro": {},
+      "mikro": {
+        "zat_besi_mg": 2.38,
+        "magnesium_mg": 40,
+        "natrium_mg": 5590,
+        "tembaga_mg": 0.135,
+        "kalsium_mg": 20,
+        "kalium_mg": 212,
+        "zinc_mg": 0.43,
+        "kolin_mg": 38.4,
+        "folat_mcg": 18,
+        "vitamin_b6_mg": 0.2
+      },
       "harga_per_100": 2000
     },
     {
@@ -369,13 +517,26 @@
       "nama": "Saus tiram",
       "kategori": "bumbu",
       "per_100g": {
-        "kkal": 143,
-        "protein_g": 3,
-        "karbo_g": 27,
-        "lemak_g": 0.6,
-        "serat_g": 0.5
+        "kkal": 51,
+        "protein_g": 1.35,
+        "karbo_g": 10.9,
+        "lemak_g": 0.25,
+        "serat_g": 0.3
       },
-      "mikro": {},
+      "mikro": {
+        "natrium_mg": 2730,
+        "tembaga_mg": 0.147,
+        "vitamin_c_mg": 0.1,
+        "folat_mcg": 15,
+        "vitamin_b12_mcg": 0.41,
+        "zinc_mg": 0.09,
+        "vitamin_b6_mg": 0.016,
+        "zat_besi_mg": 0.18,
+        "magnesium_mg": 4,
+        "kalsium_mg": 32,
+        "kalium_mg": 54,
+        "kolin_mg": 3.5
+      },
       "harga_per_100": 3000
     },
     {
@@ -383,13 +544,16 @@
       "nama": "Madu",
       "kategori": "pemanis",
       "per_100g": {
-        "kkal": 304,
+        "kkal": 294,
         "protein_g": 0.3,
-        "karbo_g": 82,
+        "karbo_g": 79.5,
         "lemak_g": 0,
         "serat_g": 0.2
       },
-      "mikro": {},
+      "mikro": {
+        "zat_besi_mg": 0.9,
+        "natrium_mg": 6
+      },
       "harga_per_100": 8000
     },
     {
@@ -397,13 +561,25 @@
       "nama": "Whey protein bubuk (generik)",
       "kategori": "suplemen",
       "per_100g": {
-        "kkal": 400,
-        "protein_g": 80,
-        "karbo_g": 8,
-        "lemak_g": 5,
-        "serat_g": 0
+        "kkal": 352,
+        "protein_g": 78.1,
+        "karbo_g": 6.25,
+        "lemak_g": 1.56,
+        "serat_g": 3.1
       },
-      "mikro": null,
+      "mikro": {
+        "zat_besi_mg": 1.13,
+        "magnesium_mg": 195,
+        "natrium_mg": 156,
+        "tembaga_mg": 0.049,
+        "folat_mcg": 33,
+        "vitamin_b12_mcg": 2.45,
+        "kalsium_mg": 469,
+        "kalium_mg": 500,
+        "zinc_mg": 6.18,
+        "vitamin_b6_mg": 0.607,
+        "kolin_mg": 224
+      },
       "harga_per_100": 20000
     },
     {
@@ -411,13 +587,19 @@
       "nama": "Bawang putih",
       "kategori": "bumbu",
       "per_100g": {
-        "kkal": 149,
-        "protein_g": 6.4,
-        "karbo_g": 33,
-        "lemak_g": 0.5,
-        "serat_g": 2.1
+        "kkal": 112,
+        "protein_g": 4.5,
+        "karbo_g": 23.1,
+        "lemak_g": 0.2,
+        "serat_g": 0.6
       },
-      "mikro": {},
+      "mikro": {
+        "zat_besi_mg": 1.0,
+        "kalium_mg": 665.7,
+        "vitamin_c_mg": 15,
+        "natrium_mg": 46,
+        "tembaga_mg": 0.09
+      },
       "harga_per_100": 4000
     },
     {
@@ -425,13 +607,28 @@
       "nama": "Granola",
       "kategori": "karbo",
       "per_100g": {
-        "kkal": 471,
-        "protein_g": 10,
-        "karbo_g": 64,
-        "lemak_g": 20,
-        "serat_g": 7
+        "kkal": 489,
+        "protein_g": 13.7,
+        "karbo_g": 53.9,
+        "lemak_g": 24.3,
+        "serat_g": 8.9
       },
-      "mikro": {},
+      "mikro": {
+        "vitamin_c_mg": 1.2,
+        "vitamin_b6_mg": 0.37,
+        "kolin_mg": 49.2,
+        "kalsium_mg": 76,
+        "kalium_mg": 539,
+        "zinc_mg": 4.17,
+        "vitamin_e_mg": 11.1,
+        "vitamin_k_mcg": 5.3,
+        "folat_mcg": 84,
+        "zat_besi_mg": 3.95,
+        "magnesium_mg": 168,
+        "natrium_mg": 26,
+        "tembaga_mg": 0.647,
+        "vitamin_a_mcg": 1
+      },
       "harga_per_100": 5000
     }
   ]

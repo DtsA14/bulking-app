@@ -49,6 +49,48 @@ makro lengkap + mikronutrien harian di Hari Ini (agregat otomatis dari
 19-29 th, 6 mikro esensial default + toggle lihat semua, sort ascending by
 %AKG), Profil nambah field umur/gender/level aktivitas.
 
+Udah kekerjain (2026-09-11): refresh 14 dari 27 bahan langsung dari TKPI via
+panganku.org (telur, tahu, tempe, nasi-matang, wortel, bayam, kacang-panjang,
+pisang, susu-full-cream, yogurt, selai-kacang, minyak-wijen, madu,
+bawang-putih) — macro/serat lebih akurat + 2 mikro baru (`natrium_mg`,
+`tembaga_mg`, sengaja gak dikasih target %AKG). 4 bahan (ayam-fillet,
+daging-sapi-has, kentang, keju-parut) SENGAJA di-skip karena entry TKPI-nya
+beda potongan/bentuk dari definisi resep kita (lihat follow-up di bawah).
+
+Udah kekerjain (2026-09-11, lanjutan): refresh 10 bahan lagi lewat **USDA
+FoodData Central API** (bukan scrape lagi, API resmi) — `ayam-fillet`
+(chicken breast skinless raw), `daging-sapi-has` (beef tenderloin raw),
+`kentang` (potato baked flesh & skin - angka lama ternyata emang udah persis
+USDA, cuma nambah mikro), `keju-parut` (cheddar cheese), `oat-instan`
+(instant oats - zat besi TETEP pake angka lama, USDA-nya kefortifikasi
+ekstrem/24.7mg per 100g gak representatif buat oat generik), `brokoli`,
+`paprika`, `kecap-asin` (soy sauce tamari), `saus-tiram` (oyster sauce -
+turun jauh dari 143→51 kkal, worth dicek), `granola`, `whey-protein`.
+Keputusan sourcing baru: **USDA jadi default**, TKPI cuma fallback buat
+bahan yang gak ada padanan internasional ATAU beda spesies/bentuk dari versi
+Barat-nya.
+
+Udah kekerjain (2026-09-11, cross-check): 14 bahan yang di-refresh dari TKPI
+di-cross-check balik ke USDA. Hasilnya: `nasi-matang` di-**revert ke USDA**
+(180→130 kkal - TKPI-nya ternyata kegedean, USDA cocok sama angka cooked
+rice standar yang dikenal luas). `bayam` & `tahu` dikonfirmasi TETEP TKPI
+(USDA "spinach"/"firm tofu" itu beda spesies/produk, bukan padanan yang
+valid). `selai-kacang` & `minyak-wijen` dikonfirmasi konsisten di kedua
+sumber (gak ada perubahan). `susu-full-cream` gagal di-cross-check (query
+USDA "milk whole" nyasar ke hasil keju, belum di-retry).
+
+## Follow-up — belum dikerjain
+- **`susu-full-cream` belum sempet di-cross-check ke USDA** — query pertama
+  ("milk whole") salah nangkep hasil keju (mozzarella/ricotta). Perlu query
+  ulang lebih spesifik ("milk, whole, 3.25% milkfat") kalau mau divalidasi.
+- **`roti-gandum` belum di-refresh** — kandidat USDA yang ketemu (pita bread,
+  vienna whole wheat) protein/karbonya beda jauh dari roti tawar biasa,
+  sengaja di-skip daripada maksa. Butuh query USDA yang lebih spesifik
+  ("bread, whole wheat, sliced" atau merek tertentu).
+- **`kecap-manis` masih estimasi lama** — gak ada di USDA (soy sauce generik
+  beda komposisi) maupun ketemu di TKPI pas scrape kemarin. Kandidat buat
+  dicari manual dari sumber lain (misal nutrition label produk ABC/Bango).
+
 ## Bug/gap yang diketahui — belum dibenerin
 - **`beratSekarang` di Profil gak sinkron sama histori berat di Progress** —
   keduanya disimpen di key storage terpisah (`profile` vs `weight-logs`) dan

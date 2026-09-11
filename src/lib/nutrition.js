@@ -70,7 +70,14 @@ export const MIKRO_LABELS = {
   vitamin_a_mcg: { label: 'Vitamin A', unit: 'mcg', akg: 650 },
   folat_mcg: { label: 'Folat', unit: 'mcg', akg: 400 },
   vitamin_k_mcg: { label: 'Vitamin K', unit: 'mcg', akg: 65 },
-  vitamin_e_mg: { label: 'Vitamin E', unit: 'mg', akg: 15 }
+  vitamin_e_mg: { label: 'Vitamin E', unit: 'mg', akg: 15 },
+  // Natrium sengaja GAK dikasih `akg` - masalah kesehatan publiknya itu
+  // KELEBIHAN, bukan kekurangan, jadi framing "%AKG tercapai" salah arah buat
+  // nutrien ini (lebih tinggi ≠ lebih baik). Ditampilin apa adanya aja.
+  natrium_mg: { label: 'Natrium', unit: 'mg' },
+  // Tembaga: AKG resmi belum diverifikasi dari sumber terpercaya, mending
+  // gak nampilin %AKG yang bisa jadi salah daripada nebak angkanya.
+  tembaga_mg: { label: 'Tembaga', unit: 'mg' }
 }
 
 // 6 mikro yang ditampilin default (gak collapse) di Hari Ini - hasil riset:
