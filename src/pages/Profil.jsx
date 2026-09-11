@@ -4,6 +4,10 @@ import { DEFAULT_PROFILE } from '../lib/profile.js'
 import ingredientsData from '../data/ingredients.json'
 import { clearTotalsCache } from '../data/recipes.js'
 import { getCalorieTarget, calcMifflinTarget, ACTIVITY_LEVELS } from '../lib/targetEngine.js'
+import {
+  getAllIngredients, saveIngredient, resetIngredientOverride, deleteCustomIngredient,
+  generateIngredientId, MIKRO_LABELS
+} from '../lib/nutrition.js'
 
 function TargetSection() {
   const [profile, setProfile] = useState(() => load('profile', DEFAULT_PROFILE))
@@ -150,11 +154,219 @@ function HargaBahanSection() {
   )
 }
 
+function emptyBahanForm() {
+  return {
+    id: null,
+    nama: '',
+    kategori: '',
+    unit: 'per_100g',
+    kkal: 0,
+    protein_g: 0,
+    karbo_g: 0,
+    lemak_g: 0,
+    serat_g: 0,
+    harga_per_100: 0,
+    mikro: [] // [{ key, value }] - dikonversi ke object pas disimpen
+  }
+}
+
+function ingredientToForm(item) {
+  const per100 = item.per_100g || item.per_100ml || {}
+  return {
+    id: item.id,
+    nama: item.nama,
+    kategori: item.kategori || '',
+    unit: item.per_100ml ? 'per_100ml' : 'per_100g',
+    kkal: per100.kkal || 0,
+    protein_g: per100.protein_g || 0,
+    karbo_g: per100.karbo_g || 0,
+    lemak_g: per100.lemak_g || 0,
+    serat_g: per100.serat_g || 0,
+    harga_per_100: item.harga_per_100 || 0,
+    mikro: Object.entries(item.mikro || {}).map(([key, value]) => ({ key, value }))
+  }
+}
+
+// Nambah & edit bahan manual - bahan BUNDLED (dari ingredients.json) diedit
+// sebagai override (bisa di-reset ke default), bahan BARU disimpen penuh
+// (cuma bisa dihapus, gak ada "default" buat di-reset). Belum kepake di
+// resep manapun sampe ada custom recipe builder - baru berguna PENUH abis itu,
+// tapi ngedit bahan BUNDLED yang udah kepake resep langsung kerasa efeknya.
+function BahanSection() {
+  const [ingredients, setIngredients] = useState(() => getAllIngredients())
+  const [editing, setEditing] = useState(null) // form object, null = list view
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null)
+
+  function refresh() {
+    setIngredients(getAllIngredients())
+    clearTotalsCache()
+  }
+
+  function openNew() {
+    setEditing(emptyBahanForm())
+  }
+
+  function openEdit(item) {
+    setEditing(ingredientToForm(item))
+  }
+
+  function updateField(field, value) {
+    setEditing(prev => ({ ...prev, [field]: value }))
+  }
+
+  function updateMikroRow(idx, field, value) {
+    setEditing(prev => {
+      const mikro = [...prev.mikro]
+      mikro[idx] = { ...mikro[idx], [field]: value }
+      return { ...prev, mikro }
+    })
+  }
+
+  function addMikroRow() {
+    const usedKeys = editing.mikro.map(m => m.key)
+    const nextKey = Object.keys(MIKRO_LABELS).find(k => !usedKeys.includes(k))
+    if (!nextKey) return
+    setEditing(prev => ({ ...prev, mikro: [...prev.mikro, { key: nextKey, value: 0 }] }))
+  }
+
+  function removeMikroRow(idx) {
+    setEditing(prev => ({ ...prev, mikro: prev.mikro.filter((_, i) => i !== idx) }))
+  }
+
+  function handleSave() {
+    if (!editing.nama.trim()) return
+    const id = editing.id || generateIngredientId(editing.nama)
+    const per100 = {
+      kkal: editing.kkal,
+      protein_g: editing.protein_g,
+      karbo_g: editing.karbo_g,
+      lemak_g: editing.lemak_g,
+      serat_g: editing.serat_g
+    }
+    const mikro = Object.fromEntries(editing.mikro.map(m => [m.key, m.value]))
+    saveIngredient({
+      id,
+      nama: editing.nama.trim(),
+      kategori: editing.kategori.trim(),
+      per_100g: editing.unit === 'per_100g' ? per100 : undefined,
+      per_100ml: editing.unit === 'per_100ml' ? per100 : undefined,
+      harga_per_100: editing.harga_per_100,
+      mikro
+    })
+    setEditing(null)
+    refresh()
+  }
+
+  function handleReset(id) {
+    resetIngredientOverride(id)
+    setEditing(null)
+    refresh()
+  }
+
+  function handleDelete(id) {
+    deleteCustomIngredient(id)
+    setConfirmDeleteId(null)
+    setEditing(null)
+    refresh()
+  }
+
+  if (editing) {
+    const isNew = !editing.id
+    const isBundled = !isNew && ingredients.find(i => i.id === editing.id)?.isBundled
+
+    return (
+      <div className="section-card">
+        <div className="recipe-detail-head">
+          <button onClick={() => setEditing(null)}>←</button>
+          <span className="rtitle">{isNew ? 'Tambah Bahan' : 'Edit Bahan'}</span>
+        </div>
+
+        <label className="field-row">
+          Nama bahan
+          <input type="text" value={editing.nama} onChange={e => updateField('nama', e.target.value)} />
+        </label>
+        <label className="field-row">
+          Kategori
+          <input type="text" value={editing.kategori} onChange={e => updateField('kategori', e.target.value)} placeholder="misal: protein-hewani, sayur, bumbu" />
+        </label>
+        <label className="field-row">
+          Satuan dasar
+          <select value={editing.unit} onChange={e => updateField('unit', e.target.value)}>
+            <option value="per_100g">per 100 gram</option>
+            <option value="per_100ml">per 100 ml (cairan)</option>
+          </select>
+        </label>
+
+        <div className="macrogrid">
+          <label className="field-row"><span>Kkal</span><input type="number" value={editing.kkal} onChange={e => updateField('kkal', parseFloat(e.target.value) || 0)} /></label>
+          <label className="field-row"><span>Protein (g)</span><input type="number" value={editing.protein_g} onChange={e => updateField('protein_g', parseFloat(e.target.value) || 0)} /></label>
+          <label className="field-row"><span>Karbo (g)</span><input type="number" value={editing.karbo_g} onChange={e => updateField('karbo_g', parseFloat(e.target.value) || 0)} /></label>
+          <label className="field-row"><span>Lemak (g)</span><input type="number" value={editing.lemak_g} onChange={e => updateField('lemak_g', parseFloat(e.target.value) || 0)} /></label>
+        </div>
+        <label className="field-row">
+          Serat (g)
+          <input type="number" value={editing.serat_g} onChange={e => updateField('serat_g', parseFloat(e.target.value) || 0)} />
+        </label>
+        <label className="field-row">
+          Harga per 100g/ml (Rp)
+          <input type="number" value={editing.harga_per_100} onChange={e => updateField('harga_per_100', parseFloat(e.target.value) || 0)} />
+        </label>
+
+        <div className="cat-heading">Mikronutrien (opsional)</div>
+        {editing.mikro.map((m, idx) => (
+          <div className="price-row" key={idx}>
+            <select value={m.key} onChange={e => updateMikroRow(idx, 'key', e.target.value)}>
+              {Object.entries(MIKRO_LABELS).map(([key, { label }]) => (
+                <option key={key} value={key}>{label}</option>
+              ))}
+            </select>
+            <input type="number" value={m.value} onChange={e => updateMikroRow(idx, 'value', parseFloat(e.target.value) || 0)} />
+            <button className="btn-secondary" onClick={() => removeMikroRow(idx)}>×</button>
+          </div>
+        ))}
+        <button className="btn-secondary" onClick={addMikroRow} style={{ marginTop: 8, marginBottom: 16 }}>+ Tambah mikro</button>
+
+        <div className="meal-card-actions" style={{ border: 'none', paddingTop: 0, marginTop: 0 }}>
+          <button className="btn-primary" onClick={handleSave}>Simpan</button>
+          {isBundled && <button className="btn-secondary" onClick={() => handleReset(editing.id)}>Reset ke default</button>}
+          {!isNew && !isBundled && (
+            confirmDeleteId === editing.id
+              ? <button className="btn-secondary" onClick={() => handleDelete(editing.id)}>Yakin hapus?</button>
+              : <button className="btn-secondary" onClick={() => setConfirmDeleteId(editing.id)}>Hapus</button>
+          )}
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="section-card">
+      <div className="cat-heading">Database Bahan</div>
+      <p className="empty-note" style={{ marginBottom: 10 }}>
+        Tambah/edit gizi bahan manual. Bahan baru belum kepake di resep manapun
+        sampe ada fitur custom recipe - ngedit bahan yang UDAH ada langsung
+        ngaruh ke Resep & Belanja.
+      </p>
+      <button className="btn-primary" onClick={openNew} style={{ marginBottom: 12 }}>+ Tambah Bahan</button>
+      {ingredients.map(item => (
+        <div className="recipe-row" key={item.id} onClick={() => openEdit(item)}>
+          <span>{item.nama}{!item.isBundled && <span className="mikro-low"> · custom</span>}</span>
+          <span className="recipe-row-right">
+            <span className="recipe-meta">{(item.per_100g || item.per_100ml || {}).kkal || 0} kkal</span>
+            <span className="recipe-row-chevron">›</span>
+          </span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export default function Profil() {
   return (
     <div className="page">
       <TargetSection />
       <HargaBahanSection />
+      <BahanSection />
     </div>
   )
 }

@@ -118,8 +118,21 @@ kartu beige" - semua kartu/tombol pake bobot & warna yang sama. Fix:
 - Disclaimer panjang (metodologi target, caveat mikro) pake kelas `.disclaimer`
   non-italic, bukan `.empty-note` italic
 
+Udah kekerjain (2026-09-11): **Database Bahan manual** di Profil - tambah
+bahan baru, edit bahan bawaan (disimpen sebagai override di
+`ingredient-overrides`, bisa direset), hapus bahan custom. `nutrition.js`
+sekarang baca index gabungan (bundled + override + custom) tiap kalkulasi,
+jadi Resep/Belanja/Hari Ini otomatis ke-update.
+
+Udah kekerjain (2026-09-11): **Custom recipe builder** di tab Resep - tombol
+"+ Tambah Resep", form nama/kategori/porsi/bahan (pilih dari Database Bahan
++ qty/satuan/gram)/langkah/catatan. Resep custom otomatis muncul di listing
+Resep & menu picker Hari Ini bareng resep bawaan (`getAllRecipes()` di
+`recipes.js`). Resep bawaan gak bisa diedit/dihapus dari sini (cuma yang
+custom) - kalau mau ubah resep bawaan, technically bisa clone jadi resep
+baru manual buat sekarang.
+
 ## Lainnya (dari diskusi awal, belum dieksekusi)
-- **Custom recipe builder** — user nambah resep sendiri, bukan cuma yang di-hardcode
 - **Reminder/notifikasi jam makan** — relevan karena masalah utama user emang
   sering skip makan
 - **Migrasi ke backend** (Supabase, kayak kemungkinan besar KYW) — kalau butuh

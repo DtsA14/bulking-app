@@ -1,15 +1,11 @@
-import ingredientsData from './ingredients.json'
-import { calcTotals } from '../lib/nutrition.js'
-
-const INGREDIENTS_BY_ID = Object.fromEntries(
-  ingredientsData.ingredients.map(item => [item.id, item])
-)
+import { calcTotals, findIngredient } from '../lib/nutrition.js'
+import { load, save } from '../lib/storage.js'
 
 // qty & unit itu buat ditampilkan ke user (natural: "2 butir", "4 sdm").
 // gram itu berat aktual (atau ml buat cairan) buat kalkulasi gizi/harga nanti,
 // dihitung sekali di sini pas nulis resep, bukan di-derive on-the-fly.
 export function ingredientLabel(ing) {
-  const item = INGREDIENTS_BY_ID[ing.ingredientId]
+  const item = findIngredient(ing.ingredientId)
   const nama = item ? item.nama : ing.ingredientId
   return `${ing.qty} ${ing.unit} ${nama}`
 }
@@ -29,7 +25,7 @@ export function recipeMatchesPantangan(recipe, pantangan) {
   if (keywords.length === 0) return false
 
   return recipe.ingredients.some(ing => {
-    const item = INGREDIENTS_BY_ID[ing.ingredientId]
+    const item = findIngredient(ing.ingredientId)
     if (!item) return false
     const haystack = `${item.nama} ${item.kategori || ''}`.toLowerCase()
     return keywords.some(k => haystack.includes(k))
@@ -254,8 +250,54 @@ export const SLOTS = [
 
 export const CAT_LABELS = { sarapan: 'Sarapan', snack: 'Snack', makan: 'Makan' }
 
+// Resep custom disimpen terpisah dari RECIPES bawaan (yang hardcoded), sama
+// pola kayak custom-ingredients di nutrition.js. Resep bawaan gak bisa
+// diedit/dihapus lewat UI (cuma bahan-nya yang bisa lewat Database Bahan) -
+// custom recipe builder ini murni buat NAMBAH resep baru.
+function getCustomRecipes() {
+  return load('custom-recipes', [])
+}
+
+// Dipake di mana-mana yang sebelumnya baca RECIPES langsung buat listing/filter
+// (Hari Ini, Resep) - biar resep custom otomatis muncul bareng yang bawaan.
+export function getAllRecipes() {
+  return [...RECIPES, ...getCustomRecipes().map(r => ({ ...r, isCustom: true }))]
+}
+
 export function findRecipe(id) {
-  return RECIPES.find(r => r.id === id)
+  return getAllRecipes().find(r => r.id === id)
+}
+
+function slugifyRecipeName(name) {
+  return name
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+}
+
+export function generateRecipeId(name) {
+  const base = slugifyRecipeName(name) || 'resep'
+  const existingIds = getAllRecipes().map(r => r.id)
+  if (!existingIds.includes(base)) return base
+  let n = 2
+  while (existingIds.includes(`${base}-${n}`)) n++
+  return `${base}-${n}`
+}
+
+export function saveCustomRecipe(recipe) {
+  const customs = getCustomRecipes()
+  const idx = customs.findIndex(r => r.id === recipe.id)
+  if (idx >= 0) customs[idx] = recipe
+  else customs.push(recipe)
+  save('custom-recipes', customs)
+  clearTotalsCache()
+}
+
+export function deleteCustomRecipe(id) {
+  save('custom-recipes', getCustomRecipes().filter(r => r.id !== id))
+  clearTotalsCache()
 }
 
 export function findBooster(id) {

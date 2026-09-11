@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { RECIPES, BOOSTERS, SLOTS, DEFAULT_SCHEDULE, findRecipe, findBooster, getRecipeTotals, getBoosterTotals, recipeMatchesPantangan } from '../data/recipes.js'
+import { BOOSTERS, SLOTS, DEFAULT_SCHEDULE, findRecipe, findBooster, getRecipeTotals, getBoosterTotals, recipeMatchesPantangan, getAllRecipes } from '../data/recipes.js'
 import { dateKey, loadDaySchedule, saveDaySchedule } from '../lib/schedule.js'
 import { getProfile } from '../lib/profile.js'
 import { getCalorieTarget, getMacroTargets, recommendBooster } from '../lib/targetEngine.js'
@@ -236,7 +236,7 @@ export default function HariIni() {
 
             {isMenuOpen && (
               <div className="picker">
-                {RECIPES.filter(rc => rc.cat === slot.cat && !recipeMatchesPantangan(rc, pantangan)).map(rc => (
+                {getAllRecipes().filter(rc => rc.cat === slot.cat && !recipeMatchesPantangan(rc, pantangan)).map(rc => (
                   <div className="picker-opt" key={rc.id} onClick={() => pickRecipe(slot.id, rc.id)}>
                     <span>{rc.name}</span>
                     <span className="picker-macro">{getRecipeTotals(rc).kkal} kkal</span>

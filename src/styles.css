@@ -108,6 +108,18 @@ body { margin: 0; font-family: -apple-system, sans-serif; background: #F7F3E8; c
 .rtab { flex: 1; background: none; border: none; padding: 8px 0; font-size: 13px; font-weight: 600; color: #8A8272; border-bottom: 2px solid transparent; cursor: pointer; }
 .rtab.active { color: #26433A; border-bottom-color: #26433A; }
 .macrogrid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.macrogrid > * { min-width: 0; }
+.macrogrid input { width: 100%; }
+
+/* Baris input bahan/langkah di recipe builder - qty/satuan/gram sempit + 1
+   input teks yang ngambil sisa ruang, plus tombol hapus di ujung. */
+.ingredient-row-inputs { display: flex; gap: 6px; align-items: center; }
+.ingredient-row-inputs input[type="number"] { width: 0; flex: 1; min-width: 0; }
+.ingredient-row-inputs input[type="text"]:not([style*="flex"]) { width: 0; flex: 1.4; min-width: 0; }
+.ingredient-row-inputs input, .ingredient-row-inputs select {
+  padding: 8px; border: 1px solid #D8CFB8; border-radius: 6px; font-size: 13px; background: #fff; color: #2A2621;
+}
+.ingredient-row-inputs button { flex-shrink: 0; }
 .mcell { background: #EFE8D6; border-radius: 8px; padding: 10px; text-align: center; }
 .mcell .v { font-size: 16px; font-weight: 600; color: #26433A; }
 .mcell .l { font-size: 11px; color: #6A6355; }

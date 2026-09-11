@@ -1,7 +1,99 @@
 import ingredientsData from '../data/ingredients.json'
-import { load } from './storage.js'
+import { load, save } from './storage.js'
 
-const BY_ID = Object.fromEntries(ingredientsData.ingredients.map(item => [item.id, item]))
+const BUNDLED_BY_ID = Object.fromEntries(ingredientsData.ingredients.map(item => [item.id, item]))
+
+// Bahan bisa ditambah/diedit manual lewat Profil (tab "Database Bahan").
+// 2 storage terpisah: `ingredient-overrides` buat bahan BUNDLED yang diedit
+// (cuma nyimpen field yang beda dari default, biar bisa di-reset), dan
+// `custom-ingredients` buat bahan BARU yang user tambahin sendiri (objek
+// lengkap, gak ada "default" buat di-reset ke). Index gak di-cache di module
+// level (beda dari getRecipeTotals/getBoosterTotals) karena harus selalu
+// baca localStorage terbaru - datanya bisa berubah kapan aja lewat UI edit.
+function getIngredientOverrides() {
+  return load('ingredient-overrides', {})
+}
+
+function getCustomIngredients() {
+  return load('custom-ingredients', [])
+}
+
+function buildIngredientIndex() {
+  const index = { ...BUNDLED_BY_ID }
+  const overrides = getIngredientOverrides()
+  Object.entries(overrides).forEach(([id, patch]) => {
+    if (index[id]) index[id] = { ...index[id], ...patch }
+  })
+  getCustomIngredients().forEach(ing => {
+    index[ing.id] = ing
+  })
+  return index
+}
+
+// Dipake UI "Database Bahan" buat nampilin semua bahan (bundled + custom),
+// diurut alfabet. `isBundled` nentuin apakah bahan ini bisa di-reset ke
+// default (true) atau cuma bisa dihapus (false, bahan custom).
+export function getAllIngredients() {
+  const index = buildIngredientIndex()
+  return Object.values(index)
+    .map(item => ({ ...item, isBundled: !!BUNDLED_BY_ID[item.id] }))
+    .sort((a, b) => a.nama.localeCompare(b.nama))
+}
+
+function slugify(nama) {
+  return nama
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+}
+
+// Bikin id unik dari nama - dipake pas nambah bahan baru. Kalau slug dasarnya
+// udah kepake (bundled ATAU custom), tambahin angka di belakang (-2, -3, dst).
+export function generateIngredientId(nama) {
+  const base = slugify(nama) || 'bahan'
+  const index = buildIngredientIndex()
+  if (!index[base]) return base
+  let n = 2
+  while (index[`${base}-${n}`]) n++
+  return `${base}-${n}`
+}
+
+// Simpen bahan baru ATAU edit bahan existing. Bahan BUNDLED disimpen sebagai
+// override (parsial, gampang di-reset); bahan custom disimpen penuh.
+export function saveIngredient(ingredient) {
+  if (BUNDLED_BY_ID[ingredient.id]) {
+    const overrides = getIngredientOverrides()
+    overrides[ingredient.id] = {
+      nama: ingredient.nama,
+      kategori: ingredient.kategori,
+      per_100g: ingredient.per_100g,
+      per_100ml: ingredient.per_100ml,
+      mikro: ingredient.mikro,
+      harga_per_100: ingredient.harga_per_100
+    }
+    save('ingredient-overrides', overrides)
+  } else {
+    const customs = getCustomIngredients()
+    const idx = customs.findIndex(i => i.id === ingredient.id)
+    if (idx >= 0) customs[idx] = ingredient
+    else customs.push(ingredient)
+    save('custom-ingredients', customs)
+  }
+}
+
+// Balikin bahan BUNDLED ke data asli (buang override-nya). Gak berlaku buat
+// bahan custom - itu pake deleteCustomIngredient().
+export function resetIngredientOverride(id) {
+  const overrides = getIngredientOverrides()
+  delete overrides[id]
+  save('ingredient-overrides', overrides)
+}
+
+export function deleteCustomIngredient(id) {
+  save('custom-ingredients', getCustomIngredients().filter(i => i.id !== id))
+}
 
 // Harga bisa di-override manual sama user lewat tab Profil (disimpen di localStorage,
 // key 'price-overrides'). Ini satu-satunya tempat yang resolve harga final -
@@ -9,7 +101,7 @@ const BY_ID = Object.fromEntries(ingredientsData.ingredients.map(item => [item.i
 export function getIngredientPrice(id) {
   const overrides = load('price-overrides', {})
   if (overrides[id] !== undefined) return overrides[id]
-  const item = BY_ID[id]
+  const item = buildIngredientIndex()[id]
   return item ? item.harga_per_100 || 0 : 0
 }
 
@@ -18,9 +110,10 @@ export function getIngredientPrice(id) {
 // ingredients: array of {ingredientId, gram}
 export function calcTotals(ingredients) {
   const totals = { kkal: 0, protein: 0, karbo: 0, lemak: 0, serat: 0, harga: 0, mikro: {} }
+  const index = buildIngredientIndex()
 
   ingredients.forEach(ing => {
-    const item = BY_ID[ing.ingredientId]
+    const item = index[ing.ingredientId]
     if (!item) return // bahan gak dikenal, skip diam-diam daripada crash
 
     const per100 = item.per_100g || item.per_100ml || {}
@@ -48,7 +141,7 @@ export function calcTotals(ingredients) {
 }
 
 export function findIngredient(id) {
-  return BY_ID[id]
+  return buildIngredientIndex()[id]
 }
 
 // Label & satuan buat tiap key mikro di ingredients.json - dipake buat nampilin
