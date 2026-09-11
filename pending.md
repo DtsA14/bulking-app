@@ -132,6 +132,14 @@ Resep & menu picker Hari Ini bareng resep bawaan (`getAllRecipes()` di
 custom) - kalau mau ubah resep bawaan, technically bisa clone jadi resep
 baru manual buat sekarang.
 
+Udah kekerjain (2026-09-11): **Satuan dasar "per 1 serving"** di Database
+Bahan (`Profil.jsx`) - opsi ke-3 selain per 100g/per 100ml, buat bahan yang
+gak masuk akal ditimbang per gram (produk kemasan, satuan butir/sdm dst).
+`calcTotals()` di `nutrition.js` otomatis kali faktor jumlah serving (bukan
+dibagi 100) buat bahan jenis ini. Recipe builder (`Resep.jsx`) ngedetek
+otomatis lewat `isPerServing()` - placeholder kolom terakhir berubah jadi
+"Jml serving" pas bahan yang dipilih pake basis ini.
+
 ## Lainnya (dari diskusi awal, belum dieksekusi)
 - **Reminder/notifikasi jam makan** — relevan karena masalah utama user emang
   sering skip makan

@@ -4,7 +4,7 @@ import {
   getAllRecipes, generateRecipeId, saveCustomRecipe, deleteCustomRecipe
 } from '../data/recipes.js'
 import { getProfile } from '../lib/profile.js'
-import { getAllIngredients } from '../lib/nutrition.js'
+import { getAllIngredients, isPerServing } from '../lib/nutrition.js'
 
 const CATS = ['sarapan', 'snack', 'makan']
 
@@ -147,19 +147,34 @@ function RecipeForm({ initial, onCancel, onSaved, onDeleted }) {
       </p>
 
       <div className="cat-heading">Bahan</div>
-      {form.ingredients.map((ing, idx) => (
-        <div key={idx} style={{ marginBottom: 10 }}>
-          <select value={ing.ingredientId} onChange={e => updateIngredient(idx, 'ingredientId', e.target.value)} style={{ width: '100%', marginBottom: 6 }}>
-            {allIngredients.map(item => <option key={item.id} value={item.id}>{item.nama}</option>)}
-          </select>
-          <div className="ingredient-row-inputs">
-            <input type="number" value={ing.qty} onChange={e => updateIngredient(idx, 'qty', parseFloat(e.target.value) || 0)} placeholder="Qty" />
-            <input type="text" value={ing.unit} onChange={e => updateIngredient(idx, 'unit', e.target.value)} placeholder="Satuan (butir/sdm)" />
-            <input type="number" value={ing.gram} onChange={e => updateIngredient(idx, 'gram', parseFloat(e.target.value) || 0)} placeholder="Gram" />
-            <button className="btn-secondary" onClick={() => removeIngredientRow(idx)}>×</button>
+      {form.ingredients.map((ing, idx) => {
+        const item = allIngredients.find(i => i.id === ing.ingredientId)
+        const perServing = isPerServing(item)
+        return (
+          <div key={idx} style={{ marginBottom: 10 }}>
+            <select value={ing.ingredientId} onChange={e => updateIngredient(idx, 'ingredientId', e.target.value)} style={{ width: '100%', marginBottom: 6 }}>
+              {allIngredients.map(opt => <option key={opt.id} value={opt.id}>{opt.nama}{isPerServing(opt) ? ' (per serving)' : ''}</option>)}
+            </select>
+            <div className="ingredient-row-inputs">
+              <input type="number" value={ing.qty} onChange={e => updateIngredient(idx, 'qty', parseFloat(e.target.value) || 0)} placeholder="Qty" />
+              <input type="text" value={ing.unit} onChange={e => updateIngredient(idx, 'unit', e.target.value)} placeholder="Satuan (butir/sdm)" />
+              <input
+                type="number"
+                value={ing.gram}
+                onChange={e => updateIngredient(idx, 'gram', parseFloat(e.target.value) || 0)}
+                placeholder={perServing ? 'Jml serving' : 'Gram'}
+              />
+              <button className="btn-secondary" onClick={() => removeIngredientRow(idx)}>×</button>
+            </div>
+            {perServing && (
+              <p className="empty-note" style={{ marginTop: 4, marginBottom: 0 }}>
+                Bahan ini pake basis 1 serving — kolom terakhir diisi JUMLAH
+                serving (misal 2), bukan berat gram.
+              </p>
+            )}
           </div>
-        </div>
-      ))}
+        )
+      })}
       <button className="btn-secondary" onClick={addIngredientRow} style={{ marginBottom: 16 }}>+ Tambah bahan</button>
 
       <div className="cat-heading">Cara masak</div>

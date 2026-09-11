@@ -171,12 +171,12 @@ function emptyBahanForm() {
 }
 
 function ingredientToForm(item) {
-  const per100 = item.per_100g || item.per_100ml || {}
+  const per100 = item.per_100g || item.per_100ml || item.per_serving || {}
   return {
     id: item.id,
     nama: item.nama,
     kategori: item.kategori || '',
-    unit: item.per_100ml ? 'per_100ml' : 'per_100g',
+    unit: item.per_serving ? 'per_serving' : item.per_100ml ? 'per_100ml' : 'per_100g',
     kkal: per100.kkal || 0,
     protein_g: per100.protein_g || 0,
     karbo_g: per100.karbo_g || 0,
@@ -250,6 +250,7 @@ function BahanSection() {
       kategori: editing.kategori.trim(),
       per_100g: editing.unit === 'per_100g' ? per100 : undefined,
       per_100ml: editing.unit === 'per_100ml' ? per100 : undefined,
+      per_serving: editing.unit === 'per_serving' ? per100 : undefined,
       harga_per_100: editing.harga_per_100,
       mikro
     })
@@ -294,11 +295,19 @@ function BahanSection() {
           <select value={editing.unit} onChange={e => updateField('unit', e.target.value)}>
             <option value="per_100g">per 100 gram</option>
             <option value="per_100ml">per 100 ml (cairan)</option>
+            <option value="per_serving">per 1 serving (misal: 1 butir/1 bungkus/1 sdm)</option>
           </select>
         </label>
+        {editing.unit === 'per_serving' && (
+          <p className="empty-note" style={{ marginBottom: 10 }}>
+            Isi nilai gizi buat 1 serving (bukan per 100g/ml) — pas dipake di
+            resep, jumlah yang diinput di kolom "Serving" tinggal dikaliin
+            langsung ke angka ini.
+          </p>
+        )}
 
         <div className="macrogrid">
-          <label className="field-row"><span>Kkal</span><input type="number" value={editing.kkal} onChange={e => updateField('kkal', parseFloat(e.target.value) || 0)} /></label>
+          <label className="field-row"><span>Kkal{editing.unit === 'per_serving' && ' /serving'}</span><input type="number" value={editing.kkal} onChange={e => updateField('kkal', parseFloat(e.target.value) || 0)} /></label>
           <label className="field-row"><span>Protein (g)</span><input type="number" value={editing.protein_g} onChange={e => updateField('protein_g', parseFloat(e.target.value) || 0)} /></label>
           <label className="field-row"><span>Karbo (g)</span><input type="number" value={editing.karbo_g} onChange={e => updateField('karbo_g', parseFloat(e.target.value) || 0)} /></label>
           <label className="field-row"><span>Lemak (g)</span><input type="number" value={editing.lemak_g} onChange={e => updateField('lemak_g', parseFloat(e.target.value) || 0)} /></label>
@@ -308,7 +317,7 @@ function BahanSection() {
           <input type="number" value={editing.serat_g} onChange={e => updateField('serat_g', parseFloat(e.target.value) || 0)} />
         </label>
         <label className="field-row">
-          Harga per 100g/ml (Rp)
+          Harga per {editing.unit === 'per_serving' ? 'serving' : '100g/ml'} (Rp)
           <input type="number" value={editing.harga_per_100} onChange={e => updateField('harga_per_100', parseFloat(e.target.value) || 0)} />
         </label>
 
@@ -352,7 +361,7 @@ function BahanSection() {
         <div className="recipe-row" key={item.id} onClick={() => openEdit(item)}>
           <span>{item.nama}{!item.isBundled && <span className="mikro-low"> · custom</span>}</span>
           <span className="recipe-row-right">
-            <span className="recipe-meta">{(item.per_100g || item.per_100ml || {}).kkal || 0} kkal</span>
+            <span className="recipe-meta">{(item.per_100g || item.per_100ml || item.per_serving || {}).kkal || 0} kkal{item.per_serving ? '/serving' : ''}</span>
             <span className="recipe-row-chevron">›</span>
           </span>
         </div>

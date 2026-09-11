@@ -70,6 +70,7 @@ export function saveIngredient(ingredient) {
       kategori: ingredient.kategori,
       per_100g: ingredient.per_100g,
       per_100ml: ingredient.per_100ml,
+      per_serving: ingredient.per_serving,
       mikro: ingredient.mikro,
       harga_per_100: ingredient.harga_per_100
     }
@@ -107,7 +108,11 @@ export function getIngredientPrice(id) {
 
 // Satu fungsi ini yang dipake bareng-bareng sama tab Resep (Gizi) dan tab Belanja
 // (estimasi harga) - biar gak ada 2 logic kalkulasi yang bisa ketinggalan sinkron.
-// ingredients: array of {ingredientId, gram}
+// ingredients: array of {ingredientId, gram}. Buat bahan `per_serving` (satuan
+// dasarnya bukan gram/ml, misal "1 butir"/"1 sdm"/"1 bungkus"), field `gram`
+// dipake sebagai JUMLAH SERVING (boleh pecahan, misal 1.5), bukan berat -
+// nilai gizinya di database emang udah didefinisiin per 1 serving, jadi
+// faktor kalinya langsung jumlah serving itu sendiri (bukan dibagi 100).
 export function calcTotals(ingredients) {
   const totals = { kkal: 0, protein: 0, karbo: 0, lemak: 0, serat: 0, harga: 0, mikro: {} }
   const index = buildIngredientIndex()
@@ -116,8 +121,8 @@ export function calcTotals(ingredients) {
     const item = index[ing.ingredientId]
     if (!item) return // bahan gak dikenal, skip diam-diam daripada crash
 
-    const per100 = item.per_100g || item.per_100ml || {}
-    const factor = ing.gram / 100
+    const per100 = item.per_100g || item.per_100ml || item.per_serving || {}
+    const factor = item.per_serving ? ing.gram : ing.gram / 100
 
     totals.kkal += (per100.kkal || 0) * factor
     totals.protein += (per100.protein_g || 0) * factor
@@ -142,6 +147,13 @@ export function calcTotals(ingredients) {
 
 export function findIngredient(id) {
   return buildIngredientIndex()[id]
+}
+
+// Dipake UI (recipe builder & database bahan) buat nentuin apakah bahan ini
+// pake basis "1 serving" (bukan gram/ml) - misal bumbu satuan/produk kemasan
+// yang gak masuk akal ditimbang per gram sama user sehari-hari.
+export function isPerServing(item) {
+  return !!item?.per_serving
 }
 
 // Label & satuan buat tiap key mikro di ingredients.json - dipake buat nampilin
