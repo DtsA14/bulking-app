@@ -3,6 +3,22 @@
 Hal-hal yang udah dibahas tapi sengaja BELUM dikerjain — biar scope tiap iterasi
 tetep jelas. Urutan bukan prioritas, tinggal diambil kapan relevan.
 
+Udah kekerjain (2026-09-12): **`whey-protein` diganti dari data generik ke
+produk real** yang user beneran beli - "Whey protein (Rimbalife Wheygan)",
+dikonversi dari foto label Nutrition Facts (35g/serving, harga Rp229.787/
+900g). Sebelum diganti, dibandingin dulu ke 3 brand lain (Optimum Nutrition
+Gold Standard, MyProtein Impact Isolate, BSN Syntha-6) dari sisi kualitas
+gizi & harga per-gram-protein - Wheygan ternyata **paling murah per gram
+protein** (Rp406/g vs Rp798-1250/g brand lain) meski protein%-nya lebih
+rendah (62.9% vs 80% isolate) & natriumnya paling tinggi (743mg/100g, ~5x
+data generik lama). Vitamin dikonversi dari %AKG di label pake acuan
+Permenkes yang sama dipake `MIKRO_LABELS` (BUKAN acuan 2150kkal yang
+dicetak di label - itu cuma disclaimer profil referensi BPOM, bukan rumus
+scaling). Fosfor & Biotin ada di label tapi gak dimasukin (belum ada
+key-nya). Ganti total (bukan cuma refresh angka) - apapun resep/booster
+yang pake `ingredientId: 'whey-protein'` otomatis kehitung ulang pake
+profil baru ini.
+
 Udah kekerjain (2026-09-12): **Inventory bahan (Aktif/Arsip)** di Database
 Bahan (Profil.jsx) - SENGAJA bukan sistem stok otomatis (gak ada quantity,
 gak ada decrement pas kepake, gak ada auto-restock) karena udah didiskusiin
