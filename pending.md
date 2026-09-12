@@ -151,6 +151,23 @@ sekali - dicatet sebagai gap terpisah, belum ditambahin). Dites: bikin bahan
 custom "per_serving" isi `epa_dha_mg`/`ala_mg`, tampil bener di "Lihat semua
 mikronutrien" - EPA+DHA raw value tanpa %, ALA dengan %AKG.
 
+Udah kekerjain (2026-09-12, lanjutan): **Nambah 2 suplemen + 4 superfood ke
+`ingredients.json` beneran** (bukan cuma exercise manual) - `vitamin-d3-1000iu`
+(25mcg vitD per serving), `omega-3-fish-oil-1000mg` (300mg EPA+DHA per
+serving), `chia-seed` (ALA 18.800mg/100g - riset via USDA/triagemethod,
+dipilih SPESIFIK buat nutup gap ALA yang 0%), `kale` (vitamin A 241mcg &
+vitamin K 390mcg/100g, lebih lengkap dari wortel), `almond` (vitamin E
+25.6mg/100g, nutup gap yang kemarin cuma 36%), `alpukat` (kalium 485mg &
+kolin 14.2mg/100g). Rerun eksperimen generate pake bahan-bahan ini nunjukin
+gap vitamin D, ALA, vitamin A, & vitamin E semuanya bisa ketutup gampang
+tanpa distorsi macro yang parah - keempatnya dipilih presisi buat gap yang
+udah diidentifikasi, bukan sekadar nambah database secara acak.
+
+**Catatan porsi**: chia-seed (dan spirulina kalau nanti ditambah) itu
+biasanya dikonsumsi jauh di bawah 100g/hari (chia ~15-30g/hari) - pas dipake
+di Resep builder, satuan gram HARUS disesuaikan ke porsi realistis, jangan
+default 100g penuh.
+
 ## Gap tracking mikro lain yang diketahui - belum ditambahin
 - **Iodium & Selenium** - dua-duanya gak ada key di `MIKRO_LABELS` sama
   sekali. Relevan spesifik karena user pantang ikan (sumber utama iodium),

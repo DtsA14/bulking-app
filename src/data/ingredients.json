@@ -1,7 +1,7 @@
 {
   "_meta": {
     "unit": "semua nilai per 100 gram bahan mentah/siap pakai, kecuali disebutkan lain",
-    "sumber": "USDA FoodData Central jadi sumber default (API resmi, cakupan lebih lengkap & terstruktur), TKPI Kemenkes 2019 via panganku.org dipake buat bahan khas Indonesia yang gak ada padanan internasional ATAU beda spesies/bentuk dari versi Barat-nya (misal bayam Indonesia = Amaranthus, beda dari 'spinach' USDA yang Spinacia; tahu Indonesia lebih basah dari 'firm tofu' USDA). Di-refresh 2026-09-11: 10 bahan dari USDA API (ayam-fillet, daging-sapi-has, kentang, keju-parut, oat-instan, brokoli, paprika, kecap-asin, saus-tiram, granola, whey-protein), 13 bahan dari TKPI (telur, tahu, tempe, wortel, bayam, kacang-panjang, pisang, susu-full-cream, yogurt, selai-kacang, minyak-wijen, madu, bawang-putih). nasi-matang di-cross-check ke USDA lagi abis TKPI-nya kedeteksi kegedean (180 vs 130 kkal - USDA menang di sini, cooked rice biasa bukan varian padat). roti-gandum belum di-refresh (kandidat USDA yang ketemu - pita/vienna bread - gak representatif buat roti tawar biasa). Angka mikro yang belum ada datanya sengaja dikosongkan (null/dihilangkan) daripada dikira-kira.",
+    "sumber": "USDA FoodData Central jadi sumber default (API resmi, cakupan lebih lengkap & terstruktur), TKPI Kemenkes 2019 via panganku.org dipake buat bahan khas Indonesia yang gak ada padanan internasional ATAU beda spesies/bentuk dari versi Barat-nya (misal bayam Indonesia = Amaranthus, beda dari 'spinach' USDA yang Spinacia; tahu Indonesia lebih basah dari 'firm tofu' USDA). Di-refresh 2026-09-11: 10 bahan dari USDA API (ayam-fillet, daging-sapi-has, kentang, keju-parut, oat-instan, brokoli, paprika, kecap-asin, saus-tiram, granola, whey-protein), 13 bahan dari TKPI (telur, tahu, tempe, wortel, bayam, kacang-panjang, pisang, susu-full-cream, yogurt, selai-kacang, minyak-wijen, madu, bawang-putih). nasi-matang di-cross-check ke USDA lagi abis TKPI-nya kedeteksi kegedean (180 vs 130 kkal - USDA menang di sini, cooked rice biasa bukan varian padat). roti-gandum belum di-refresh (kandidat USDA yang ketemu - pita/vienna bread - gak representatif buat roti tawar biasa). Angka mikro yang belum ada datanya sengaja dikosongkan (null/dihilangkan) daripada dikira-kira. 2026-09-12: nambah 2 bahan suplemen (vitamin-d3-1000iu, omega-3-fish-oil-1000mg) - angka dari komposisi label GENERIK produk sejenis di pasaran, BUKAN dari brand spesifik manapun, WAJIB dicek ulang ke label produk asli yang beneran dipake. 2026-09-12 (lanjutan): nambah 4 superfood dari USDA (chia-seed, kale, almond, alpukat) - dipilih spesifik buat nutup gap yang ketauan dari eksperimen AI meal-plan generator (ALA dari chia-seed, vitamin A & K dari kale, vitamin E dari almond, kalium & kolin dari alpukat). PENTING: chia-seed & spirulina (kalau nanti ditambah) biasanya dikonsumsi jauh di bawah 100g/hari (chia ~15-30g, spirulina ~7g) - satuan gram yang diinput pas dipake di resep builder HARUS disesuaikan ke porsi realistis, jangan asal pake 100g penuh cuma karena data disimpen per-100g.",
     "cara_pakai": "kalori_per_gram = kkal / 100. Kalikan sama berat aktual bahan buat dapet nilai per porsi.",
     "harga": "harga_per_100 = estimasi rupiah per 100g (atau per 100ml buat bahan cair), seed awal - WAJIB di-adjust manual sesuai harga di tempat belanja masing-masing, bukan data pasar real-time."
   },
@@ -630,6 +630,147 @@
         "vitamin_a_mcg": 1
       },
       "harga_per_100": 5000
+    },
+    {
+      "id": "vitamin-d3-1000iu",
+      "nama": "Vitamin D3 1000 IU (suplemen)",
+      "kategori": "suplemen",
+      "per_serving": {
+        "kkal": 0,
+        "protein_g": 0,
+        "karbo_g": 0,
+        "lemak_g": 0,
+        "serat_g": 0
+      },
+      "mikro": {
+        "vitamin_d_mcg": 25
+      },
+      "harga_per_100": 800
+    },
+    {
+      "id": "omega-3-fish-oil-1000mg",
+      "nama": "Omega-3 Fish Oil 1000mg (suplemen)",
+      "kategori": "suplemen",
+      "per_serving": {
+        "kkal": 9,
+        "protein_g": 0,
+        "karbo_g": 0,
+        "lemak_g": 1,
+        "serat_g": 0
+      },
+      "mikro": {
+        "epa_dha_mg": 300
+      },
+      "harga_per_100": 1200
+    },
+    {
+      "id": "chia-seed",
+      "nama": "Biji chia (kering)",
+      "kategori": "biji-bijian",
+      "per_100g": {
+        "kkal": 490,
+        "protein_g": 17.0,
+        "karbo_g": 38.3,
+        "lemak_g": 32.9,
+        "serat_g": 33.2
+      },
+      "mikro": {
+        "zat_besi_mg": 6.0,
+        "zinc_mg": 5.6,
+        "kalsium_mg": 595,
+        "kalium_mg": 642,
+        "magnesium_mg": 326,
+        "tembaga_mg": 1.6,
+        "vitamin_b6_mg": 0.20,
+        "folat_mcg": 111,
+        "vitamin_e_mg": 0.10,
+        "ala_mg": 18800
+      },
+      "harga_per_100": 10000
+    },
+    {
+      "id": "kale",
+      "nama": "Kale (mentah)",
+      "kategori": "sayur",
+      "per_100g": {
+        "kkal": 35.0,
+        "protein_g": 2.9,
+        "karbo_g": 4.4,
+        "lemak_g": 1.5,
+        "serat_g": 4.1
+      },
+      "mikro": {
+        "zat_besi_mg": 1.6,
+        "zinc_mg": 0.39,
+        "kalsium_mg": 254,
+        "kalium_mg": 348,
+        "magnesium_mg": 32.7,
+        "tembaga_mg": 0.05,
+        "natrium_mg": 53,
+        "vitamin_b6_mg": 0.15,
+        "kolin_mg": 0.50,
+        "vitamin_c_mg": 93.4,
+        "vitamin_a_mcg": 241,
+        "folat_mcg": 62.0,
+        "vitamin_k_mcg": 390,
+        "vitamin_e_mg": 0.66
+      },
+      "harga_per_100": 4000
+    },
+    {
+      "id": "almond",
+      "nama": "Almond (mentah)",
+      "kategori": "kacang",
+      "per_100g": {
+        "kkal": 584,
+        "protein_g": 21.5,
+        "karbo_g": 20.0,
+        "lemak_g": 51.1,
+        "serat_g": 10.8
+      },
+      "mikro": {
+        "zat_besi_mg": 3.7,
+        "zinc_mg": 2.9,
+        "kalsium_mg": 254,
+        "kalium_mg": 733,
+        "magnesium_mg": 258,
+        "tembaga_mg": 0.91,
+        "vitamin_b6_mg": 0.10,
+        "vitamin_a_mcg": 2.0,
+        "folat_mcg": 44.0,
+        "kolin_mg": 52.1,
+        "vitamin_e_mg": 25.6
+      },
+      "harga_per_100": 18000
+    },
+    {
+      "id": "alpukat",
+      "nama": "Alpukat (mentah)",
+      "kategori": "buah",
+      "per_100g": {
+        "kkal": 160,
+        "protein_g": 2.0,
+        "karbo_g": 8.5,
+        "lemak_g": 14.7,
+        "serat_g": 6.7
+      },
+      "mikro": {
+        "zat_besi_mg": 0.55,
+        "zinc_mg": 0.64,
+        "kalsium_mg": 12.0,
+        "kalium_mg": 485,
+        "magnesium_mg": 29.0,
+        "tembaga_mg": 0.19,
+        "natrium_mg": 7.0,
+        "vitamin_b6_mg": 0.26,
+        "kolin_mg": 14.2,
+        "vitamin_c_mg": 10.0,
+        "vitamin_a_mcg": 146,
+        "folat_mcg": 81.0,
+        "vitamin_k_mcg": 21.0,
+        "vitamin_e_mg": 2.1
+      },
+      "harga_per_100": 1500
     }
   ]
 }
