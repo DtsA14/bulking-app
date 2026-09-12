@@ -1,7 +1,7 @@
 {
   "_meta": {
     "unit": "semua nilai per 100 gram bahan mentah/siap pakai, kecuali disebutkan lain",
-    "sumber": "USDA FoodData Central jadi sumber default (API resmi, cakupan lebih lengkap & terstruktur), TKPI Kemenkes 2019 via panganku.org dipake buat bahan khas Indonesia yang gak ada padanan internasional ATAU beda spesies/bentuk dari versi Barat-nya (misal bayam Indonesia = Amaranthus, beda dari 'spinach' USDA yang Spinacia; tahu Indonesia lebih basah dari 'firm tofu' USDA). Di-refresh 2026-09-11: 10 bahan dari USDA API (ayam-fillet, daging-sapi-has, kentang, keju-parut, oat-instan, brokoli, paprika, kecap-asin, saus-tiram, granola, whey-protein), 13 bahan dari TKPI (telur, tahu, tempe, wortel, bayam, kacang-panjang, pisang, susu-full-cream, yogurt, selai-kacang, minyak-wijen, madu, bawang-putih). nasi-matang di-cross-check ke USDA lagi abis TKPI-nya kedeteksi kegedean (180 vs 130 kkal - USDA menang di sini, cooked rice biasa bukan varian padat). roti-gandum belum di-refresh (kandidat USDA yang ketemu - pita/vienna bread - gak representatif buat roti tawar biasa). Angka mikro yang belum ada datanya sengaja dikosongkan (null/dihilangkan) daripada dikira-kira. 2026-09-12: nambah 2 bahan suplemen (vitamin-d3-1000iu, omega-3-fish-oil-1000mg) - angka dari komposisi label GENERIK produk sejenis di pasaran, BUKAN dari brand spesifik manapun, WAJIB dicek ulang ke label produk asli yang beneran dipake. 2026-09-12 (lanjutan): nambah 4 superfood dari USDA (chia-seed, kale, almond, alpukat) - dipilih spesifik buat nutup gap yang ketauan dari eksperimen AI meal-plan generator (ALA dari chia-seed, vitamin A & K dari kale, vitamin E dari almond, kalium & kolin dari alpukat). PENTING: chia-seed & spirulina (kalau nanti ditambah) biasanya dikonsumsi jauh di bawah 100g/hari (chia ~15-30g, spirulina ~7g) - satuan gram yang diinput pas dipake di resep builder HARUS disesuaikan ke porsi realistis, jangan asal pake 100g penuh cuma karena data disimpen per-100g. 2026-09-12 (cross-check ke USDA FDC API resmi): angka awal chia-seed & almond disourcing dari situs pihak ketiga (triagemethod.com) - abis di-cross-check ke api.nal.usda.gov langsung, ketauan beberapa meleset jauh dari SR Legacy resmi: chia-seed kalium (642->407, -37%), tembaga (1.6->0.924, -42%), folat (111->49, -56%), vitamin E (0.10->0.5, 5x kurang) - SEMUA UDAH DIREVISI ke angka resmi. alpukat vitamin A paling parah (146->7mcg, situs ketiga 20x kegedean) - UDAH DIREVISI. kale & sebagian besar almond udah cocok dari awal, cuma minor rounding diff. Pelajaran: situs pihak ketiga (myfooddata/triagemethod) klaim sumber USDA tapi bisa aja transkripsi/interpretasi datanya salah - WAJIB cross-check ke fdc.nal.usda.gov API langsung kalau angkanya krusial, jangan percaya situs turunan mentah-mentah.",
+    "sumber": "USDA FoodData Central jadi sumber default (API resmi, cakupan lebih lengkap & terstruktur), TKPI Kemenkes 2019 via panganku.org dipake buat bahan khas Indonesia yang gak ada padanan internasional ATAU beda spesies/bentuk dari versi Barat-nya (misal bayam Indonesia = Amaranthus, beda dari 'spinach' USDA yang Spinacia; tahu Indonesia lebih basah dari 'firm tofu' USDA). Di-refresh 2026-09-11: 10 bahan dari USDA API (ayam-fillet, daging-sapi-has, kentang, keju-parut, oat-instan, brokoli, paprika, kecap-asin, saus-tiram, granola, whey-protein), 13 bahan dari TKPI (telur, tahu, tempe, wortel, bayam, kacang-panjang, pisang, susu-full-cream, yogurt, selai-kacang, minyak-wijen, madu, bawang-putih). nasi-matang di-cross-check ke USDA lagi abis TKPI-nya kedeteksi kegedean (180 vs 130 kkal - USDA menang di sini, cooked rice biasa bukan varian padat). roti-gandum belum di-refresh (kandidat USDA yang ketemu - pita/vienna bread - gak representatif buat roti tawar biasa). Angka mikro yang belum ada datanya sengaja dikosongkan (null/dihilangkan) daripada dikira-kira. 2026-09-12: nambah 2 bahan suplemen (vitamin-d3-1000iu, omega-3-fish-oil-1000mg) - angka dari komposisi label GENERIK produk sejenis di pasaran, BUKAN dari brand spesifik manapun, WAJIB dicek ulang ke label produk asli yang beneran dipake. 2026-09-12 (lanjutan): nambah 4 superfood dari USDA (chia-seed, kale, almond, alpukat) - dipilih spesifik buat nutup gap yang ketauan dari eksperimen AI meal-plan generator (ALA dari chia-seed, vitamin A & K dari kale, vitamin E dari almond, kalium & kolin dari alpukat). PENTING: chia-seed & spirulina (kalau nanti ditambah) biasanya dikonsumsi jauh di bawah 100g/hari (chia ~15-30g, spirulina ~7g) - satuan gram yang diinput pas dipake di resep builder HARUS disesuaikan ke porsi realistis, jangan asal pake 100g penuh cuma karena data disimpen per-100g. 2026-09-12 (cross-check ke USDA FDC API resmi): angka awal chia-seed & almond disourcing dari situs pihak ketiga (triagemethod.com) - abis di-cross-check ke api.nal.usda.gov langsung, ketauan beberapa meleset jauh dari SR Legacy resmi: chia-seed kalium (642->407, -37%), tembaga (1.6->0.924, -42%), folat (111->49, -56%), vitamin E (0.10->0.5, 5x kurang) - SEMUA UDAH DIREVISI ke angka resmi. alpukat vitamin A paling parah (146->7mcg, situs ketiga 20x kegedean) - UDAH DIREVISI. kale & sebagian besar almond udah cocok dari awal, cuma minor rounding diff. Pelajaran: situs pihak ketiga (myfooddata/triagemethod) klaim sumber USDA tapi bisa aja transkripsi/interpretasi datanya salah - WAJIB cross-check ke fdc.nal.usda.gov API langsung kalau angkanya krusial, jangan percaya situs turunan mentah-mentah. 2026-09-12 (audit lengkap): re-query ulang ke USDA FDC API buat 17 bahan yang udah punya FDC ID (10 asli + nasi-matang + 4 superfood + roti-gandum), nambahin field baru yang kelewat pas refresh 2026-09-11 (gula_g, breakdown lemak jenuh/trans/mono/poly, selenium, vitamin B1/B2/B3) KHUSUS buat bahan yang macro-nya masih cocok persis sama data lama (konfirmasi masih food entry yang sama). roti-gandum AKHIRNYA dapet data lengkap ('Bread, whole-wheat, commercially prepared', fdcId 172688) - gak lagi 'mikro kosong'. Ketemu 2 MATCH SALAH yang sengaja GAK dipake: whey-protein query generik nyasar ke 'Whey, sweet, dried' (13g protein/100g, byproduct susu biasa) padahal bahan kita itu suplemen bubuk (78g protein/100g) - dibiarin apa adanya, SR Legacy gak punya entry generik buat whey protein POWDER/isolate (itu produk branded/manufaktur, bukan whole food). keju-parut sempet ke-match 'Cheese, american cheddar, IMITATION' (produk substitusi non-dairy) sebelum ketemu entry asli 'Cheese, cheddar' (fdcId 328637, Foundation dataset) yang confirmed match persis ke data lama - dipake buat backfill. daging-sapi-has: re-query gak dapet match yang persis sama kayak sourcing awal (USDA gak punya entry 'all grades' gabungan buat tenderloin, cuma per-grade choice/select/prime) - macro/mikro LAMA dibiarin apa adanya, BELUM di-backfill field baru, perlu verifikasi lebih lanjut. brokoli: macro & vitamin A/E dari re-query beda ~10-400% dari data lama meski food description sama ('Broccoli, raw') - kemungkinan beda versi/revisi lab USDA, DIBIARIN apa adanya (gak di-overwrite), field baru yang konsisten (selenium, B1/B2/B3, breakdown lemak) tetep di-backfill. oat-instan: SENGAJA gak dikasih selenium/B1/B2/B3 dari USDA - produk instant oats di real market rata-rata difortifikasi ekstrem (konsisten sama keputusan zat besi 2026-09-11), breakdown lemak tetep di-backfill karena itu bukan nutrient yang difortifikasi.",
     "cara_pakai": "kalori_per_gram = kkal / 100. Kalikan sama berat aktual bahan buat dapet nilai per porsi.",
     "harga": "harga_per_100 = estimasi rupiah per 100g (atau per 100ml buat bahan cair), seed awal - WAJIB di-adjust manual sesuai harga di tempat belanja masing-masing, bukan data pasar real-time."
   },
@@ -15,7 +15,10 @@
         "protein_g": 22.5,
         "karbo_g": 0,
         "lemak_g": 2.62,
-        "serat_g": 0
+        "serat_g": 0,
+        "lemak_jenuh_g": 0.563,
+        "lemak_mono_g": 0.689,
+        "lemak_poly_g": 0.424
       },
       "mikro": {
         "zat_besi_mg": 0.37,
@@ -24,12 +27,17 @@
         "vitamin_b12_mcg": 0.21,
         "kalsium_mg": 5,
         "kalium_mg": 334,
+        "magnesium_mg": 28,
         "natrium_mg": 45,
         "tembaga_mg": 0.037,
         "kolin_mg": 82.1,
         "folat_mcg": 9,
         "vitamin_e_mg": 0.56,
-        "vitamin_a_mcg": 9
+        "vitamin_a_mcg": 9,
+        "selenium_mcg": 22.8,
+        "vitamin_b1_mg": 0.094,
+        "vitamin_b2_mg": 0.177,
+        "vitamin_b3_mg": 9.6
       },
       "harga_per_100": 3500
     },
@@ -135,7 +143,10 @@
         "protein_g": 2.38,
         "karbo_g": 28.6,
         "lemak_g": 0.21,
-        "serat_g": 0
+        "serat_g": 0,
+        "lemak_jenuh_g": 0.077,
+        "lemak_mono_g": 0.088,
+        "lemak_poly_g": 0.076
       },
       "mikro": {
         "natrium_mg": 0,
@@ -146,7 +157,12 @@
         "vitamin_b6_mg": 0.05,
         "zat_besi_mg": 0.2,
         "magnesium_mg": 13,
-        "folat_mcg": 2
+        "folat_mcg": 2,
+        "kolin_mg": 2.1,
+        "selenium_mcg": 7.5,
+        "vitamin_b1_mg": 0.02,
+        "vitamin_b2_mg": 0.013,
+        "vitamin_b3_mg": 0.4
       },
       "harga_per_100": 300
     },
@@ -159,7 +175,10 @@
         "protein_g": 2.5,
         "karbo_g": 21.2,
         "lemak_g": 0.13,
-        "serat_g": 2.2
+        "serat_g": 2.2,
+        "lemak_jenuh_g": 0.034,
+        "lemak_mono_g": 0.003,
+        "lemak_poly_g": 0.057
       },
       "mikro": {
         "kalium_mg": 535,
@@ -174,7 +193,12 @@
         "zat_besi_mg": 1.08,
         "magnesium_mg": 28,
         "vitamin_a_mcg": 1,
-        "natrium_mg": 10
+        "natrium_mg": 10,
+        "kolin_mg": 14.8,
+        "selenium_mcg": 0.4,
+        "vitamin_b1_mg": 0.064,
+        "vitamin_b2_mg": 0.048,
+        "vitamin_b3_mg": 1.41
       },
       "harga_per_100": 1200
     },
@@ -183,13 +207,35 @@
       "nama": "Roti gandum (whole wheat)",
       "kategori": "karbo",
       "per_100g": {
-        "kkal": 247,
-        "protein_g": 13,
-        "karbo_g": 41,
-        "lemak_g": 3.4,
-        "serat_g": 6
+        "kkal": 252,
+        "protein_g": 12.45,
+        "karbo_g": 42.71,
+        "lemak_g": 3.5,
+        "serat_g": 6,
+        "lemak_jenuh_g": 0.722,
+        "lemak_trans_g": 0.02,
+        "lemak_mono_g": 0.62,
+        "lemak_poly_g": 1.592
       },
-      "mikro": {},
+      "mikro": {
+        "kalsium_mg": 161,
+        "zat_besi_mg": 2.47,
+        "magnesium_mg": 75,
+        "kalium_mg": 254,
+        "natrium_mg": 455,
+        "zinc_mg": 1.77,
+        "tembaga_mg": 0.227,
+        "selenium_mcg": 25.7,
+        "vitamin_b1_mg": 0.394,
+        "vitamin_b2_mg": 0.167,
+        "vitamin_b3_mg": 4.438,
+        "vitamin_b6_mg": 0.215,
+        "folat_mcg": 42,
+        "kolin_mg": 27.2,
+        "vitamin_e_mg": 2.66,
+        "vitamin_k_mcg": 7.8,
+        "ala_mg": 137
+      },
       "harga_per_100": 4000
     },
     {
@@ -201,7 +247,10 @@
         "protein_g": 11.9,
         "karbo_g": 69.5,
         "lemak_g": 6.9,
-        "serat_g": 10
+        "serat_g": 10,
+        "lemak_jenuh_g": 1.346,
+        "lemak_mono_g": 2.325,
+        "lemak_poly_g": 2.533
       },
       "mikro": {
         "zat_besi_mg": 4.7,
@@ -226,7 +275,10 @@
         "protein_g": 2.57,
         "karbo_g": 6.27,
         "lemak_g": 0.34,
-        "serat_g": 2.4
+        "serat_g": 2.4,
+        "lemak_jenuh_g": 0.114,
+        "lemak_mono_g": 0.031,
+        "lemak_poly_g": 0.112
       },
       "mikro": {
         "vitamin_c_mg": 91.3,
@@ -241,7 +293,12 @@
         "natrium_mg": 36,
         "tembaga_mg": 0.059,
         "vitamin_k_mcg": 102,
-        "folat_mcg": 65
+        "folat_mcg": 65,
+        "kolin_mg": 18.7,
+        "selenium_mcg": 2.5,
+        "vitamin_b1_mg": 0.071,
+        "vitamin_b2_mg": 0.117,
+        "vitamin_b3_mg": 0.639
       },
       "harga_per_100": 3000
     },
@@ -323,7 +380,10 @@
         "protein_g": 0.99,
         "karbo_g": 6.03,
         "lemak_g": 0.3,
-        "serat_g": 2.1
+        "serat_g": 2.1,
+        "lemak_jenuh_g": 0.059,
+        "lemak_mono_g": 0.007,
+        "lemak_poly_g": 0.156
       },
       "mikro": {
         "vitamin_c_mg": 128,
@@ -339,7 +399,11 @@
         "kalsium_mg": 7,
         "kalium_mg": 211,
         "zinc_mg": 0.25,
-        "vitamin_b6_mg": 0.291
+        "vitamin_b6_mg": 0.291,
+        "selenium_mcg": 0.1,
+        "vitamin_b1_mg": 0.054,
+        "vitamin_b2_mg": 0.085,
+        "vitamin_b3_mg": 0.979
       },
       "harga_per_100": 4000
     },
@@ -415,7 +479,11 @@
         "protein_g": 23.3,
         "karbo_g": 2.44,
         "lemak_g": 34,
-        "serat_g": 0
+        "serat_g": 0,
+        "lemak_jenuh_g": 19.2,
+        "lemak_trans_g": 1.14,
+        "lemak_mono_g": 7.44,
+        "lemak_poly_g": 1.18
       },
       "mikro": {
         "kalsium_mg": 707,
@@ -430,7 +498,11 @@
         "vitamin_k_mcg": 2.4,
         "natrium_mg": 654,
         "zat_besi_mg": 0.16,
-        "magnesium_mg": 26.8
+        "magnesium_mg": 26.8,
+        "selenium_mcg": 28.3,
+        "vitamin_b1_mg": 0.029,
+        "vitamin_b2_mg": 0.441,
+        "vitamin_b3_mg": 0.052
       },
       "harga_per_100": 8000
     },
@@ -496,7 +568,10 @@
         "protein_g": 10.5,
         "karbo_g": 5.57,
         "lemak_g": 0.1,
-        "serat_g": 0.8
+        "serat_g": 0.8,
+        "lemak_jenuh_g": 0.073,
+        "lemak_mono_g": 0.088,
+        "lemak_poly_g": 0.263
       },
       "mikro": {
         "zat_besi_mg": 2.38,
@@ -508,7 +583,11 @@
         "zinc_mg": 0.43,
         "kolin_mg": 38.4,
         "folat_mcg": 18,
-        "vitamin_b6_mg": 0.2
+        "vitamin_b6_mg": 0.2,
+        "selenium_mcg": 0.5,
+        "vitamin_b1_mg": 0.033,
+        "vitamin_b2_mg": 0.165,
+        "vitamin_b3_mg": 2.196
       },
       "harga_per_100": 2000
     },
@@ -521,7 +600,10 @@
         "protein_g": 1.35,
         "karbo_g": 10.9,
         "lemak_g": 0.25,
-        "serat_g": 0.3
+        "serat_g": 0.3,
+        "lemak_jenuh_g": 0.043,
+        "lemak_mono_g": 0.073,
+        "lemak_poly_g": 0.066
       },
       "mikro": {
         "natrium_mg": 2730,
@@ -535,7 +617,11 @@
         "magnesium_mg": 4,
         "kalsium_mg": 32,
         "kalium_mg": 54,
-        "kolin_mg": 3.5
+        "kolin_mg": 3.5,
+        "selenium_mcg": 4.4,
+        "vitamin_b1_mg": 0.01,
+        "vitamin_b2_mg": 0.124,
+        "vitamin_b3_mg": 1.474
       },
       "harga_per_100": 3000
     },
@@ -611,7 +697,11 @@
         "protein_g": 13.7,
         "karbo_g": 53.9,
         "lemak_g": 24.3,
-        "serat_g": 8.9
+        "serat_g": 8.9,
+        "lemak_jenuh_g": 3.957,
+        "lemak_trans_g": 0.023,
+        "lemak_mono_g": 10.951,
+        "lemak_poly_g": 7.809
       },
       "mikro": {
         "vitamin_c_mg": 1.2,
@@ -627,7 +717,11 @@
         "magnesium_mg": 168,
         "natrium_mg": 26,
         "tembaga_mg": 0.647,
-        "vitamin_a_mcg": 1
+        "vitamin_a_mcg": 1,
+        "selenium_mcg": 25.4,
+        "vitamin_b1_mg": 0.548,
+        "vitamin_b2_mg": 0.354,
+        "vitamin_b3_mg": 2.739
       },
       "harga_per_100": 5000
     },
@@ -672,7 +766,11 @@
         "protein_g": 16.54,
         "karbo_g": 42.12,
         "lemak_g": 30.74,
-        "serat_g": 34.4
+        "serat_g": 34.4,
+        "lemak_jenuh_g": 3.33,
+        "lemak_trans_g": 0.14,
+        "lemak_mono_g": 2.309,
+        "lemak_poly_g": 23.665
       },
       "mikro": {
         "zat_besi_mg": 7.72,
@@ -685,7 +783,11 @@
         "vitamin_c_mg": 1.6,
         "folat_mcg": 49,
         "vitamin_e_mg": 0.5,
-        "ala_mg": 17830
+        "ala_mg": 17830,
+        "selenium_mcg": 55.2,
+        "vitamin_b1_mg": 0.62,
+        "vitamin_b2_mg": 0.17,
+        "vitamin_b3_mg": 8.83
       },
       "harga_per_100": 10000
     },
@@ -698,7 +800,10 @@
         "protein_g": 2.9,
         "karbo_g": 4.4,
         "lemak_g": 1.5,
-        "serat_g": 4.1
+        "serat_g": 4.1,
+        "lemak_jenuh_g": 0.178,
+        "lemak_mono_g": 0.104,
+        "lemak_poly_g": 0.673
       },
       "mikro": {
         "zat_besi_mg": 1.6,
@@ -714,7 +819,11 @@
         "vitamin_a_mcg": 241,
         "folat_mcg": 62.0,
         "vitamin_k_mcg": 390,
-        "vitamin_e_mg": 0.66
+        "vitamin_e_mg": 0.66,
+        "selenium_mcg": 0.9,
+        "vitamin_b1_mg": 0.113,
+        "vitamin_b2_mg": 0.347,
+        "vitamin_b3_mg": 1.18
       },
       "harga_per_100": 4000
     },
@@ -727,7 +836,11 @@
         "protein_g": 21.15,
         "karbo_g": 21.55,
         "lemak_g": 49.93,
-        "serat_g": 12.5
+        "serat_g": 12.5,
+        "lemak_jenuh_g": 3.802,
+        "lemak_trans_g": 0.015,
+        "lemak_mono_g": 31.551,
+        "lemak_poly_g": 12.329
       },
       "mikro": {
         "zat_besi_mg": 3.71,
@@ -740,7 +853,11 @@
         "vitamin_b6_mg": 0.137,
         "folat_mcg": 44.0,
         "kolin_mg": 52.1,
-        "vitamin_e_mg": 25.63
+        "vitamin_e_mg": 25.63,
+        "selenium_mcg": 4.1,
+        "vitamin_b1_mg": 0.205,
+        "vitamin_b2_mg": 1.138,
+        "vitamin_b3_mg": 3.618
       },
       "harga_per_100": 18000
     },
@@ -753,7 +870,10 @@
         "protein_g": 2.0,
         "karbo_g": 8.5,
         "lemak_g": 14.7,
-        "serat_g": 6.7
+        "serat_g": 6.7,
+        "lemak_jenuh_g": 2.126,
+        "lemak_mono_g": 9.799,
+        "lemak_poly_g": 1.816
       },
       "mikro": {
         "zat_besi_mg": 0.55,
@@ -769,7 +889,12 @@
         "vitamin_a_mcg": 7,
         "folat_mcg": 81.0,
         "vitamin_k_mcg": 21.0,
-        "vitamin_e_mg": 2.1
+        "vitamin_e_mg": 2.1,
+        "ala_mg": 111,
+        "selenium_mcg": 0.4,
+        "vitamin_b1_mg": 0.067,
+        "vitamin_b2_mg": 0.13,
+        "vitamin_b3_mg": 1.738
       },
       "harga_per_100": 1500
     }

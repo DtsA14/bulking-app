@@ -206,6 +206,36 @@ angka SALAH buat selenium (4.0mcg, ternyata yang bener 30mcg - beda 7.5x!).
 Belum ada data mikro ini di bahan manapun di `ingredients.json` - baru
 ke-hitung kalau bahan yang punya datanya ditambah/diedit manual.
 
+Udah kekerjain (2026-09-12): **Audit ulang 17 bahan** yang punya FDC ID
+resmi (10 asli 2026-09-11 + nasi-matang + 4 superfood + roti-gandum),
+backfill `gula_g`/breakdown lemak/selenium/B1/B2/B3 yang kelewat pas
+refresh sebelumnya. **roti-gandum akhirnya dapet data lengkap** (`Bread,
+whole-wheat, commercially prepared`, sebelumnya cuma estimasi kasar +
+mikro kosong). Ketemu 2 salah-match yang SENGAJA gak dipake:
+- `whey-protein`: query generik nyasar ke "dried whey" biasa (13g
+  protein/100g) padahal bahan kita itu suplemen bubuk (78g protein/100g) -
+  SR Legacy emang gak punya entry generik buat whey protein POWDER/isolate
+  (itu produk branded, bukan whole food) - dibiarin pake data lama.
+- `keju-parut`: sempet ke-match "Cheese, american cheddar, IMITATION"
+  (substitusi non-dairy!) sebelum ketemu entry asli "Cheese, cheddar"
+  (fdcId 328637) yang confirmed match persis - dipake buat backfill.
+
+2 bahan DIBIARIN apa adanya (belum di-backfill, butuh verifikasi lanjut):
+- `daging-sapi-has` - USDA gak punya entry "all grades" gabungan buat
+  tenderloin (cuma per-grade choice/select/prime terpisah), gak yakin mana
+  yang match sourcing awal - resiko bikin data internal gak konsisten
+  kalau dipaksa gabung macro grade-A + mikro grade-B.
+- `brokoli` - macro & vitamin A/E dari re-query beda jauh (10-400%) dari
+  data lama meski food description sama persis ("Broccoli, raw") -
+  kemungkinan beda revisi/batch lab USDA antar waktu query. Field yang
+  konsisten (selenium, B1-3, breakdown lemak) tetep di-backfill, tapi
+  vitamin A/E LAMA dibiarin, bukan di-overwrite ke angka baru yang meragukan.
+
+`oat-instan` SENGAJA gak dikasih selenium/B1/B2/B3 dari USDA - instant
+oats di market rata-rata difortifikasi ekstrem (konsisten sama keputusan
+zat besi 2026-09-11), breakdown lemak tetep di-backfill karena itu bukan
+nutrient yang difortifikasi produsen.
+
 ## Gap tracking mikro yang MASIH belum ditambahin (setelah iodium/selenium/B1-3)
 - Manganese, Fosfor, Biotin (B7), Asam pantotenat (B5) - sengaja di-skip,
   dinilai jarang defisiensi di diet apapun & gak actionable buat keputusan
