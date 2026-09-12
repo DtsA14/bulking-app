@@ -207,7 +207,17 @@ export const MIKRO_LABELS = {
   // rekomendasi internasional (WHO/AHA ~250-500mg) juga masih bervariasi -
   // mending ditampilin apa adanya drpd nebak angka target.
   ala_mg: { label: 'Omega-3 (ALA)', unit: 'mg', akg: 1600 },
-  epa_dha_mg: { label: 'Omega-3 (EPA+DHA)', unit: 'mg' }
+  epa_dha_mg: { label: 'Omega-3 (EPA+DHA)', unit: 'mg' },
+  // Iodium & Selenium - relevan spesifik karena pantang ikan (sumber utama
+  // keduanya). AKG dicross-check ke 2 sumber independen (selenium sempet
+  // ketemu angka salah 4.0mcg di 1 sumber, ternyata yang bener 30mcg).
+  iodium_mcg: { label: 'Iodium', unit: 'mcg', akg: 150 },
+  selenium_mcg: { label: 'Selenium', unit: 'mcg', akg: 30 },
+  // B1/B2/B3 - kerja bareng buat metabolisme energi, relevan buat konteks
+  // latihan intensitas tinggi meski jarang defisiensi di diet umum.
+  vitamin_b1_mg: { label: 'Vitamin B1 (Tiamin)', unit: 'mg', akg: 1.2 },
+  vitamin_b2_mg: { label: 'Vitamin B2 (Riboflavin)', unit: 'mg', akg: 1.3 },
+  vitamin_b3_mg: { label: 'Vitamin B3 (Niasin)', unit: 'mg', akg: 16 }
 }
 
 // 6 mikro yang ditampilin default (gak collapse) di Hari Ini - hasil riset:

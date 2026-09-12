@@ -196,6 +196,23 @@ Data breakdown ini **BELUM di-backfill** ke 27+ bahan lama - baru diisi kalau
 ngedit satu-satu manual atau pas nambah bahan baru dari sumber yang emang
 punya datanya (kayak 4 superfood + 2 suplemen yang baru ditambah).
 
+Udah kekerjain (2026-09-12): **Nambah 5 mikro baru** - `iodium_mcg` (AKG
+150mcg) & `selenium_mcg` (AKG 30mcg, dua-duanya relevan spesifik krn pantang
+ikan), `vitamin_b1_mg`/Tiamin (AKG 1.2mg), `vitamin_b2_mg`/Riboflavin (AKG
+1.3mg), `vitamin_b3_mg`/Niasin (AKG 16mg) - kerja bareng metabolisme energi.
+Semua angka AKG dari Permenkes 28/2019 dewasa laki-laki 19-29th, **dicross-
+check ke 2 sumber independen** krn 1 sumber pertama (andrafarm.com) kasih
+angka SALAH buat selenium (4.0mcg, ternyata yang bener 30mcg - beda 7.5x!).
+Belum ada data mikro ini di bahan manapun di `ingredients.json` - baru
+ke-hitung kalau bahan yang punya datanya ditambah/diedit manual.
+
+## Gap tracking mikro yang MASIH belum ditambahin (setelah iodium/selenium/B1-3)
+- Manganese, Fosfor, Biotin (B7), Asam pantotenat (B5) - sengaja di-skip,
+  dinilai jarang defisiensi di diet apapun & gak actionable buat keputusan
+  makan sehari-hari (lihat diskusi 2026-09-12)
+- Kolesterol - sengaja di-skip, evidence terbaru bilang saturated fat (udah
+  ditrack) lebih actionable drpd kolesterol makanan itu sendiri
+
 ## Gap tracking mikro lain yang diketahui - belum ditambahin
 - **Iodium & Selenium** - dua-duanya gak ada key di `MIKRO_LABELS` sama
   sekali. Relevan spesifik karena user pantang ikan (sumber utama iodium),
