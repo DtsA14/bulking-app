@@ -137,6 +137,26 @@ Kesimpulan buat kalau nanti beneran dibangun (lihat item #8 di atas):
   generator ini digarap, prompt-nya jangan diarahin "prioritasin whole food,
   suplemen darurat aja" - treat semua bahan (termasuk suplemen) setara dari
   awal.
+
+Udah kekerjain (2026-09-12): **Nambah tracking Omega-3, dipisah ALA vs
+EPA+DHA** di `MIKRO_LABELS` (`lib/nutrition.js`) - `ala_mg` (AKG 1600mg,
+Permenkes 28/2019 dewasa laki-laki 19-29th) dan `epa_dha_mg` (sengaja GAK ada
+`akg`, belum ada acuan resmi Indonesia buat dewasa umum, rekomendasi
+internasional WHO/AHA ~250-500mg masih bervariasi). Dipisah karena tubuh cuma
+convert ALA->EPA/DHA ~5-10%, nyampur jadi 1 angka nyesatin. Latar belakang:
+kelanjutan eksperimen AI generator di atas - user gak makan ikan (pantangan
+Profil), jadi omega-3 (terutama EPA+DHA) & vitamin D itu 2 gap struktural
+yang gak kekejar dari whole food, plus iodium & selenium (gak ke-track sama
+sekali - dicatet sebagai gap terpisah, belum ditambahin). Dites: bikin bahan
+custom "per_serving" isi `epa_dha_mg`/`ala_mg`, tampil bener di "Lihat semua
+mikronutrien" - EPA+DHA raw value tanpa %, ALA dengan %AKG.
+
+## Gap tracking mikro lain yang diketahui - belum ditambahin
+- **Iodium & Selenium** - dua-duanya gak ada key di `MIKRO_LABELS` sama
+  sekali. Relevan spesifik karena user pantang ikan (sumber utama iodium),
+  tapi practically kemungkinan udah aman dari garam beryodium/sumber lain -
+  belum prioritas ditambahin kecuali kepake buat eksperimen AI generator
+  lagi.
 - Butuh infra baru yang belum ada di app ini: serverless function buat proxy
   API key (gak bisa di-embed client-side, sama constraint-nya kayak USDA key
   kemarin) - beda dari fitur-fitur sebelumnya yang murni frontend+localStorage.

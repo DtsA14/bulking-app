@@ -182,7 +182,18 @@ export const MIKRO_LABELS = {
   natrium_mg: { label: 'Natrium', unit: 'mg' },
   // Tembaga: AKG resmi belum diverifikasi dari sumber terpercaya, mending
   // gak nampilin %AKG yang bisa jadi salah daripada nebak angkanya.
-  tembaga_mg: { label: 'Tembaga', unit: 'mg' }
+  tembaga_mg: { label: 'Tembaga', unit: 'mg' },
+  // Omega-3 dipisah ALA (nabati - chia/kenari/flaxseed) vs EPA+DHA (hewani -
+  // ikan/suplemen fish oil) karena beda sumber & beda efikasi biologis (badan
+  // cuma convert ALA->EPA/DHA ~5-10%, jadi nyampur keduanya jadi 1 angka
+  // nyesatin). ALA pake AKG resmi Permenkes 28/2019 (1.6g dewasa laki-laki
+  // 19-29th, sama kayak angka "Total Omega-3" yang ada di tabelnya). EPA+DHA
+  // sengaja GAK dikasih `akg` - belum ada acuan resmi Indonesia yang jelas
+  // buat orang dewasa umum (beda dari ibu hamil/menyusui yang udah ada),
+  // rekomendasi internasional (WHO/AHA ~250-500mg) juga masih bervariasi -
+  // mending ditampilin apa adanya drpd nebak angka target.
+  ala_mg: { label: 'Omega-3 (ALA)', unit: 'mg', akg: 1600 },
+  epa_dha_mg: { label: 'Omega-3 (EPA+DHA)', unit: 'mg' }
 }
 
 // 6 mikro yang ditampilin default (gak collapse) di Hari Ini - hasil riset:
