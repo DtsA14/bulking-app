@@ -78,6 +78,7 @@ function aggregateWeek() {
 export default function Belanja() {
   const [, forceRefresh] = useState(0)
   const [addIngredientId, setAddIngredientId] = useState('')
+  const [tab, setTab] = useState('perlu') // 'perlu' | 'inventory'
 
   const { rows } = aggregateWeek()
   const neededRows = rows.filter(r => !r.active)
@@ -106,8 +107,9 @@ export default function Belanja() {
   return (
     <div className="page">
       <p className="intro">
-        Bahan yang perlu dibeli = dipake di jadwal 7 hari terakhir TAPI belum ada di Inventory.
-        Inventory = bahan yang lu tandain "punya" - lepas dari jadwal, bisa ditambah/dihapus kapan aja.
+        {tab === 'perlu'
+          ? 'Bahan yang dipake di jadwal 7 hari terakhir tapi belum ada di Inventory.'
+          : 'Bahan yang lu tandain "punya" - lepas dari jadwal, bisa ditambah/dihapus kapan aja.'}
       </p>
 
       {isDemoSeed && (
@@ -117,58 +119,67 @@ export default function Belanja() {
         </p>
       )}
 
-      <div className="section-heading-row" style={{ marginTop: 0 }}>
-        <div className="cat-heading" style={{ margin: 0 }}>Perlu dibeli</div>
+      <div className="tabbar">
+        <button className={tab === 'perlu' ? 'rtab active' : 'rtab'} onClick={() => setTab('perlu')}>
+          Perlu dibeli{neededRows.length > 0 ? ` (${neededRows.length})` : ''}
+        </button>
+        <button className={tab === 'inventory' ? 'rtab active' : 'rtab'} onClick={() => setTab('inventory')}>
+          Inventory ({inventory.length})
+        </button>
       </div>
-      {neededRows.length === 0 ? (
-        <p className="empty-note" style={{ marginTop: 4 }}>
-          {rows.length === 0
-            ? 'Belum ada histori jadwal minggu ini. Isi menu di tab Hari Ini dulu.'
-            : 'Semua bahan yang kepake minggu ini udah ada di Inventory - gak ada yang perlu dibeli.'}
-        </p>
+
+      {tab === 'perlu' ? (
+        neededRows.length === 0 ? (
+          <p className="empty-note" style={{ marginTop: 4 }}>
+            {rows.length === 0
+              ? 'Belum ada histori jadwal minggu ini. Isi menu di tab Hari Ini dulu.'
+              : 'Semua bahan yang kepake minggu ini udah ada di Inventory - gak ada yang perlu dibeli.'}
+          </p>
+        ) : (
+          <>
+            <div className="summary-bar" style={{ marginTop: 8 }}>
+              <div className="summary-item">
+                <div className="summary-val">Rp{totalHarga.toLocaleString('id-ID')}</div>
+                <div className="summary-lbl">estimasi belanja</div>
+              </div>
+            </div>
+            {neededRows.map(r => (
+              <div className="log-row" key={r.id}>
+                <span>{r.nama}</span>
+                <span className="recipe-row-right">
+                  <span>{r.gram} g · Rp{r.harga.toLocaleString('id-ID')}</span>
+                  <button className="btn-secondary" onClick={() => markOwned(r.id)}>Udah beli</button>
+                </span>
+              </div>
+            ))}
+            <p className="empty-note" style={{ marginTop: 12 }}>
+              Estimasi harga dari database bahan (bisa diedit manual). Jumlah bahan dibulatin ke atas
+              per batch resep, jadi ada kemungkinan sedikit lebih dari yang benar-benar kepake.
+            </p>
+          </>
+        )
       ) : (
         <>
-          <div className="summary-bar" style={{ marginTop: 8 }}>
-            <div className="summary-item">
-              <div className="summary-val">Rp{totalHarga.toLocaleString('id-ID')}</div>
-              <div className="summary-lbl">estimasi belanja</div>
+          {toAddOptions.length > 0 && (
+            <div className="ingredient-row-inputs" style={{ marginBottom: 12, marginTop: 4 }}>
+              <select value={addIngredientId} onChange={e => setAddIngredientId(e.target.value)} style={{ flex: 1 }}>
+                <option value="">Cari bahan buat ditambah...</option>
+                {toAddOptions.map(opt => <option key={opt.id} value={opt.id}>{opt.nama}</option>)}
+              </select>
+              <button className="btn-primary" onClick={handleAdd}>+ Tambah</button>
             </div>
-          </div>
-          {neededRows.map(r => (
-            <div className="log-row" key={r.id}>
-              <span>{r.nama}</span>
-              <span className="recipe-row-right">
-                <span>{r.gram} g · Rp{r.harga.toLocaleString('id-ID')}</span>
-                <button className="btn-secondary" onClick={() => markOwned(r.id)}>Udah beli</button>
-              </span>
-            </div>
-          ))}
-          <p className="empty-note" style={{ marginTop: 12 }}>
-            Estimasi harga dari database bahan (bisa diedit manual). Jumlah bahan dibulatin ke atas
-            per batch resep, jadi ada kemungkinan sedikit lebih dari yang benar-benar kepake.
-          </p>
+          )}
+          {inventory.length === 0 ? (
+            <p className="empty-note">Belum ada bahan di Inventory.</p>
+          ) : (
+            inventory.map(item => (
+              <div className="log-row" key={item.id}>
+                <span>{item.nama}</span>
+                <button className="btn-secondary" onClick={() => markOut(item.id)}>Habis</button>
+              </div>
+            ))
+          )}
         </>
-      )}
-
-      <div className="cat-heading">Inventory kamu ({inventory.length})</div>
-      {toAddOptions.length > 0 && (
-        <div className="ingredient-row-inputs" style={{ marginBottom: 12 }}>
-          <select value={addIngredientId} onChange={e => setAddIngredientId(e.target.value)} style={{ flex: 1 }}>
-            <option value="">Cari bahan buat ditambah...</option>
-            {toAddOptions.map(opt => <option key={opt.id} value={opt.id}>{opt.nama}</option>)}
-          </select>
-          <button className="btn-primary" onClick={handleAdd}>+ Tambah</button>
-        </div>
-      )}
-      {inventory.length === 0 ? (
-        <p className="empty-note">Belum ada bahan di Inventory.</p>
-      ) : (
-        inventory.map(item => (
-          <div className="log-row" key={item.id}>
-            <span>{item.nama}</span>
-            <button className="btn-secondary" onClick={() => markOut(item.id)}>Habis</button>
-          </div>
-        ))
       )}
     </div>
   )
