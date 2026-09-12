@@ -114,7 +114,16 @@ export function getIngredientPrice(id) {
 // nilai gizinya di database emang udah didefinisiin per 1 serving, jadi
 // faktor kalinya langsung jumlah serving itu sendiri (bukan dibagi 100).
 export function calcTotals(ingredients) {
-  const totals = { kkal: 0, protein: 0, karbo: 0, lemak: 0, serat: 0, harga: 0, mikro: {} }
+  const totals = {
+    kkal: 0, protein: 0, karbo: 0, lemak: 0, serat: 0, harga: 0,
+    // Breakdown opsional - kebanyakan bahan lama belum punya data ini (undefined,
+    // dianggap 0), jadi totalnya bisa aja lebih kecil dari `karbo`/`lemak` total
+    // kalau belum semua bahan di resep punya breakdown-nya. Gula & pati SENGAJA
+    // gak dipisah jadi field tersendiri - pati = karbo - serat - gula, tinggal
+    // diitung pas ditampilin, gak perlu disimpen dobel.
+    gula: 0, lemakJenuh: 0, lemakTrans: 0, lemakMono: 0, lemakPoly: 0,
+    mikro: {}
+  }
   const index = buildIngredientIndex()
 
   ingredients.forEach(ing => {
@@ -129,6 +138,11 @@ export function calcTotals(ingredients) {
     totals.karbo += (per100.karbo_g || 0) * factor
     totals.lemak += (per100.lemak_g || 0) * factor
     totals.serat += (per100.serat_g || 0) * factor
+    totals.gula += (per100.gula_g || 0) * factor
+    totals.lemakJenuh += (per100.lemak_jenuh_g || 0) * factor
+    totals.lemakTrans += (per100.lemak_trans_g || 0) * factor
+    totals.lemakMono += (per100.lemak_mono_g || 0) * factor
+    totals.lemakPoly += (per100.lemak_poly_g || 0) * factor
     totals.harga += getIngredientPrice(ing.ingredientId) * factor
 
     // Mikro beda-beda field per bahan (gak semua punya data yang sama), jadi

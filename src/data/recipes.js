@@ -71,6 +71,11 @@ export function getRecipeTotals(recipe) {
     karbo: Math.round(batch.karbo / porsi),
     lemak: Math.round(batch.lemak / porsi),
     serat: Math.round(batch.serat / porsi),
+    gula: Math.round((batch.gula / porsi) * 10) / 10,
+    lemakJenuh: Math.round((batch.lemakJenuh / porsi) * 10) / 10,
+    lemakTrans: Math.round((batch.lemakTrans / porsi) * 10) / 10,
+    lemakMono: Math.round((batch.lemakMono / porsi) * 10) / 10,
+    lemakPoly: Math.round((batch.lemakPoly / porsi) * 10) / 10,
     harga: Math.round(batch.harga / porsi),
     mikro: roundMikro(batch.mikro, porsi)
   }
@@ -233,6 +238,11 @@ export function getBoosterTotals(booster) {
     karbo: Math.round(t.karbo),
     lemak: Math.round(t.lemak),
     serat: Math.round(t.serat),
+    gula: Math.round(t.gula * 10) / 10,
+    lemakJenuh: Math.round(t.lemakJenuh * 10) / 10,
+    lemakTrans: Math.round(t.lemakTrans * 10) / 10,
+    lemakMono: Math.round(t.lemakMono * 10) / 10,
+    lemakPoly: Math.round(t.lemakPoly * 10) / 10,
     harga: Math.round(t.harga),
     mikro: roundMikro(t.mikro, 1)
   }

@@ -165,6 +165,14 @@ function emptyBahanForm() {
     karbo_g: 0,
     lemak_g: 0,
     serat_g: 0,
+    // Breakdown opsional - kosong (0) berarti "belum ada datanya", BUKAN
+    // "beneran 0", tapi gak ada cara bedain keduanya di angka doang. Sama
+    // kayak mikro, mending dibiarin kosong drpd nebak.
+    gula_g: 0,
+    lemak_jenuh_g: 0,
+    lemak_trans_g: 0,
+    lemak_mono_g: 0,
+    lemak_poly_g: 0,
     harga_per_100: 0,
     mikro: [] // [{ key, value }] - dikonversi ke object pas disimpen
   }
@@ -182,6 +190,11 @@ function ingredientToForm(item) {
     karbo_g: per100.karbo_g || 0,
     lemak_g: per100.lemak_g || 0,
     serat_g: per100.serat_g || 0,
+    gula_g: per100.gula_g || 0,
+    lemak_jenuh_g: per100.lemak_jenuh_g || 0,
+    lemak_trans_g: per100.lemak_trans_g || 0,
+    lemak_mono_g: per100.lemak_mono_g || 0,
+    lemak_poly_g: per100.lemak_poly_g || 0,
     harga_per_100: item.harga_per_100 || 0,
     mikro: Object.entries(item.mikro || {}).map(([key, value]) => ({ key, value }))
   }
@@ -241,7 +254,12 @@ function BahanSection() {
       protein_g: editing.protein_g,
       karbo_g: editing.karbo_g,
       lemak_g: editing.lemak_g,
-      serat_g: editing.serat_g
+      serat_g: editing.serat_g,
+      gula_g: editing.gula_g,
+      lemak_jenuh_g: editing.lemak_jenuh_g,
+      lemak_trans_g: editing.lemak_trans_g,
+      lemak_mono_g: editing.lemak_mono_g,
+      lemak_poly_g: editing.lemak_poly_g
     }
     const mikro = Object.fromEntries(editing.mikro.map(m => [m.key, m.value]))
     saveIngredient({
@@ -316,6 +334,23 @@ function BahanSection() {
           Serat (g)
           <input type="number" value={editing.serat_g} onChange={e => updateField('serat_g', parseFloat(e.target.value) || 0)} />
         </label>
+        <label className="field-row">
+          Gula (g, opsional - bagian dari Karbo di atas)
+          <input type="number" value={editing.gula_g} onChange={e => updateField('gula_g', parseFloat(e.target.value) || 0)} />
+        </label>
+
+        <div className="cat-heading">Breakdown lemak (opsional)</div>
+        <p className="empty-note" style={{ marginBottom: 10 }}>
+          Isi kalau ada datanya - jumlahnya gak harus pas sama Lemak total di
+          atas (boleh kurang kalau belum semua jenis lemaknya diketahui).
+        </p>
+        <div className="macrogrid">
+          <label className="field-row"><span>Jenuh (g)</span><input type="number" value={editing.lemak_jenuh_g} onChange={e => updateField('lemak_jenuh_g', parseFloat(e.target.value) || 0)} /></label>
+          <label className="field-row"><span>Trans (g)</span><input type="number" value={editing.lemak_trans_g} onChange={e => updateField('lemak_trans_g', parseFloat(e.target.value) || 0)} /></label>
+          <label className="field-row"><span>Tak jenuh tunggal (g)</span><input type="number" value={editing.lemak_mono_g} onChange={e => updateField('lemak_mono_g', parseFloat(e.target.value) || 0)} /></label>
+          <label className="field-row"><span>Tak jenuh ganda (g)</span><input type="number" value={editing.lemak_poly_g} onChange={e => updateField('lemak_poly_g', parseFloat(e.target.value) || 0)} /></label>
+        </div>
+
         <label className="field-row">
           Harga per {editing.unit === 'per_serving' ? 'serving' : '100g/ml'} (Rp)
           <input type="number" value={editing.harga_per_100} onChange={e => updateField('harga_per_100', parseFloat(e.target.value) || 0)} />

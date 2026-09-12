@@ -8,6 +8,15 @@ import { getAllIngredients, isPerServing } from '../lib/nutrition.js'
 
 const CATS = ['sarapan', 'snack', 'makan']
 
+// Pati gak disimpen sebagai field sendiri - dihitung dari sisa Karbo abis
+// dikurangin Serat & Gula, biar gak ada 2 sumber data karbo yang bisa gak
+// sinkron. Diklem ke 0 biar gak minus kalau breakdown-nya belum lengkap
+// (banyak bahan lama belum punya data gula_g, jadi Gula ke-baca 0 padahal
+// karbo-nya tetep ada isinya).
+function pati(t) {
+  return Math.max(0, Math.round((t.karbo - t.serat - t.gula) * 10) / 10)
+}
+
 function RecipeGizi({ recipe }) {
   const t = getRecipeTotals(recipe)
   return (
@@ -19,6 +28,12 @@ function RecipeGizi({ recipe }) {
         <div className="mcell"><div className="v">{t.lemak}g</div><div className="l">lemak</div></div>
       </div>
       <div className="field-row no-gap"><span>Serat</span><span>{t.serat}g</span></div>
+      <div className="field-row no-gap"><span>· Gula</span><span>{t.gula}g</span></div>
+      <div className="field-row no-gap"><span>· Pati</span><span>{pati(t)}g</span></div>
+      <div className="field-row no-gap"><span>· Lemak jenuh</span><span>{t.lemakJenuh}g</span></div>
+      <div className="field-row no-gap"><span>· Lemak trans</span><span>{t.lemakTrans}g</span></div>
+      <div className="field-row no-gap"><span>· Lemak tak jenuh tunggal</span><span>{t.lemakMono}g</span></div>
+      <div className="field-row no-gap"><span>· Lemak tak jenuh ganda</span><span>{t.lemakPoly}g</span></div>
       <div className="field-row no-gap"><span>Estimasi harga bahan</span><span>Rp{t.harga.toLocaleString('id-ID')}</span></div>
       {recipe.micro && <p className="recipe-micro"><strong>Mikro:</strong> {recipe.micro}</p>}
     </>

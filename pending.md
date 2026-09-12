@@ -180,6 +180,22 @@ BUKAN jaminan akurat - kalau angkanya bakal dipake buat keputusan (bukan
 cuma estimasi kasar), cross-check ke API resmi USDA dulu, jangan percaya
 mentah-mentah dari WebFetch/WebSearch ke situs pihak ketiga.
 
+Udah kekerjain (2026-09-12): **Breakdown Karbo (Gula) & Lemak (Jenuh/Trans/
+Tak jenuh tunggal/Tak jenuh ganda)** - field baru opsional di skema ingredient
+(`gula_g`, `lemak_jenuh_g`, `lemak_trans_g`, `lemak_mono_g`, `lemak_poly_g`),
+`calcTotals()` di `nutrition.js` ngagregasi semuanya sama kayak makro lain.
+**Pati SENGAJA gak disimpen sebagai field sendiri** - dihitung on-the-fly di
+`Resep.jsx` (`pati = karbo - serat - gula`, diklem ke 0) biar gak ada 2 sumber
+data karbo yang bisa gak sinkron. Form edit bahan (`Profil.jsx` BahanSection)
+udah bisa isi field-field ini; tampil di tab Gizi resep (`RecipeGizi`) sebagai
+baris tambahan setelah Serat. **BELUM ditampilin** di ringkasan makro harian
+Hari Ini - sengaja ditahan biar gak numpuk kepadatan di layar utama yang
+udah lumayan penuh (macro grid + mikro list); breakdown ini sifatnya "detail
+teknis", cocoknya di tab Gizi per-resep (drill-down), bukan glance harian.
+Data breakdown ini **BELUM di-backfill** ke 27+ bahan lama - baru diisi kalau
+ngedit satu-satu manual atau pas nambah bahan baru dari sumber yang emang
+punya datanya (kayak 4 superfood + 2 suplemen yang baru ditambah).
+
 ## Gap tracking mikro lain yang diketahui - belum ditambahin
 - **Iodium & Selenium** - dua-duanya gak ada key di `MIKRO_LABELS` sama
   sekali. Relevan spesifik karena user pantang ikan (sumber utama iodium),
