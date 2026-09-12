@@ -221,20 +221,29 @@ mikro kosong). Ketemu 2 salah-match yang SENGAJA gak dipake:
   (fdcId 328637) yang confirmed match persis - dipake buat backfill.
 
 2 bahan DIBIARIN apa adanya (belum di-backfill, butuh verifikasi lanjut):
-- `daging-sapi-has` - USDA gak punya entry "all grades" gabungan buat
-  tenderloin (cuma per-grade choice/select/prime terpisah), gak yakin mana
-  yang match sourcing awal - resiko bikin data internal gak konsisten
-  kalau dipaksa gabung macro grade-A + mikro grade-B.
-- `brokoli` - macro & vitamin A/E dari re-query beda jauh (10-400%) dari
-  data lama meski food description sama persis ("Broccoli, raw") -
-  kemungkinan beda revisi/batch lab USDA antar waktu query. Field yang
-  konsisten (selenium, B1-3, breakdown lemak) tetep di-backfill, tapi
-  vitamin A/E LAMA dibiarin, bukan di-overwrite ke angka baru yang meragukan.
-
 `oat-instan` SENGAJA gak dikasih selenium/B1/B2/B3 dari USDA - instant
 oats di market rata-rata difortifikasi ekstrem (konsisten sama keputusan
 zat besi 2026-09-11), breakdown lemak tetep di-backfill karena itu bukan
 nutrient yang difortifikasi produsen.
+
+Udah kekerjain (2026-09-12): **Resolusi `brokoli` & `daging-sapi-has`.**
+Root cause selisih 10-400% brokoli kemarin: match-nya ternyata di dataset
+**Foundation** (fdcId 747447 "Broccoli, raw"), bukan **SR Legacy** (fdcId
+170379) yang di-query pas audit sebelumnya - dua dataset USDA yang beda,
+bukan beda revisi lab kayak dugaan awal. Foundation match ini cocok 100%
+ke SEMUA 13 nilai yang udah ada (termasuk vitamin A & E yang sempet
+dicurigai salah) - selenium/B1/B2/B3/breakdown lemak sekarang dipake dari
+Foundation (`kolin_mg` yang sebelumnya nempel dari SR Legacy dicabut
+karena Foundation gak nyantumin data itu buat entry ini).
+
+`daging-sapi-has` MASIH belum kebackfill - ketemu kandidat Foundation
+"Beef, tenderloin steak, raw" (fdcId 2727573) yang protein/kalsium/tembaga
+match hampir persis (21.09~21, 4.089~4, 0.1046~0.102), TAPI record ini
+gak nyantumin selenium/B1/B2/B3/breakdown lemak/vitamin A/E/D/B12 sama
+sekali - Foundation Foods emang gak selalu lengkap semua nutrien per
+entry. Gak ada satupun record USDA yang punya macro cocok DAN data mikro
+baru sekaligus, jadi tetep dibiarin sebagai gap resmi drpd dipaksa gabung
+dari 2 sumber beda yang bisa bikin data internal gak konsisten.
 
 ## Gap tracking mikro yang MASIH belum ditambahin (setelah iodium/selenium/B1-3)
 - Manganese, Fosfor, Biotin (B7), Asam pantotenat (B5) - sengaja di-skip,
