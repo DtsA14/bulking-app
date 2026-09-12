@@ -19,6 +19,25 @@ arsipnya balik ke aktif. Use case: user filter bahan lewat "latihan
 generate" jadi cuma bahan yang beneran mau dibeli di real life yang keliatan
 di pemilih resep, tanpa perlu hapus data bahan yang sesekali dipake.
 
+Udah kekerjain (2026-09-12, lanjutan): **Belanja jadi 2 section: "Perlu
+dibeli" + "Inventory kamu"** - nyambungin flag `active`/arsip di atas ke
+jadwal 7 hari. "Perlu dibeli" = bahan yang kepake di jadwal TAPI statusnya
+arsip (belum dipunya), plus estimasi harga & tombol "Udah beli" (langsung
+`setIngredientActive(id, true)`, sekali klik pindah ke Inventory). Bahan
+yang aktif TAPI kebetulan kepake di jadwal gak nongol di "Perlu dibeli" -
+logikanya emang "udah punya, gak perlu dibeli lagi". "Inventory kamu" = list
+semua bahan aktif + tombol "Habis" per item (`setIngredientActive(id,
+false)`) buat archive balik, sama search `<select>` "+ Tambah" (isinya
+bahan yang lagi arsip) buat nandain "baru beli sesuatu" di luar konteks
+jadwal. Nambah `setIngredientActive()` di `nutrition.js` sebagai shortcut
+toggle tanpa lewat form edit lengkap. GAK ada storage baru - reuse total
+flag `active` yang udah ada, cuma beda cara bacanya doang (dulu cuma buat
+filter pemilih resep, sekarang juga buat nentuin "perlu dibeli atau
+enggak"). Default awal: semua bahan tetep `active` apa adanya (gak di-reset
+paksa jadi kosong) - inventory-nya "belajar" progresif pas user archive
+bahan yang emang gak dipunya, bukan setup manual 33 bahan sekaligus di hari
+pertama.
+
 ## #8 — Generate resep dari bahan (arah kebalikan dari Belanja)
 Alur: user masukin bahan yang ada di rumah → sistem/AI nyari atau bikinin resep
 baru dari situ, termasuk cooking direction yang belum pernah ada di database.

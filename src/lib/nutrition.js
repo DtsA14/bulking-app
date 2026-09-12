@@ -99,6 +99,14 @@ export function isIngredientActive(item) {
   return item?.active !== false
 }
 
+// Toggle aktif/arsip langsung by id, tanpa lewat form edit lengkap - dipake
+// di Belanja (Inventory) buat tombol "+ Tambah"/"Habis" satu klik.
+export function setIngredientActive(id, active) {
+  const item = findIngredient(id)
+  if (!item) return
+  saveIngredient({ ...item, active })
+}
+
 // Balikin bahan BUNDLED ke data asli (buang override-nya). Gak berlaku buat
 // bahan custom - itu pake deleteCustomIngredient().
 export function resetIngredientOverride(id) {
