@@ -20,6 +20,38 @@ Kalau dikerjain nanti:
 - Gizi tetep dihitung dari `ingredients-db.json` (akurat), AI cuma nentuin
   kombinasi & cara masak
 
+## #9 — OCR nutrition facts label buat isi Database Bahan
+Konteks: user mau pake app ini buat "latihan generate" biar tau kasar-kasar
+belanja apa aja di real life. Rencana alurnya: produk yang ADA nutrition
+facts di kemasan bakal diinput manual (bukan andelin database bahan umum),
+yang GAK ada baru pake database yang udah ada. Males nyatetin nutrients
+satu-satu dari label -> pengen OCR biar auto-isi form.
+
+**Solusi darurat (udah jalan sekarang, gak perlu kode apa-apa)**: foto label
+langsung dikirim ke chat, di-ekstrak manual sama Claude, tinggal paste angka
+hasilnya ke form "Tambah Bahan". Ini udah nutup sebagian besar masalah
+"ribet nyatetin" tanpa nunggu development apapun.
+
+**Kalau mau dibangun jadi fitur beneran di app:**
+- **OCR murni (baca teks dari gambar) BISA 100% client-side, gratis, offline
+  - GAK butuh API/backend.** Library kayak Tesseract.js (web) atau ML Kit
+  (native Android) - user pernah bikin ini di app lain (Warung Cerdas) tanpa
+  API, teknologi yang sama bisa dipake di sini juga.
+- Yang beda tingkat kesulitan itu PARSING hasil OCR ke field yang bener
+  (Energi -> kkal, Protein -> protein_g, dst). Kalau target scope-nya cuma
+  label BPOM standar Indonesia (urutannya lumayan konsisten: Energi Total,
+  Lemak Total, Protein, Karbohidrat Total, Gula, Garam/Natrium), regex/
+  keyword matching biasa CUKUP - masih gak butuh AI/API. Baru worth pake
+  AI/vision model kalau mau robust ke format label yang berantakan/gak
+  standar (produk import, kemasan rusak/miring, dll).
+- **Beda sama fitur #8 (AI recipe generator)** yang emang butuh infra baru
+  (serverless proxy API key) - OCR versi client-side-only ini GAK kena
+  barrier yang sama, bisa dikerjain duluan tanpa nunggu keputusan soal
+  backend/API.
+- **Baru worth dipikirin serius kalau app-nya dipake orang lain** (bukan
+  cuma personal use) - kata user sendiri, buat pemakaian sendiri manual
+  paste dari chat udah cukup.
+
 ## Dari audit eksternal (2026-09) — belum dikerjain
 1 poin dari audit yang sengaja ditahan (bukan kelewat):
 
