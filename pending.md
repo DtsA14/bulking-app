@@ -168,6 +168,18 @@ biasanya dikonsumsi jauh di bawah 100g/hari (chia ~15-30g/hari) - pas dipake
 di Resep builder, satuan gram HARUS disesuaikan ke porsi realistis, jangan
 default 100g penuh.
 
+Udah kekerjain (2026-09-12, cross-check): 4 superfood di atas awalnya
+disourcing dari situs pihak ketiga (triagemethod.com, klaim data USDA) -
+di-cross-check ulang langsung ke `api.nal.usda.gov` (SR Legacy), ketauan
+**chia-seed** meleset jauh di 4 nutrien (kalium -37%, tembaga -42%, folat
+-56%, vitamin E malah 5x KURANG dari resmi) dan **alpukat** vitamin A
+20x kegedean (146 vs 7mcg resmi). Semua udah direvisi ke angka API resmi.
+Kale & almond udah akurat dari awal (cuma beda rounding kecil). **Pelajaran
+penting buat sourcing ke depan**: situs turunan yang "klaim" sumber USDA
+BUKAN jaminan akurat - kalau angkanya bakal dipake buat keputusan (bukan
+cuma estimasi kasar), cross-check ke API resmi USDA dulu, jangan percaya
+mentah-mentah dari WebFetch/WebSearch ke situs pihak ketiga.
+
 ## Gap tracking mikro lain yang diketahui - belum ditambahin
 - **Iodium & Selenium** - dua-duanya gak ada key di `MIKRO_LABELS` sama
   sekali. Relevan spesifik karena user pantang ikan (sumber utama iodium),

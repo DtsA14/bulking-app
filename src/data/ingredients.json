@@ -1,7 +1,7 @@
 {
   "_meta": {
     "unit": "semua nilai per 100 gram bahan mentah/siap pakai, kecuali disebutkan lain",
-    "sumber": "USDA FoodData Central jadi sumber default (API resmi, cakupan lebih lengkap & terstruktur), TKPI Kemenkes 2019 via panganku.org dipake buat bahan khas Indonesia yang gak ada padanan internasional ATAU beda spesies/bentuk dari versi Barat-nya (misal bayam Indonesia = Amaranthus, beda dari 'spinach' USDA yang Spinacia; tahu Indonesia lebih basah dari 'firm tofu' USDA). Di-refresh 2026-09-11: 10 bahan dari USDA API (ayam-fillet, daging-sapi-has, kentang, keju-parut, oat-instan, brokoli, paprika, kecap-asin, saus-tiram, granola, whey-protein), 13 bahan dari TKPI (telur, tahu, tempe, wortel, bayam, kacang-panjang, pisang, susu-full-cream, yogurt, selai-kacang, minyak-wijen, madu, bawang-putih). nasi-matang di-cross-check ke USDA lagi abis TKPI-nya kedeteksi kegedean (180 vs 130 kkal - USDA menang di sini, cooked rice biasa bukan varian padat). roti-gandum belum di-refresh (kandidat USDA yang ketemu - pita/vienna bread - gak representatif buat roti tawar biasa). Angka mikro yang belum ada datanya sengaja dikosongkan (null/dihilangkan) daripada dikira-kira. 2026-09-12: nambah 2 bahan suplemen (vitamin-d3-1000iu, omega-3-fish-oil-1000mg) - angka dari komposisi label GENERIK produk sejenis di pasaran, BUKAN dari brand spesifik manapun, WAJIB dicek ulang ke label produk asli yang beneran dipake. 2026-09-12 (lanjutan): nambah 4 superfood dari USDA (chia-seed, kale, almond, alpukat) - dipilih spesifik buat nutup gap yang ketauan dari eksperimen AI meal-plan generator (ALA dari chia-seed, vitamin A & K dari kale, vitamin E dari almond, kalium & kolin dari alpukat). PENTING: chia-seed & spirulina (kalau nanti ditambah) biasanya dikonsumsi jauh di bawah 100g/hari (chia ~15-30g, spirulina ~7g) - satuan gram yang diinput pas dipake di resep builder HARUS disesuaikan ke porsi realistis, jangan asal pake 100g penuh cuma karena data disimpen per-100g.",
+    "sumber": "USDA FoodData Central jadi sumber default (API resmi, cakupan lebih lengkap & terstruktur), TKPI Kemenkes 2019 via panganku.org dipake buat bahan khas Indonesia yang gak ada padanan internasional ATAU beda spesies/bentuk dari versi Barat-nya (misal bayam Indonesia = Amaranthus, beda dari 'spinach' USDA yang Spinacia; tahu Indonesia lebih basah dari 'firm tofu' USDA). Di-refresh 2026-09-11: 10 bahan dari USDA API (ayam-fillet, daging-sapi-has, kentang, keju-parut, oat-instan, brokoli, paprika, kecap-asin, saus-tiram, granola, whey-protein), 13 bahan dari TKPI (telur, tahu, tempe, wortel, bayam, kacang-panjang, pisang, susu-full-cream, yogurt, selai-kacang, minyak-wijen, madu, bawang-putih). nasi-matang di-cross-check ke USDA lagi abis TKPI-nya kedeteksi kegedean (180 vs 130 kkal - USDA menang di sini, cooked rice biasa bukan varian padat). roti-gandum belum di-refresh (kandidat USDA yang ketemu - pita/vienna bread - gak representatif buat roti tawar biasa). Angka mikro yang belum ada datanya sengaja dikosongkan (null/dihilangkan) daripada dikira-kira. 2026-09-12: nambah 2 bahan suplemen (vitamin-d3-1000iu, omega-3-fish-oil-1000mg) - angka dari komposisi label GENERIK produk sejenis di pasaran, BUKAN dari brand spesifik manapun, WAJIB dicek ulang ke label produk asli yang beneran dipake. 2026-09-12 (lanjutan): nambah 4 superfood dari USDA (chia-seed, kale, almond, alpukat) - dipilih spesifik buat nutup gap yang ketauan dari eksperimen AI meal-plan generator (ALA dari chia-seed, vitamin A & K dari kale, vitamin E dari almond, kalium & kolin dari alpukat). PENTING: chia-seed & spirulina (kalau nanti ditambah) biasanya dikonsumsi jauh di bawah 100g/hari (chia ~15-30g, spirulina ~7g) - satuan gram yang diinput pas dipake di resep builder HARUS disesuaikan ke porsi realistis, jangan asal pake 100g penuh cuma karena data disimpen per-100g. 2026-09-12 (cross-check ke USDA FDC API resmi): angka awal chia-seed & almond disourcing dari situs pihak ketiga (triagemethod.com) - abis di-cross-check ke api.nal.usda.gov langsung, ketauan beberapa meleset jauh dari SR Legacy resmi: chia-seed kalium (642->407, -37%), tembaga (1.6->0.924, -42%), folat (111->49, -56%), vitamin E (0.10->0.5, 5x kurang) - SEMUA UDAH DIREVISI ke angka resmi. alpukat vitamin A paling parah (146->7mcg, situs ketiga 20x kegedean) - UDAH DIREVISI. kale & sebagian besar almond udah cocok dari awal, cuma minor rounding diff. Pelajaran: situs pihak ketiga (myfooddata/triagemethod) klaim sumber USDA tapi bisa aja transkripsi/interpretasi datanya salah - WAJIB cross-check ke fdc.nal.usda.gov API langsung kalau angkanya krusial, jangan percaya situs turunan mentah-mentah.",
     "cara_pakai": "kalori_per_gram = kkal / 100. Kalikan sama berat aktual bahan buat dapet nilai per porsi.",
     "harga": "harga_per_100 = estimasi rupiah per 100g (atau per 100ml buat bahan cair), seed awal - WAJIB di-adjust manual sesuai harga di tempat belanja masing-masing, bukan data pasar real-time."
   },
@@ -668,23 +668,24 @@
       "nama": "Biji chia (kering)",
       "kategori": "biji-bijian",
       "per_100g": {
-        "kkal": 490,
-        "protein_g": 17.0,
-        "karbo_g": 38.3,
-        "lemak_g": 32.9,
-        "serat_g": 33.2
+        "kkal": 486,
+        "protein_g": 16.54,
+        "karbo_g": 42.12,
+        "lemak_g": 30.74,
+        "serat_g": 34.4
       },
       "mikro": {
-        "zat_besi_mg": 6.0,
-        "zinc_mg": 5.6,
-        "kalsium_mg": 595,
-        "kalium_mg": 642,
-        "magnesium_mg": 326,
-        "tembaga_mg": 1.6,
-        "vitamin_b6_mg": 0.20,
-        "folat_mcg": 111,
-        "vitamin_e_mg": 0.10,
-        "ala_mg": 18800
+        "zat_besi_mg": 7.72,
+        "zinc_mg": 4.58,
+        "kalsium_mg": 631,
+        "kalium_mg": 407,
+        "magnesium_mg": 335,
+        "tembaga_mg": 0.924,
+        "natrium_mg": 16,
+        "vitamin_c_mg": 1.6,
+        "folat_mcg": 49,
+        "vitamin_e_mg": 0.5,
+        "ala_mg": 17830
       },
       "harga_per_100": 10000
     },
@@ -722,24 +723,24 @@
       "nama": "Almond (mentah)",
       "kategori": "kacang",
       "per_100g": {
-        "kkal": 584,
-        "protein_g": 21.5,
-        "karbo_g": 20.0,
-        "lemak_g": 51.1,
-        "serat_g": 10.8
+        "kkal": 579,
+        "protein_g": 21.15,
+        "karbo_g": 21.55,
+        "lemak_g": 49.93,
+        "serat_g": 12.5
       },
       "mikro": {
-        "zat_besi_mg": 3.7,
-        "zinc_mg": 2.9,
-        "kalsium_mg": 254,
+        "zat_besi_mg": 3.71,
+        "zinc_mg": 3.12,
+        "kalsium_mg": 269,
         "kalium_mg": 733,
-        "magnesium_mg": 258,
-        "tembaga_mg": 0.91,
-        "vitamin_b6_mg": 0.10,
-        "vitamin_a_mcg": 2.0,
+        "magnesium_mg": 270,
+        "tembaga_mg": 1.031,
+        "natrium_mg": 1,
+        "vitamin_b6_mg": 0.137,
         "folat_mcg": 44.0,
         "kolin_mg": 52.1,
-        "vitamin_e_mg": 25.6
+        "vitamin_e_mg": 25.63
       },
       "harga_per_100": 18000
     },
@@ -765,7 +766,7 @@
         "vitamin_b6_mg": 0.26,
         "kolin_mg": 14.2,
         "vitamin_c_mg": 10.0,
-        "vitamin_a_mcg": 146,
+        "vitamin_a_mcg": 7,
         "folat_mcg": 81.0,
         "vitamin_k_mcg": 21.0,
         "vitamin_e_mg": 2.1
