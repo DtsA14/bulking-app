@@ -4,7 +4,7 @@ import {
   getAllRecipes, generateRecipeId, saveCustomRecipe, deleteCustomRecipe
 } from '../data/recipes.js'
 import { getProfile } from '../lib/profile.js'
-import { getAllIngredients, isPerServing } from '../lib/nutrition.js'
+import { getAllIngredients, isPerServing, isIngredientActive } from '../lib/nutrition.js'
 
 const CATS = ['sarapan', 'snack', 'makan']
 
@@ -74,6 +74,10 @@ function RecipeForm({ initial, onCancel, onSaved, onDeleted }) {
   const [form, setForm] = useState(initial)
   const [confirmDelete, setConfirmDelete] = useState(false)
   const allIngredients = getAllIngredients()
+  // Bahan yang diarsipkan disembunyiin dari pemilih SUPAYA gak dipilih baru,
+  // tapi row yang UDAH kepilih bahan arsip (misal lagi ngedit resep lama)
+  // tetep ditampilin di select-nya sendiri - biar gak keliatan ilang/error.
+  const activeIngredients = allIngredients.filter(isIngredientActive)
 
   function update(field, value) {
     setForm(prev => ({ ...prev, [field]: value }))
@@ -88,10 +92,10 @@ function RecipeForm({ initial, onCancel, onSaved, onDeleted }) {
   }
 
   function addIngredientRow() {
-    if (allIngredients.length === 0) return
+    if (activeIngredients.length === 0) return
     setForm(prev => ({
       ...prev,
-      ingredients: [...prev.ingredients, { ingredientId: allIngredients[0].id, qty: 1, unit: '', gram: 0 }]
+      ingredients: [...prev.ingredients, { ingredientId: activeIngredients[0].id, qty: 1, unit: '', gram: 0 }]
     }))
   }
 
@@ -165,10 +169,16 @@ function RecipeForm({ initial, onCancel, onSaved, onDeleted }) {
       {form.ingredients.map((ing, idx) => {
         const item = allIngredients.find(i => i.id === ing.ingredientId)
         const perServing = isPerServing(item)
+        // Bahan arsip gak muncul buat dipilih baru, TAPI kalau row ini udah
+        // kepilih bahan arsip (dari sebelum diarsipin), tetep ditampilin di
+        // select-nya sendiri biar gak keliatan ilang.
+        const options = item && !isIngredientActive(item)
+          ? [item, ...activeIngredients]
+          : activeIngredients
         return (
           <div key={idx} style={{ marginBottom: 10 }}>
             <select value={ing.ingredientId} onChange={e => updateIngredient(idx, 'ingredientId', e.target.value)} style={{ width: '100%', marginBottom: 6 }}>
-              {allIngredients.map(opt => <option key={opt.id} value={opt.id}>{opt.nama}{isPerServing(opt) ? ' (per serving)' : ''}</option>)}
+              {options.map(opt => <option key={opt.id} value={opt.id}>{opt.nama}{isPerServing(opt) ? ' (per serving)' : ''}{!isIngredientActive(opt) ? ' (arsip)' : ''}</option>)}
             </select>
             <div className="ingredient-row-inputs">
               <input type="number" value={ing.qty} onChange={e => updateIngredient(idx, 'qty', parseFloat(e.target.value) || 0)} placeholder="Qty" />

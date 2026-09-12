@@ -61,10 +61,15 @@ export function generateIngredientId(nama) {
 }
 
 // Simpen bahan baru ATAU edit bahan existing. Bahan BUNDLED disimpen sebagai
-// override (parsial, gampang di-reset); bahan custom disimpen penuh.
+// override (parsial, gampang di-reset); bahan custom disimpen penuh. `active`
+// SENGAJA cuma ditulis kalau eksplisit dikirim (bukan undefined) - kalau
+// enggak, dipertahankan dari state sebelumnya. Tanpa ini, tiap kali user edit
+// gizi/harga bahan yang lagi diarsipin (lewat form biasa, bukan tombol
+// arsip), status arsipnya bakal ke-reset balik jadi aktif tanpa sengaja.
 export function saveIngredient(ingredient) {
   if (BUNDLED_BY_ID[ingredient.id]) {
     const overrides = getIngredientOverrides()
+    const prevActive = overrides[ingredient.id]?.active
     overrides[ingredient.id] = {
       nama: ingredient.nama,
       kategori: ingredient.kategori,
@@ -72,16 +77,26 @@ export function saveIngredient(ingredient) {
       per_100ml: ingredient.per_100ml,
       per_serving: ingredient.per_serving,
       mikro: ingredient.mikro,
-      harga_per_100: ingredient.harga_per_100
+      harga_per_100: ingredient.harga_per_100,
+      active: ingredient.active !== undefined ? ingredient.active : prevActive
     }
     save('ingredient-overrides', overrides)
   } else {
     const customs = getCustomIngredients()
     const idx = customs.findIndex(i => i.id === ingredient.id)
-    if (idx >= 0) customs[idx] = ingredient
-    else customs.push(ingredient)
+    const prevActive = idx >= 0 ? customs[idx].active : undefined
+    const toSave = { ...ingredient, active: ingredient.active !== undefined ? ingredient.active : prevActive }
+    if (idx >= 0) customs[idx] = toSave
+    else customs.push(toSave)
     save('custom-ingredients', customs)
   }
+}
+
+// Bahan dianggap aktif kecuali eksplisit diarsipin (`active: false`) -
+// biar semua bahan lama (belum pernah disentuh field ini) default aktif
+// tanpa perlu migrasi data.
+export function isIngredientActive(item) {
+  return item?.active !== false
 }
 
 // Balikin bahan BUNDLED ke data asli (buang override-nya). Gak berlaku buat

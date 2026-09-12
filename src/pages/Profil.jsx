@@ -6,7 +6,7 @@ import { clearTotalsCache } from '../data/recipes.js'
 import { getCalorieTarget, calcMifflinTarget, ACTIVITY_LEVELS } from '../lib/targetEngine.js'
 import {
   getAllIngredients, saveIngredient, resetIngredientOverride, deleteCustomIngredient,
-  generateIngredientId, MIKRO_LABELS
+  generateIngredientId, MIKRO_LABELS, isIngredientActive
 } from '../lib/nutrition.js'
 
 function TargetSection() {
@@ -209,6 +209,7 @@ function BahanSection() {
   const [ingredients, setIngredients] = useState(() => getAllIngredients())
   const [editing, setEditing] = useState(null) // form object, null = list view
   const [confirmDeleteId, setConfirmDeleteId] = useState(null)
+  const [showArchived, setShowArchived] = useState(false)
 
   function refresh() {
     setIngredients(getAllIngredients())
@@ -246,8 +247,11 @@ function BahanSection() {
     setEditing(prev => ({ ...prev, mikro: prev.mikro.filter((_, i) => i !== idx) }))
   }
 
-  function handleSave() {
-    if (!editing.nama.trim()) return
+  // `extra` dipake khusus buat nitip field `active` pas toggle arsip - gak
+  // dipanggil dari form Simpan biasa, biar edit gizi/harga gak numpang
+  // ngubah status arsip bahan tanpa sengaja (lihat komentar di
+  // saveIngredient() kenapa itu bahaya).
+  function buildPayload(extra = {}) {
     const id = editing.id || generateIngredientId(editing.nama)
     const per100 = {
       kkal: editing.kkal,
@@ -262,7 +266,7 @@ function BahanSection() {
       lemak_poly_g: editing.lemak_poly_g
     }
     const mikro = Object.fromEntries(editing.mikro.map(m => [m.key, m.value]))
-    saveIngredient({
+    return {
       id,
       nama: editing.nama.trim(),
       kategori: editing.kategori.trim(),
@@ -270,8 +274,20 @@ function BahanSection() {
       per_100ml: editing.unit === 'per_100ml' ? per100 : undefined,
       per_serving: editing.unit === 'per_serving' ? per100 : undefined,
       harga_per_100: editing.harga_per_100,
-      mikro
-    })
+      mikro,
+      ...extra
+    }
+  }
+
+  function handleSave() {
+    if (!editing.nama.trim()) return
+    saveIngredient(buildPayload())
+    setEditing(null)
+    refresh()
+  }
+
+  function handleToggleActive(currentlyActive) {
+    saveIngredient(buildPayload({ active: !currentlyActive }))
     setEditing(null)
     refresh()
   }
@@ -291,7 +307,9 @@ function BahanSection() {
 
   if (editing) {
     const isNew = !editing.id
-    const isBundled = !isNew && ingredients.find(i => i.id === editing.id)?.isBundled
+    const current = !isNew && ingredients.find(i => i.id === editing.id)
+    const isBundled = !isNew && current?.isBundled
+    const currentlyActive = isNew || isIngredientActive(current)
 
     return (
       <div className="section-card">
@@ -370,8 +388,21 @@ function BahanSection() {
         ))}
         <button className="btn-secondary" onClick={addMikroRow} style={{ marginTop: 8, marginBottom: 16 }}>+ Tambah mikro</button>
 
+        {!isNew && (
+          <p className="empty-note" style={{ marginBottom: 10 }}>
+            {currentlyActive
+              ? 'Bahan aktif - muncul di pemilih bahan pas bikin resep.'
+              : 'Bahan diarsipkan - disembunyiin dari pemilih bahan resep baru, tapi resep LAMA yang udah kepake bahan ini tetep kehitung normal.'}
+          </p>
+        )}
+
         <div className="meal-card-actions" style={{ border: 'none', paddingTop: 0, marginTop: 0 }}>
           <button className="btn-primary" onClick={handleSave}>Simpan</button>
+          {!isNew && (
+            <button className="btn-secondary" onClick={() => handleToggleActive(currentlyActive)}>
+              {currentlyActive ? 'Arsipkan' : 'Aktifkan'}
+            </button>
+          )}
           {isBundled && <button className="btn-secondary" onClick={() => handleReset(editing.id)}>Reset ke default</button>}
           {!isNew && !isBundled && (
             confirmDeleteId === editing.id
@@ -383,24 +414,42 @@ function BahanSection() {
     )
   }
 
+  const activeIngredients = ingredients.filter(isIngredientActive)
+  const archivedIngredients = ingredients.filter(i => !isIngredientActive(i))
+
+  function renderRow(item) {
+    return (
+      <div className="recipe-row" key={item.id} onClick={() => openEdit(item)}>
+        <span>{item.nama}{!item.isBundled && <span className="mikro-low"> · custom</span>}</span>
+        <span className="recipe-row-right">
+          <span className="recipe-meta">{(item.per_100g || item.per_100ml || item.per_serving || {}).kkal || 0} kkal{item.per_serving ? '/serving' : ''}</span>
+          <span className="recipe-row-chevron">›</span>
+        </span>
+      </div>
+    )
+  }
+
   return (
     <div className="section-card">
       <div className="cat-heading">Database Bahan</div>
       <p className="empty-note" style={{ marginBottom: 10 }}>
         Tambah/edit gizi bahan manual. Bahan baru belum kepake di resep manapun
         sampe ada fitur custom recipe - ngedit bahan yang UDAH ada langsung
-        ngaruh ke Resep & Belanja.
+        ngaruh ke Resep & Belanja. Bahan yang diarsipkan gak ilang, cuma
+        disembunyiin dari pemilih bahan resep baru - buat bahan yang gak lagi
+        dibeli/dipake tapi masih mau disimpen datanya.
       </p>
       <button className="btn-primary" onClick={openNew} style={{ marginBottom: 12 }}>+ Tambah Bahan</button>
-      {ingredients.map(item => (
-        <div className="recipe-row" key={item.id} onClick={() => openEdit(item)}>
-          <span>{item.nama}{!item.isBundled && <span className="mikro-low"> · custom</span>}</span>
-          <span className="recipe-row-right">
-            <span className="recipe-meta">{(item.per_100g || item.per_100ml || item.per_serving || {}).kkal || 0} kkal{item.per_serving ? '/serving' : ''}</span>
-            <span className="recipe-row-chevron">›</span>
-          </span>
-        </div>
-      ))}
+      {activeIngredients.map(renderRow)}
+
+      {archivedIngredients.length > 0 && (
+        <>
+          <button className="btn-secondary" onClick={() => setShowArchived(v => !v)} style={{ marginTop: 12 }}>
+            {showArchived ? 'Sembunyikan' : 'Lihat'} arsip ({archivedIngredients.length})
+          </button>
+          {showArchived && archivedIngredients.map(renderRow)}
+        </>
+      )}
     </div>
   )
 }

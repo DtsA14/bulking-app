@@ -3,6 +3,22 @@
 Hal-hal yang udah dibahas tapi sengaja BELUM dikerjain — biar scope tiap iterasi
 tetep jelas. Urutan bukan prioritas, tinggal diambil kapan relevan.
 
+Udah kekerjain (2026-09-12): **Inventory bahan (Aktif/Arsip)** di Database
+Bahan (Profil.jsx) - SENGAJA bukan sistem stok otomatis (gak ada quantity,
+gak ada decrement pas kepake, gak ada auto-restock) karena udah didiskusiin
+sebelumnya kalau inventory kuantitas gampang drift dari kondisi asli & nambah
+maintenance burden. Ini cuma boolean flag `active` per bahan (default aktif,
+gak perlu migrasi data lama) - "Arsipkan"/"Aktifkan" di form edit bahan,
+bahan yang diarsip disembunyiin dari list utama (masuk collapsible "Lihat
+arsip") DAN dari pemilih bahan di Resep builder (biar gak kepilih buat resep
+baru), tapi TETEP kehitung normal kalau ada resep lama yang udah kepake
+bahan itu (arsip ≠ hapus). `saveIngredient()` di `nutrition.js` sengaja
+dibikin cuma nulis field `active` kalau eksplisit dikirim - biar edit
+gizi/harga bahan yang diarsipkan lewat form biasa gak numpang reset status
+arsipnya balik ke aktif. Use case: user filter bahan lewat "latihan
+generate" jadi cuma bahan yang beneran mau dibeli di real life yang keliatan
+di pemilih resep, tanpa perlu hapus data bahan yang sesekali dipake.
+
 ## #8 — Generate resep dari bahan (arah kebalikan dari Belanja)
 Alur: user masukin bahan yang ada di rumah → sistem/AI nyari atau bikinin resep
 baru dari situ, termasuk cooking direction yang belum pernah ada di database.
