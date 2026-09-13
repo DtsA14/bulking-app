@@ -1,13 +1,20 @@
-import { calcTotals, findIngredient } from '../lib/nutrition.js'
+import { calcTotals, findIngredient, isPerServing } from '../lib/nutrition.js'
 import { load, save } from '../lib/storage.js'
 
 // qty & unit itu buat ditampilkan ke user (natural: "2 butir", "4 sdm").
 // gram itu berat aktual (atau ml buat cairan) buat kalkulasi gizi/harga nanti,
-// dihitung sekali di sini pas nulis resep, bukan di-derive on-the-fly.
+// dihitung sekali di sini pas nulis resep, bukan di-derive on-the-fly. Satuan
+// selain 'g'/'ml' (butir, sdm, scoop, dst) gak langsung keliatan berapa gram
+// beratnya - ditambahin keterangan "(Xg)" biar jelas tanpa perlu buka tab Gizi.
+// Bahan `per_serving` dikecualiin - field gram-nya itu JUMLAH SERVING, bukan
+// berat, jadi nampilin "(Xg)" buat itu malah nyesatin.
 export function ingredientLabel(ing) {
   const item = findIngredient(ing.ingredientId)
   const nama = item ? item.nama : ing.ingredientId
-  return `${ing.qty} ${ing.unit} ${nama}`
+  const base = `${ing.qty} ${ing.unit} ${nama}`
+  const isBaseUnit = ing.unit === 'g' || ing.unit === 'ml'
+  if (isBaseUnit || !item || isPerServing(item)) return base
+  return `${base} (${ing.gram}g)`
 }
 
 export function ingredientGram(ing) {
