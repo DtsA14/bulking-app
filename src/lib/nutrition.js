@@ -35,8 +35,9 @@ function buildIngredientIndex() {
 // default (true) atau cuma bisa dihapus (false, bahan custom).
 export function getAllIngredients() {
   const index = buildIngredientIndex()
+  const overrides = getIngredientOverrides()
   return Object.values(index)
-    .map(item => ({ ...item, isBundled: !!BUNDLED_BY_ID[item.id] }))
+    .map(item => ({ ...item, isBundled: !!BUNDLED_BY_ID[item.id], hasOverride: overrides[item.id] !== undefined }))
     .sort((a, b) => a.nama.localeCompare(b.nama))
 }
 
