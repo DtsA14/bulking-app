@@ -125,7 +125,7 @@ export const RECIPES = [
       { ingredientId: 'pisang', qty: 1, unit: 'buah', gram: 118 },
       { ingredientId: 'susu-full-cream', qty: 250, unit: 'ml', gram: 250 },
       { ingredientId: 'selai-kacang', qty: 2, unit: 'sdm', gram: 32 },
-      { ingredientId: 'whey-protein', qty: 1, unit: 'scoop', gram: 30 },
+      { ingredientId: 'whey-protein', qty: 1, unit: 'scoop', gram: 35 },
       { ingredientId: 'oat-instan', qty: 3, unit: 'sdm', gram: 24 },
       { ingredientId: 'madu', qty: 1, unit: 'sdm', gram: 21 }
     ],
