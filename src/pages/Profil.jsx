@@ -318,6 +318,14 @@ function BahanSection() {
           <span className="rtitle">{isNew ? 'Tambah Bahan' : 'Edit Bahan'}</span>
         </div>
 
+        {isBundled && current.hasOverride && (
+          <p className="empty-note" style={{ marginBottom: 10 }}>
+            Bahan ini udah pernah diedit manual - datanya gak lagi ikut ke-update
+            kalau data bawaan bahan ini direvisi lagi nanti. Klik "Reset ke default"
+            di bawah kalau mau balik pake data bawaan terbaru.
+          </p>
+        )}
+
         <label className="field-row">
           Nama bahan
           <input type="text" value={editing.nama} onChange={e => updateField('nama', e.target.value)} />
@@ -420,7 +428,11 @@ function BahanSection() {
   function renderRow(item) {
     return (
       <div className="recipe-row" key={item.id} onClick={() => openEdit(item)}>
-        <span>{item.nama}{!item.isBundled && <span className="mikro-low"> · custom</span>}</span>
+        <span>
+          {item.nama}
+          {!item.isBundled && <span className="mikro-low"> · custom</span>}
+          {item.isBundled && item.hasOverride && <span className="mikro-low"> · diedit manual (gak ikut update data bawaan)</span>}
+        </span>
         <span className="recipe-row-right">
           <span className="recipe-meta">{(item.per_100g || item.per_100ml || item.per_serving || {}).kkal || 0} kkal{item.per_serving ? '/serving' : ''}</span>
           <span className="recipe-row-chevron">›</span>
