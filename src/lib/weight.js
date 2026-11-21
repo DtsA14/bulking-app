@@ -22,6 +22,11 @@ function daysBetween(dateStr, referenceStr) {
   return Math.round((d2 - d1) / 86400000)
 }
 
+// Minimal jumlah log di TIAP jendela 7 hari sebelum delta per minggu dianggap
+// valid. Dengan 1-2 log, satu timbangan yang noisy (abis makan besar, dll)
+// langsung jadi "tren" dan bikin TDEE adaptif di targetEngine.js melonjak.
+const MIN_LOGS_PER_WINDOW = 3
+
 // Dipake bareng sama Progress.jsx (nampilin tren) dan lib/targetEngine.js
 // (ngitung TDEE adaptif) - biar gak ada 2 cara beda buat nentuin "tren berat
 // mingguan" yang bisa saling gak nyambung.
@@ -33,6 +38,9 @@ export function getWeightTrend(logs, today) {
   const avgPrev = avg(prev7)
   // avgNow dan avgPrev udah masing-masing rata-rata 7 hari kalender, jadi
   // selisihnya LANGSUNG jadi delta per minggu - gak perlu dibagi 2 lagi.
-  const deltaPerWeek = avgNow !== null && avgPrev !== null ? avgNow - avgPrev : null
+  // Tapi cuma kalau dua-duanya punya cukup log: sampel 1-2 log terlalu tipis.
+  const enoughLogs =
+    last7.length >= MIN_LOGS_PER_WINDOW && prev7.length >= MIN_LOGS_PER_WINDOW
+  const deltaPerWeek = enoughLogs && avgNow !== null && avgPrev !== null ? avgNow - avgPrev : null
   return { avgNow, avgPrev, deltaPerWeek }
 }
