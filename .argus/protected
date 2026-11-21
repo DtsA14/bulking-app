@@ -1,0 +1,25 @@
+# Files the coding agent never changes in bulking-app, one glob per line (Argus contract globs: ** crosses directories,
+# * and ? stay in one path component). Read by the Argus harness from the job's commit, never from the working
+# tree (SPEC_PROTECTED_FILES). A new test file (*.test.*) may be added (the drafter adds one); an existing one never
+# changes. Build and tool configuration is executed at build or test time, so none of it may be added either.
+package.json
+**/package.json
+package-lock.json
+.npmrc
+**/.npmrc
+index.html
+public/**
+vite.config.*
+vitest.config.*
+vitest.workspace.*
+vitest.setup.*
+postcss.config.*
+.postcssrc*
+tailwind.config.*
+babel.config.*
+.babelrc*
+tsconfig*.json
+.env*
+.gitignore
+*.test.*
+**/*.test.*
