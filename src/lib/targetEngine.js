@@ -8,6 +8,10 @@ const HISTORY_DAYS = 14
 const MIN_TRACKED_DAYS = 10
 const KKAL_PER_KG = 7700
 const SURPLUS_KKAL = 300
+// Batas toleransi selisih TDEE adaptif vs Mifflin. Kalau lebih dari 25%,
+// data historinya dianggap belum stabil (noise, hari kosong, tren berat
+// kebaca aneh) - mending balik ke estimasi baseline daripada target ngawur.
+const MAX_ADAPTIVE_DEVIATION = 0.25
 const PROTEIN_G_PER_KG = 2.0 // lean bulk: 1.6-2.2 g/kg, pake titik atas biar aman
 const FAT_G_PER_KG = 1.0 // lean bulk: 0.8-1.2 g/kg buat kesehatan hormonal
 
@@ -32,6 +36,13 @@ export function calcMifflinTarget(profile) {
   const multiplier = ACTIVITY_LEVELS[profile.aktivitas]?.multiplier || ACTIVITY_LEVELS.moderate.multiplier
   const tdee = Math.round(bmr * multiplier)
   return { tdee, target: tdee + SURPLUS_KKAL }
+}
+
+// Cek apakah TDEE adaptif masih "masuk akal" dibanding estimasi populasi
+// (Mifflin). Selisih relatif <= 25% dianggap stabil; batasnya inklusif.
+// Pure function - gak baca storage, gampang dites.
+export function isAdaptiveStable(adaptiveTdee, mifflinTdee) {
+  return Math.abs(adaptiveTdee - mifflinTdee) / mifflinTdee <= MAX_ADAPTIVE_DEVIATION
 }
 
 function dayKkal(daySchedule) {
@@ -84,6 +95,21 @@ export function getCalorieTarget() {
 
   const avgIntake = dailyKkals.reduce((a, b) => a + b, 0) / dailyKkals.length
   const tdee = Math.round(avgIntake - (deltaPerWeek * KKAL_PER_KG) / 7)
+
+  // Guard: kalau TDEE adaptif kejauhan dari estimasi Mifflin, data historinya
+  // belum bisa dipercaya - balik ke baseline, tapi tandai unstable biar UI
+  // (kalau mau) bisa kasih tau user kenapa.
+  const mifflin = calcMifflinTarget(profile)
+  if (!isAdaptiveStable(tdee, mifflin.tdee)) {
+    return {
+      mode: 'baseline',
+      tdee: mifflin.tdee,
+      target: mifflin.target,
+      daysTracked: dailyKkals.length,
+      unstable: true
+    }
+  }
+
   return { mode: 'adaptive', tdee, target: tdee + SURPLUS_KKAL, daysTracked: dailyKkals.length }
 }
 
