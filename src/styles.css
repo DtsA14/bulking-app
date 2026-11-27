@@ -3,7 +3,9 @@ body { margin: 0; font-family: -apple-system, sans-serif; background: #F7F3E8; c
 
 .app-shell { display: flex; flex-direction: column; min-height: 100vh; max-width: 480px; margin: 0 auto; }
 .app-header { background: #26433A; padding: 14px 16px; }
+.app-header-row { display: flex; align-items: center; justify-content: space-between; }
 .app-header-title { color: #fff; font-weight: 600; font-size: 16px; }
+.app-header-btn { background: none; border: none; color: #fff; font-size: 16px; padding: 4px 8px; cursor: pointer; }
 .app-content { flex: 1; padding: 16px; padding-bottom: 80px; overflow-y: auto; }
 
 .storage-toast {
